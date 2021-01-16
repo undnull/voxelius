@@ -12,20 +12,16 @@
 #include <stddef.h>
 #include <stdint.h>
 
-typedef uint_least8_t uint8;
-typedef uint_least16_t uint16;
-typedef uint_least32_t uint32;
-typedef uint_least64_t uint64;
-
-typedef int_least8_t int8;
-typedef int_least16_t int16;
-typedef int_least32_t int32;
-typedef int_least64_t int64;
-
 typedef glm::mat<4, 4, float, glm::packed_highp> float4x4;
 
 typedef glm::vec<2, float, glm::packed_highp> float2;
 typedef glm::vec<3, float, glm::packed_highp> float3;
 typedef glm::vec<4, float, glm::packed_highp> float4;
+
+// uint8_t is temporary for now and just describes a color.
+// when I get to some more complex voxels (maybe textured)
+// this must be changed to uint16_t...
+typedef uint8_t voxel_t;
+typedef voxel_t * chunk_t;
 
 #endif
