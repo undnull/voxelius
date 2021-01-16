@@ -21,7 +21,7 @@ namespace window
         }
     } ad;
 
-    const bool init()
+    bool init()
     {
         if(glfwInit() != GLFW_TRUE) {
             glfwTerminate();
@@ -46,7 +46,7 @@ namespace window
         return true;
     }
 
-    const bool is_open()
+    bool is_open()
     {
         return glfwWindowShouldClose(window) != GLFW_TRUE;
     }

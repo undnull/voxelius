@@ -8,3 +8,4 @@ target_sources(voxelius PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}/main.cc"
     "${CMAKE_CURRENT_LIST_DIR}/window.cc"
 )
+add_subdirectory(gl)

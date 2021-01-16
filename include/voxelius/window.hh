@@ -10,9 +10,9 @@ struct GLFWwindow;
 
 namespace window
 {
-    const bool init();
+    bool init();
 
-    const bool is_open();
+    bool is_open();
     void close();
 
     void begin_frame();
