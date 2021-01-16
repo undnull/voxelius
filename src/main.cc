@@ -55,9 +55,6 @@ int main(void)
         return 1;
     }
 
-    logger::log("logger test. this will be printed on any configuration!");
-    logger::dlog("logger test. this won't be printed on release builds!");
-
     while(window::is_open()) {
         window::begin_frame();
 
