@@ -6,6 +6,7 @@
 #include <voxelius/gl/buffer.hh>
 #include <voxelius/gl/program.hh>
 #include <voxelius/gl/vao.hh>
+#include <voxelius/render/mesh.hh>
 #include <voxelius/util/file.hh>
 #include <voxelius/logger.hh>
 #include <voxelius/window.hh>
@@ -19,17 +20,18 @@ int main(void)
     gl::VertexShader vs;
     gl::FragmentShader fs;    
     gl::Program prog;
-    gl::Buffer vbo(GL_ARRAY_BUFFER);
-    gl::Buffer ebo(GL_ELEMENT_ARRAY_BUFFER);
-    gl::VAO vao;
 
-    const float3 vertices[3] = {
-        float3(-0.5f, -0.5f, 0.0f),
-        float3( 0.0f,  0.5f, 0.0f),
-        float3( 0.5f, -0.5f, 0.0f),
-    };
+    render::Mesh mesh;
 
-    const unsigned int indices[3] = { 0, 1, 2 };
+    mesh.add_vertex(render::vertex { float3(-0.5f, -0.5f, 0.0f) });
+    mesh.add_vertex(render::vertex { float3( 0.0f,  0.5f, 0.0f) });
+    mesh.add_vertex(render::vertex { float3( 0.5f, -0.5f, 0.0f) });
+
+    mesh.add_index(0);
+    mesh.add_index(1);
+    mesh.add_index(2);
+
+    mesh.update();
 
     const std::string vs_src = util::file_read_txt("./shaders/triangle.vs");
     const std::string fs_src = util::file_read_txt("./shaders/triangle.fs");
@@ -53,19 +55,6 @@ int main(void)
         return 1;
     }
 
-    vao.bind();
-
-    vbo.bind();
-    vbo.set_data(vertices, sizeof(vertices));
-
-    ebo.bind();
-    ebo.set_data(indices, sizeof(indices));
-
-    vao.enable_attrib(0);
-    vao.set_attrib_ptr(0, sizeof(float3), 3, 0);
-
-    vao.unbind();
-
     logger::log("logger test. this will be printed on any configuration!");
     logger::dlog("logger test. this won't be printed on release builds!");
 
@@ -76,8 +65,8 @@ int main(void)
 
         prog.bind();
 
-        vao.bind();
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+        mesh.get_vao().bind();
+        glDrawElements(GL_TRIANGLES, (GLsizei)mesh.get_num_indices(), GL_UNSIGNED_INT, nullptr);
 
         window::end_frame();
     }

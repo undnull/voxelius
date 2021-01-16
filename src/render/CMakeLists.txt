@@ -1,0 +1,8 @@
+#
+# CMakeLists.txt
+# Created: 2021-01-16, 22:25:48.
+# Copyright (C) 2021, Kirill GPRB.
+#
+target_sources(voxelius PRIVATE
+    "${CMAKE_CURRENT_LIST_DIR}/mesh.cc"
+)

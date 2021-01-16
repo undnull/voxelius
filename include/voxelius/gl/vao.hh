@@ -20,7 +20,7 @@ namespace gl
 
         void enable_attrib(unsigned int index) const;
 
-        void set_attrib_ptr(unsigned int index, size_t size, size_t count, size_t offset) const;
+        void set_attrib_ptr_float(unsigned int index, size_t stride, size_t count, size_t offset) const;
 
         void bind() const;
         void unbind() const;
