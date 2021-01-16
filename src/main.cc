@@ -6,9 +6,9 @@
 #include <voxelius/gl/buffer.hh>
 #include <voxelius/gl/program.hh>
 #include <voxelius/gl/vao.hh>
+#include <voxelius/logger.hh>
 #include <voxelius/window.hh>
 #include <glad/glad.h>
-#include <iostream>
 
 static const char *vs_src =
     "#version 420\n"
@@ -48,20 +48,20 @@ int main(void)
 
     vs.set_source(vs_src);
     if(!vs.try_compile()) {
-        std::cerr << vs.get_info_log() << std::endl;
+        logger::log("%s", vs.get_info_log());
         return 1;
     }
 
     fs.set_source(fs_src);
     if(!fs.try_compile()) {
-        std::cerr << fs.get_info_log() << std::endl;
+        logger::log("%s", fs.get_info_log());
         return 1;
     }
 
     prog.attach(vs);
     prog.attach(fs);
     if(!prog.try_link()) {
-        std::cerr << prog.get_info_log() << std::endl;
+        logger::log("%s", prog.get_info_log());
         return 1;
     }
 
@@ -77,6 +77,9 @@ int main(void)
     vao.set_attrib_ptr(0, sizeof(float3), 3, 0);
 
     vao.unbind();
+
+    logger::log("logger test. this will be printed on any configuration!");
+    logger::dlog("logger test. this won't be printed on release builds!");
 
     while(window::is_open()) {
         window::begin_frame();

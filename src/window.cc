@@ -4,6 +4,7 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <voxelius/globals.hh>
+#include <voxelius/logger.hh>
 #include <voxelius/window.hh>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -21,8 +22,14 @@ namespace window
         }
     } ad;
 
+    static void glfw_error(int code, const char *message)
+    {
+        logger::log("glfw error %d: %s", code, message);
+    }
+
     bool init()
     {
+        glfwSetErrorCallback(glfw_error);
         if(glfwInit() != GLFW_TRUE) {
             glfwTerminate();
             return false;
