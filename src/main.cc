@@ -6,25 +6,10 @@
 #include <voxelius/gl/buffer.hh>
 #include <voxelius/gl/program.hh>
 #include <voxelius/gl/vao.hh>
+#include <voxelius/util/file.hh>
 #include <voxelius/logger.hh>
 #include <voxelius/window.hh>
 #include <glad/glad.h>
-
-static const char *vs_src =
-    "#version 420\n"
-    "layout(location = 0) in vec3 vtx;\n"
-    "void main(void)\n"
-    "{\n"
-    "    gl_Position = vec4(vtx, 1.0);\n"
-    "}\n";
-
-static const char *fs_src =
-    "#version 420\n"
-    "layout(location = 0) out vec4 target;\n"
-    "void main(void)\n"
-    "{\n"
-    "    target = vec4(0.0, 1.0, 0.0, 1.0);\n"
-    "}\n";
 
 int main(void)
 {
@@ -46,13 +31,16 @@ int main(void)
 
     const unsigned int indices[3] = { 0, 1, 2 };
 
-    vs.set_source(vs_src);
+    const std::string vs_src = util::file_read_txt("./shaders/triangle.vs");
+    const std::string fs_src = util::file_read_txt("./shaders/triangle.fs");
+
+    vs.set_source(vs_src.c_str());
     if(!vs.try_compile()) {
         logger::log("%s", vs.get_info_log());
         return 1;
     }
 
-    fs.set_source(fs_src);
+    fs.set_source(fs_src.c_str());
     if(!fs.try_compile()) {
         logger::log("%s", fs.get_info_log());
         return 1;
