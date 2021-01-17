@@ -84,6 +84,11 @@ namespace gl
         glProgramUniform1f(program, location, value);
     }
 
+    void Program::set_uniform(int location, const double value) const
+    {
+        glProgramUniform1d(program, location, value);
+    }
+
     void Program::set_uniform(int location, const vec2_t &value) const
     {
         glProgramUniform2dv(program, location, 1, glm::value_ptr(value));
