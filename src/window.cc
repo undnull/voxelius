@@ -35,6 +35,8 @@ namespace window
             return false;
         }
 
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
         window = glfwCreateWindow(800, 600, "Voxelius", nullptr, nullptr);
         if(!window) {
             glfwTerminate();
