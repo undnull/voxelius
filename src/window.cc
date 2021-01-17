@@ -65,7 +65,7 @@ namespace window
 
     void begin_frame()
     {
-        globals::current_time = (float)glfwGetTime();
+        globals::current_time = glfwGetTime();
         globals::frame_time = globals::current_time - globals::last_time;
         globals::last_time = globals::current_time;
     }

@@ -28,9 +28,9 @@ namespace gl
         glEnableVertexAttribArray(index);
     }
 
-    void VAO::set_attrib_ptr_float(unsigned int index, size_t stride, size_t count, size_t offset) const
+    void VAO::set_attrib_ptr_d(unsigned int index, size_t stride, size_t count, size_t offset) const
     {
-        glVertexAttribPointer(index, (GLint)count, GL_FLOAT, GL_FALSE, (GLsizei)stride, (const void *)offset);
+        glVertexAttribPointer(index, (GLint)count, GL_DOUBLE, GL_FALSE, (GLsizei)stride, (const void *)offset);
     }
 
     void VAO::bind() const

@@ -12,11 +12,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
-typedef glm::mat<4, 4, float, glm::packed_highp> float4x4;
+typedef glm::mat<4, 4, double, glm::packed_highp> mat4x4_t;
 
-typedef glm::vec<2, float, glm::packed_highp> float2;
-typedef glm::vec<3, float, glm::packed_highp> float3;
-typedef glm::vec<4, float, glm::packed_highp> float4;
+typedef glm::vec<2, double, glm::packed_highp> vec2_t;
+typedef glm::vec<3, double, glm::packed_highp> vec3_t;
+typedef glm::vec<4, double, glm::packed_highp> vec4_t;
 
 // uint8_t is temporary for now and just describes a color.
 // when I get to some more complex voxels (maybe textured)

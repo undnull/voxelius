@@ -41,13 +41,13 @@ namespace render
         ebo.set_data(indices.data(), sizeof(unsigned int) * indices.size());
 
         vao.enable_attrib(0);
-        vao.set_attrib_ptr_float(0, sizeof(vertex), 3, offsetof(vertex, position));
+        vao.set_attrib_ptr_d(0, sizeof(vertex), 3, offsetof(vertex, position));
         vao.enable_attrib(1);
-        vao.set_attrib_ptr_float(1, sizeof(vertex), 3, offsetof(vertex, normal));
+        vao.set_attrib_ptr_d(1, sizeof(vertex), 3, offsetof(vertex, normal));
         vao.enable_attrib(2);
-        vao.set_attrib_ptr_float(2, sizeof(vertex), 2, offsetof(vertex, texcoord));
+        vao.set_attrib_ptr_d(2, sizeof(vertex), 2, offsetof(vertex, texcoord));
         vao.enable_attrib(3);
-        vao.set_attrib_ptr_float(3, sizeof(vertex), 4, offsetof(vertex, color));
+        vao.set_attrib_ptr_d(3, sizeof(vertex), 4, offsetof(vertex, color));
 
         vao.unbind();
     }

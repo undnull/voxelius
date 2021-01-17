@@ -84,23 +84,23 @@ namespace gl
         glProgramUniform1f(program, location, value);
     }
 
-    void Program::set_uniform(int location, const float2 &value) const
+    void Program::set_uniform(int location, const vec2_t &value) const
     {
-        glProgramUniform2fv(program, location, 1, glm::value_ptr(value));
+        glProgramUniform2dv(program, location, 1, glm::value_ptr(value));
     }
 
-    void Program::set_uniform(int location, const float3 &value) const
+    void Program::set_uniform(int location, const vec3_t &value) const
     {
-        glProgramUniform3fv(program, location, 1, glm::value_ptr(value));
+        glProgramUniform3dv(program, location, 1, glm::value_ptr(value));
     }
 
-    void Program::set_uniform(int location, const float4 &value) const
+    void Program::set_uniform(int location, const vec4_t &value) const
     {
-        glProgramUniform4fv(program, location, 1, glm::value_ptr(value));
+        glProgramUniform4dv(program, location, 1, glm::value_ptr(value));
     }
 
-    void Program::set_uniform(int location, const float4x4 &value) const
+    void Program::set_uniform(int location, const mat4x4_t &value) const
     {
-        glProgramUniformMatrix4fv(program, location, 1, GL_FALSE, glm::value_ptr(value));
+        glProgramUniformMatrix4dv(program, location, 1, GL_FALSE, glm::value_ptr(value));
     }
 }

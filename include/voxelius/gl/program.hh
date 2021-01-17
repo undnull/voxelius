@@ -29,10 +29,11 @@ namespace gl
 
         void set_uniform(int location, const int value) const;
         void set_uniform(int location, const float value) const;
-        void set_uniform(int location, const float2 &value) const;
-        void set_uniform(int location, const float3 &value) const;
-        void set_uniform(int location, const float4 &value) const;
-        void set_uniform(int location, const float4x4 &value) const;
+        void set_uniform(int location, const double value) const;
+        void set_uniform(int location, const vec2_t &value) const;
+        void set_uniform(int location, const vec3_t &value) const;
+        void set_uniform(int location, const vec4_t &value) const;
+        void set_uniform(int location, const mat4x4_t &value) const;
 
     private:
         unsigned int program;

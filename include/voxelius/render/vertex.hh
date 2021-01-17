@@ -10,10 +10,10 @@
 namespace render
 {
     struct vertex final {
-        float3 position = { 0.0f, 0.0f, 0.0f };
-        float3 normal = { 0.0f, 0.0f, 0.0f };
-        float2 texcoord = { 0.0f, 0.0f };
-        float4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
+        vec3_t position = { 0.0, 0.0, 0.0 };
+        vec3_t normal = { 0.0, 0.0, 0.0 };
+        vec2_t texcoord = { 0.0, 0.0 };
+        vec4_t color = { 1.0, 1.0, 1.0, 1.0 };
     };
 }
 

@@ -23,9 +23,9 @@ int main(void)
 
     render::Mesh mesh;
 
-    mesh.add_vertex(render::vertex { float3(-0.5f, -0.5f, 0.0f) });
-    mesh.add_vertex(render::vertex { float3( 0.0f,  0.5f, 0.0f) });
-    mesh.add_vertex(render::vertex { float3( 0.5f, -0.5f, 0.0f) });
+    mesh.add_vertex(render::vertex { vec3_t(-0.5, -0.5, 0.0) });
+    mesh.add_vertex(render::vertex { vec3_t( 0.0,  0.5, 0.0) });
+    mesh.add_vertex(render::vertex { vec3_t( 0.5, -0.5, 0.0) });
 
     mesh.add_index(0);
     mesh.add_index(1);
