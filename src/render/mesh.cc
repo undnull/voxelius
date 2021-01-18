@@ -1,6 +1,6 @@
 /*
  * mesh.cc
- * Created: 2021-01-16, 22:16:05.
+ * Created: 2021-01-18, 14:06:32.
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <voxelius/render/mesh.hh>
@@ -8,7 +8,7 @@
 
 namespace render
 {
-    Mesh::Mesh() : vao(), vbo(GL_ARRAY_BUFFER), ebo(GL_ELEMENT_ARRAY_BUFFER), vertices(), indices()
+    Mesh::Mesh() : vbo(GL_ARRAY_BUFFER), ebo(GL_ELEMENT_ARRAY_BUFFER)
     {
 
     }
@@ -26,8 +26,8 @@ namespace render
 
     void Mesh::add_index(unsigned int index)
     {
-        // fixme: check for the index validity???
-        indices.push_back(index);
+        if(index < vertices.size())
+            indices.push_back(index);
     }
 
     void Mesh::update()
@@ -42,12 +42,9 @@ namespace render
 
         vao.enable_attrib(0);
         vao.set_attrib_ptr_d(0, sizeof(vertex), 3, offsetof(vertex, position));
+
         vao.enable_attrib(1);
-        vao.set_attrib_ptr_d(1, sizeof(vertex), 3, offsetof(vertex, normal));
-        vao.enable_attrib(2);
-        vao.set_attrib_ptr_d(2, sizeof(vertex), 2, offsetof(vertex, texcoord));
-        vao.enable_attrib(3);
-        vao.set_attrib_ptr_d(3, sizeof(vertex), 4, offsetof(vertex, color));
+        vao.set_attrib_ptr_d(1, sizeof(vertex), 4, offsetof(vertex, color));
 
         vao.unbind();
     }
@@ -60,10 +57,5 @@ namespace render
     size_t Mesh::get_num_indices() const
     {
         return indices.size();
-    }
-
-    gl::VAO & Mesh::get_vao()
-    {
-        return vao;
     }
 }

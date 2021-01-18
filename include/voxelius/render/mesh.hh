@@ -1,6 +1,6 @@
 /*
  * mesh.hh
- * Created: 2021-01-16, 22:11:02.
+ * Created: 2021-01-18, 14:02:31.
  * Copyright (C) 2021, Kirill GPRB.
  */
 #ifndef VOXELIUS_RENDER_MESH_HH
@@ -25,11 +25,11 @@ namespace render
 
         size_t get_num_vertices() const;
         size_t get_num_indices() const;
-    
-        gl::VAO & get_vao();
+
+    public:
+        gl::VAO vao;
 
     private:
-        gl::VAO vao;
         gl::Buffer vbo, ebo;
         std::vector<vertex> vertices;
         std::vector<unsigned int> indices;
