@@ -14,6 +14,7 @@ namespace logger
 {
     static std::mutex mutex;
     static std::ofstream logfile("./voxelius.log", std::ios::out | std::ios::app);
+    static std::ofstream logfile_l("./voxelius.latest.log", std::ios::out);
 
     void detail::log(const std::string &str)
     {
@@ -28,7 +29,8 @@ namespace logger
         ss << " ";
         ss << str;
 
-        if(logfile.good()) logfile << ss.str() << std::endl;
-        if(std::cerr.good()) std::cerr << ss.str() << std::endl;
+        std::cerr << ss.str() << std::endl;
+        logfile << ss.str() << std::endl;
+        logfile_l << ss.str() << std::endl;
     }
 }

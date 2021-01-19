@@ -1,3 +1,4 @@
 .vscode/*
 build/*
 voxelius.log
+voxelius.latest.log
