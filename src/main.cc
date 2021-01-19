@@ -61,7 +61,7 @@ int main(void)
         vbo.set_data(vertices, sizeof(vertices));
         vao.bind_vbo(vbo, 0, 0, sizeof(vec3_t));
         vao.enable_attrib(0);
-        vao.set_attrib_format<double>(0, 3, false);
+        vao.set_attrib_format<float>(0, 3, false);
         vao.set_attrib_binding(0, 0);
 
         while(window::is_open()) {

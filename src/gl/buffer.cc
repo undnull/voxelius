@@ -39,7 +39,6 @@ namespace gl
 
     void Buffer::set_data(const void *data, size_t size)
     {
-        // GL4.3: Direct State Access
         glNamedBufferData(buffer, (GLsizeiptr)size, data, GL_STATIC_DRAW);
     }
 }

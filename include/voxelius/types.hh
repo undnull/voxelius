@@ -14,15 +14,15 @@
 #include <stddef.h>
 #include <stdint.h>
 
-typedef glm::mat<4, 4, double, glm::packed_highp> mat4x4_t;
+typedef glm::mat<4, 4, float, glm::packed_highp> mat4x4_t;
 
-typedef glm::vec<2, double, glm::packed_highp> vec2_t;
-typedef glm::vec<3, double, glm::packed_highp> vec3_t;
-typedef glm::vec<4, double, glm::packed_highp> vec4_t;
+typedef glm::vec<2, float, glm::packed_highp> vec2_t;
+typedef glm::vec<3, float, glm::packed_highp> vec3_t;
+typedef glm::vec<4, float, glm::packed_highp> vec4_t;
 
-typedef glm::qua<double, glm::packed_highp> quat_t;
+typedef glm::qua<float, glm::packed_highp> quat_t;
 
-typedef glm::vec<3, double, glm::packed_highp> dcoord_t;
+typedef glm::vec<3, float, glm::packed_highp> dcoord_t;
 typedef glm::vec<3, int64_t, glm::packed_highp> icoord_t;
 typedef glm::vec<3, uint8_t, glm::packed_highp> ucoord_t;
 

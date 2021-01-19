@@ -36,7 +36,7 @@ namespace window
 
     static void gl_debug_callback(GLenum src, GLenum type, GLuint id, GLenum severity, GLsizei length, const char *msg, const void *gay)
     {
-        logger::log("GL%u: %s", type, msg);
+        logger::log("gl: %s", msg);
     }
 
     bool init()
