@@ -4,11 +4,15 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <voxelius/gl/program.hh>
+#include <voxelius/gl/texture.hh>
 #include <voxelius/gl/vao.hh>
 #include <voxelius/util/file.hh>
 #include <voxelius/logger.hh>
 #include <voxelius/window.hh>
 #include <glad/glad.h>
+#include <time.h>
+#include <stdlib.h>
+#include <random>
 
 int main(void)
 {
@@ -27,8 +31,20 @@ int main(void)
         gl::FragmentShader frag;
         gl::Program prog;
 
-        gl::Buffer vbo;
+        gl::Buffer vbo, vbo_uv, ebo;
         gl::VAO vao;
+
+
+        std::mt19937_64 mtgen((unsigned long long)time(nullptr));
+        const size_t nb = 512 * 512 * 4;
+        uint8_t *pixels = new uint8_t[nb];
+        for(size_t i = 0; i < nb; i++) {
+            pixels[i] = mtgen() % 255;
+        }
+
+        gl::Texture texture;
+        texture.load_rgba<uint8_t>(512, 512, pixels);
+        texture.set_filter(true);
 
         vert.set_binary(vert_bin.data(), vert_bin.size());
         if(!vert.specialize("main")) {
@@ -52,10 +68,23 @@ int main(void)
         frag.release();
         vert.release();
 
-        vec3_t vertices[3] = {
-            vec3_t(-0.5, -0.5, 0.0),
-            vec3_t( 0.0,  0.5, 0.0),
-            vec3_t( 0.5, -0.5, 0.0),
+        vec3_t vertices[4] = {
+            vec3_t(-1.0, -1.0, 0.0),
+            vec3_t(-1.0,  1.0, 0.0),
+            vec3_t( 1.0,  1.0, 0.0),
+            vec3_t( 1.0, -1.0, 0.0),
+        };
+
+        vec2_t texcoords[4] = {
+            vec2_t(0.0, 0.0),
+            vec2_t(0.0, 1.0),
+            vec2_t(1.0, 1.0),
+            vec2_t(0.0, 1.0),
+        };
+
+        unsigned int indices[6] = {
+            0, 1, 2,
+            0, 2, 3
         };
 
         vbo.set_data(vertices, sizeof(vertices));
@@ -64,17 +93,29 @@ int main(void)
         vao.set_attrib_format<float>(0, 3, false);
         vao.set_attrib_binding(0, 0);
 
+        vbo_uv.set_data(texcoords, sizeof(texcoords));
+        vao.bind_vbo(vbo_uv, 1, 0, sizeof(vec2_t));
+        vao.enable_attrib(1);
+        vao.set_attrib_format<float>(1, 2, false);
+        vao.set_attrib_binding(1, 1);
+
+        ebo.set_data(indices, sizeof(indices));
+        vao.bind_ebo(ebo);
+
         while(window::is_open()) {
             window::begin_frame();
 
             glClear(GL_COLOR_BUFFER_BIT);
 
             prog.bind();
+            texture.bind(0);
             vao.bind();
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
             
             window::end_frame();
         }
+
+        delete[] pixels;
     }
 
     return 0;

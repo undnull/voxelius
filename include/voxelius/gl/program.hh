@@ -23,7 +23,6 @@ namespace gl
         bool link();
 
         void bind() const;
-        void unbind() const;
 
         void set_uniform(int location, const int value) const;
         void set_uniform(int location, const float value) const;

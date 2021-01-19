@@ -52,7 +52,8 @@ namespace gl
         glEnableVertexArrayAttrib(vao, attrib_index);
     }
 
-    template<> void VAO::set_attrib_format<float>(unsigned int attrib_index, size_t count, bool normalized)
+    template<>
+    void VAO::set_attrib_format<float>(unsigned int attrib_index, size_t count, bool normalized)
     {
         glVertexArrayAttribFormat(vao, attrib_index, (GLint)count, GL_FLOAT, normalized ? GL_TRUE : GL_FALSE, 0);
     }
@@ -65,10 +66,5 @@ namespace gl
     void VAO::bind() const
     {
         glBindVertexArray(vao);
-    }
-
-    void VAO::unbind() const
-    {
-        glBindVertexArray(0);
     }
 }

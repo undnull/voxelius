@@ -1,9 +1,12 @@
 #version 460
 
-layout(location = 0) in vec3 position;
-layout(location = 0) out vec4 target;
+layout(location = 0) in vec2 i_texcoord;
+
+layout(location = 0) out vec4 o_color;
+
+layout(binding = 0) uniform sampler2D u_sampler;
 
 void main(void)
 {
-    target = vec4(position.yxy, 1.0);
+    o_color = texture(u_sampler, i_texcoord);
 }
