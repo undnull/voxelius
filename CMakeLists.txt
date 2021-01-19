@@ -9,6 +9,8 @@ project(voxelius VERSION 0.0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 add_executable(voxelius "")
 
+add_subdirectory(shaders)
+
 # warning C4996: This function or variable may be unsafe.
 target_compile_definitions(voxelius PRIVATE _CRT_SECURE_NO_WARNINGS=1)
 
