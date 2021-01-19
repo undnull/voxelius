@@ -1,6 +1,6 @@
 /*
  * vao.cc
- * Created: 2021-01-16, 19:11:15.
+ * Created: 2021-01-19, 12:13:10.
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <voxelius/gl/vao.hh>
@@ -8,29 +8,58 @@
 
 namespace gl
 {
-    VAO::VAO()
+    VAO::VAO() : vao(0)
     {
-        glGenVertexArrays(1, &vao);
+        create();
     }
 
     VAO::~VAO()
     {
-        glDeleteVertexArrays(1, &vao);
+        release();
     }
 
-    unsigned int VAO::get_vao() const
+    void VAO::create()
     {
-        return vao;
+        release();
+        glCreateVertexArrays(1, &vao);
     }
 
-    void VAO::enable_attrib(unsigned int index) const
+    void VAO::release()
     {
-        glEnableVertexAttribArray(index);
+        if(vao) {
+            glDeleteVertexArrays(1, &vao);
+            vao = 0;
+        }
     }
 
-    void VAO::set_attrib_ptr_d(unsigned int index, size_t stride, size_t count, size_t offset) const
+    bool VAO::is_good() const
     {
-        glVertexAttribPointer(index, (GLint)count, GL_DOUBLE, GL_FALSE, (GLsizei)stride, (const void *)offset);
+        return vao != 0;
+    }
+
+    void VAO::bind_vbo(const Buffer &buffer, unsigned int binding_index, size_t offset, size_t stride)
+    {
+        glVertexArrayVertexBuffer(vao, binding_index, buffer.get_buffer(), (GLintptr)offset, (GLsizei)stride);
+    }
+
+    void VAO::bind_ebo(const Buffer &buffer)
+    {
+        glVertexArrayElementBuffer(vao, buffer.get_buffer());
+    }
+
+    void VAO::enable_attrib(unsigned int attrib_index)
+    {
+        glEnableVertexArrayAttrib(vao, attrib_index);
+    }
+
+    template<> void VAO::set_attrib_format<double>(unsigned int attrib_index, size_t count, bool normalized)
+    {
+        glVertexArrayAttribFormat(vao, attrib_index, (GLint)count, GL_DOUBLE, normalized ? GL_TRUE : GL_FALSE, 0);
+    }
+
+    void VAO::set_attrib_binding(unsigned int attrib_index, unsigned int binding_index)
+    {
+        glVertexArrayAttribBinding(vao, attrib_index, binding_index);
     }
 
     void VAO::bind() const

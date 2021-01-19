@@ -1,6 +1,6 @@
 /*
  * buffer.cc
- * Created: 2021-01-16, 18:25:00.
+ * Created: 2021-01-19, 10:40:37.
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <voxelius/gl/buffer.hh>
@@ -8,38 +8,38 @@
 
 namespace gl
 {
-    Buffer::Buffer(unsigned int target) : target(target)
+    Buffer::Buffer() : buffer(0)
     {
-        glGenBuffers(1, &buffer);
+        create();
     }
 
     Buffer::~Buffer()
     {
-        glDeleteBuffers(1, &buffer);
+        release();
     }
 
-    unsigned int Buffer::get_buffer() const
+    void Buffer::create()
     {
-        return buffer;
+        release();
+        glCreateBuffers(1, &buffer);
     }
 
-    unsigned int Buffer::get_target() const
+    void Buffer::release()
     {
-        return target;
+        if(buffer) {
+            glDeleteBuffers(1, &buffer);
+            buffer = 0;
+        }
     }
 
-    void Buffer::set_data(const void *data, size_t size) const
+    bool Buffer::is_good() const
     {
-        glBufferData(target, (GLsizeiptr)size, data, GL_STATIC_DRAW);
+        return buffer != 0;
     }
 
-    void Buffer::bind() const
+    void Buffer::set_data(const void *data, size_t size)
     {
-        glBindBuffer(target, buffer);
-    }
-
-    void Buffer::unbind() const
-    {
-        glBindBuffer(target, 0);
+        // GL4.3: Direct State Access
+        glNamedBufferData(buffer, (GLsizeiptr)size, data, GL_STATIC_DRAW);
     }
 }

@@ -1,6 +1,6 @@
 /*
  * program.cc
- * Created: 2021-01-16, 17:31:41.
+ * Created: 2021-01-19, 11:48:54.
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <voxelius/gl/program.hh>
@@ -9,27 +9,43 @@
 
 namespace gl
 {
-    Program::Program() : program(glCreateProgram()), info_log(nullptr)
+    Program::Program() : program(0), info_log(nullptr)
     {
-
+        create();
     }
 
     Program::~Program()
     {
-        glDeleteProgram(program);
+        if(info_log)
+            delete[] info_log;
+        release();
     }
 
-    unsigned int Program::get_program() const
+    void Program::create()
     {
-        return program;
+        release();
+        program = glCreateProgram();
     }
 
-    void Program::attach(const Shader &shader) const
+    void Program::release()
+    {
+        if(program) {
+            glDeleteProgram(program);
+            program = 0;
+        }
+    }
+
+    bool Program::is_good() const
+    {
+        return program != 0;
+    }
+
+    void Program::attach(const Shader &shader)
     {
         glAttachShader(program, shader.get_shader());
     }
 
-    bool Program::try_link()
+    bool Program::link()
     {
         if(info_log) {
             delete[] info_log;
@@ -40,23 +56,18 @@ namespace gl
         glLinkProgram(program);
         glGetProgramiv(program, GL_LINK_STATUS, &success);
 
-        if(success != GL_TRUE) {
-            int size;
-            glGetProgramiv(program, GL_INFO_LOG_LENGTH, &size);
+        if(success == GL_FALSE) {
+            int length;
+            glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
 
-            info_log = new char[(size_t)size + 1];
-            info_log[size] = 0;
-            
-            glGetProgramInfoLog(program, size, 0, info_log);
+            info_log = new char[(size_t)length + 1];
+            info_log[(size_t)length] = 0;
+            glGetProgramInfoLog(program, length, 0, info_log);
+
             return false;
         }
 
         return true;
-    }
-
-    const char * Program::get_info_log() const
-    {
-        return info_log;
     }
 
     void Program::bind() const
@@ -67,11 +78,6 @@ namespace gl
     void Program::unbind() const
     {
         glUseProgram(0);
-    }
-
-    int Program::find_uniform(const char *name) const
-    {
-        return glGetUniformLocation(program, name);
     }
 
     void Program::set_uniform(int location, const int value) const

@@ -1,11 +1,9 @@
-#version 440
+#version 460
 
-layout(location = 0) in vec4 i_color;
-
-layout(location = 0) out vec4 o_color;
+layout(location = 0) in vec3 position;
+layout(location = 0) out vec4 target;
 
 void main(void)
 {
-    // frag -> fbo
-    o_color = vec4(1.0);
+    target = vec4(position.yxy, 1.0);
 }

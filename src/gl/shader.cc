@@ -1,6 +1,6 @@
 /*
  * shader.cc
- * Created: 2021-01-16, 17:24:50.
+ * Created: 2021-01-19, 11:15:39.
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <voxelius/gl/shader.hh>
@@ -8,29 +8,44 @@
 
 namespace gl
 {
-    Shader::Shader(const unsigned int type) : shader(glCreateShader(type)), info_log(nullptr)
+    Shader::Shader(unsigned int type) : type(type), shader(0), info_log(nullptr)
     {
-
+        create();
     }
 
     Shader::~Shader()
     {
-        glDeleteProgram(shader);
         if(info_log)
             delete[] info_log;
+        release();
     }
 
-    unsigned int Shader::get_shader() const
+    void Shader::create()
     {
-        return shader;
+        release();
+        shader = glCreateShader(type);
     }
 
-    void Shader::set_source(const char *source) const
+    void Shader::release()
     {
-        glShaderSource(shader, 1, &source, 0);
+        if(shader) {
+            glDeleteShader(shader);
+            shader = 0;
+        }
     }
 
-    bool Shader::try_compile()
+    bool Shader::is_good() const
+    {
+        return shader != 0;
+    }
+
+    void Shader::set_binary(const void *binary, size_t size)
+    {
+        // GL4.6: SPIR-V shaders
+        glShaderBinary(1, &shader, GL_SHADER_BINARY_FORMAT_SPIR_V, binary, (GLsizei)size);
+    }
+
+    bool Shader::specialize(const char *entry)
     {
         if(info_log) {
             delete[] info_log;
@@ -38,26 +53,21 @@ namespace gl
         }
 
         int success;
-        glCompileShader(shader);
+        glSpecializeShader(shader, entry, 0, 0, nullptr);
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
-        if(success != GL_TRUE) {
-            int size;
-            glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &size);
+        if(success == GL_FALSE) {
+            int length;
+            glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
 
-            info_log = new char[(size_t)size + 1];
-            info_log[size] = 0;
-            
-            glGetShaderInfoLog(shader, size, 0, info_log);
+            info_log = new char[(size_t)length + 1];
+            info_log[(size_t)length] = 0;
+            glGetShaderInfoLog(shader, length, 0, info_log);
+
             return false;
         }
 
         return true;
-    }
-
-    const char * Shader::get_info_log() const
-    {
-        return info_log;
     }
 
     VertexShader::VertexShader() : Shader(GL_VERTEX_SHADER)
@@ -67,6 +77,6 @@ namespace gl
 
     FragmentShader::FragmentShader() : Shader(GL_FRAGMENT_SHADER)
     {
-
+        
     }
 }

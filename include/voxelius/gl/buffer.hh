@@ -1,31 +1,33 @@
 /*
  * buffer.hh
- * Created: 2021-01-16, 18:03:59.
+ * Created: 2021-01-19, 10:35:53.
  * Copyright (C) 2021, Kirill GPRB.
  */
 #ifndef VOXELIUS_GL_BUFFER_HH
 #define VOXELIUS_GL_BUFFER_HH 1
-#include <stddef.h>
+#include <voxelius/gl/resource.hh>
+#include <voxelius/types.hh>
 
 namespace gl
 {
-    class Buffer {
+    class Buffer final : public Resource {
     public:
-        Buffer(unsigned int target);
-        virtual ~Buffer();
-    
-        unsigned int get_buffer() const;
-        unsigned int get_target() const;
-        
-        // fixme: set_static_data and set_dynamic_data instead?
-        void set_data(const void *data, size_t size) const;
+        Buffer();
+        ~Buffer();
 
-        void bind() const;
-        void unbind() const;
+        void create() override;
+        void release() override;
+        bool is_good() const override;
+
+        void set_data(const void *data, size_t size);
+
+        inline constexpr unsigned int get_buffer() const
+        {
+            return buffer;
+        }
 
     private:
         unsigned int buffer;
-        unsigned int target;
     };
 }
 

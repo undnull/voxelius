@@ -1,6 +1,6 @@
 #
 # CMakeLists.txt
-# Created: 2021-01-16, 18:56:42.
+# Created: 2021-01-19, 13:00:11.
 # Copyright (C) 2021, Kirill GPRB.
 #
 target_sources(voxelius PRIVATE

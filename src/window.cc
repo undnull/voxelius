@@ -27,6 +27,11 @@ namespace window
         logger::log("glfw error %d: %s", code, message);
     }
 
+    static void gl_debug_callback(GLenum src, GLenum type, GLuint id, GLenum severity, GLsizei length, const char *msg, const void *gay)
+    {
+        logger::log("GL%u: %s", type, msg);
+    }
+
     bool init()
     {
         glfwSetErrorCallback(glfw_error);
@@ -50,7 +55,17 @@ namespace window
             return false;
         }
 
+        if(!GLAD_GL_VERSION_4_6) {
+            logger::log("gl: OpenGL 4.6 is required!");
+            glfwDestroyWindow(window);
+            glfwTerminate();
+            return false;
+        }
+
         glfwSwapInterval(1);
+
+        glEnable(GL_DEBUG_OUTPUT);
+        glDebugMessageCallback(gl_debug_callback, nullptr);
 
         return true;
     }
