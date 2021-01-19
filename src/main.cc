@@ -18,7 +18,7 @@ int main(void)
     // Everything related to OpenGL wrappers should
     // be created INSIDE this context so we safely
     // release everything before destroying the window
-    // with the context using the AD class.
+    // with the context using the AD (see window.cc) class.
     {
         std::vector<uint8_t> vert_bin = util::file_read_bin("./shaders/triangle.vspv");
         std::vector<uint8_t> frag_bin = util::file_read_bin("./shaders/triangle.fspv");

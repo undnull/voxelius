@@ -13,6 +13,13 @@ namespace window
 {
     static GLFWwindow *window;
 
+    // The window must be literally the first thing created
+    // and the last thing destroyed, thus we would need to have
+    // a pocket destructor to specifically destroy the GLFW window
+    // and shut down the library.
+    // And due to this "rule" everything that somewhat related to
+    // the GL wrappers should be initialized/used/destroyed inside
+    // a brand new scope (go back to main.cc and see the braces).
     static class AD final {
     public:
         ~AD()
