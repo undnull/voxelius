@@ -7,9 +7,11 @@
 #include <voxelius/gl/texture.hh>
 #include <voxelius/gl/vao.hh>
 #include <voxelius/util/file.hh>
+#include <voxelius/globals.hh>
 #include <voxelius/logger.hh>
 #include <voxelius/window.hh>
 #include <glad/glad.h>
+#include <glm/gtc/matrix_transform.hpp>
 #include <time.h>
 #include <stdlib.h>
 #include <random>
@@ -34,12 +36,11 @@ int main(void)
         gl::Buffer vbo, vbo_uv, ebo;
         gl::VAO vao;
 
-
         std::mt19937_64 mtgen((unsigned long long)time(nullptr));
-        const size_t nb = 512 * 512 * 4;
-        uint8_t *pixels = new uint8_t[nb];
+        const size_t nb = 512 * 512;
+        uint32_t *pixels = new uint32_t[nb];
         for(size_t i = 0; i < nb; i++) {
-            pixels[i] = mtgen() % 255;
+            pixels[i] = (mtgen() >> 16) & 0xFFFFFFFF;
         }
 
         gl::Texture texture;
@@ -102,12 +103,17 @@ int main(void)
         ebo.set_data(indices, sizeof(indices));
         vao.bind_ebo(ebo);
 
+        mat4x4_t model = mat4x4_t(1.0);
+
         while(window::is_open()) {
             window::begin_frame();
+
+            model = glm::rotate(model, (float)globals::frame_time * 0.5f, vec3_t(0.0, 1.0, 0.0));
 
             glClear(GL_COLOR_BUFFER_BIT);
 
             prog.bind();
+            prog.set_uniform(0, model);
             texture.bind(0);
             vao.bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
