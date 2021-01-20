@@ -72,6 +72,7 @@ namespace window
         glfwSwapInterval(1);
 
         glEnable(GL_DEBUG_OUTPUT);
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
         glDebugMessageCallback(gl_debug_callback, nullptr);
 
         return true;

@@ -13,6 +13,8 @@
 #include <glm/gtx/quaternion.hpp>
 #include <stddef.h>
 #include <stdint.h>
+#include <memory>
+#include <string>
 
 typedef glm::mat<4, 4, float, glm::packed_highp> mat4x4_t;
 

@@ -60,8 +60,7 @@ namespace gl
             int length;
             glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
 
-            info_log = new char[(size_t)length + 1];
-            info_log[(size_t)length] = 0;
+            info_log = new char[length];
             glGetProgramInfoLog(program, length, 0, info_log);
 
             return false;
