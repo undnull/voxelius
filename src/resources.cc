@@ -40,17 +40,6 @@ namespace resources
         return count;
     }
 
-    template<typename T>
-    static inline std::shared_ptr<T> try_get_resource(resource_list<T> &list, const char *id)
-    {
-        const size_t hash = std::hash<const char *>{}(id);
-        for(resource<T> &res : list) {
-            if(res.hash == hash)
-                return res.ptr;
-        }
-        return nullptr;
-    }
-
     void init()
     {
         programs.clear();
