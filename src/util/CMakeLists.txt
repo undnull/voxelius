@@ -5,5 +5,4 @@
 #
 target_sources(voxelius PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}/file.cc"
-    "${CMAKE_CURRENT_LIST_DIR}/image.cc"
 )
