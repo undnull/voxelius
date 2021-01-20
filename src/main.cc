@@ -26,8 +26,8 @@ int main(void)
     // release everything before destroying the window
     // with the context using the AD (see window.cc) class.
     {
-        std::vector<uint8_t> vert_bin = util::file_read_bin("./shaders/sandbox.vert.spv");
-        std::vector<uint8_t> frag_bin = util::file_read_bin("./shaders/sandbox.frag.spv");
+        std::vector<uint8_t> vert_bin = util::file_read_bin("./shaders/sandbox.vspv");
+        std::vector<uint8_t> frag_bin = util::file_read_bin("./shaders/sandbox.fspv");
 
         gl::VertexShader vert;
         gl::FragmentShader frag;
