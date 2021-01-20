@@ -11,4 +11,5 @@ target_sources(voxelius PRIVATE
 )
 
 add_subdirectory(gl)
+add_subdirectory(render)
 add_subdirectory(util)
