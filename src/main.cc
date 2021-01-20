@@ -7,14 +7,12 @@
 #include <voxelius/gl/texture.hh>
 #include <voxelius/gl/vao.hh>
 #include <voxelius/util/file.hh>
+#include <voxelius/util/image.hh>
 #include <voxelius/globals.hh>
 #include <voxelius/logger.hh>
 #include <voxelius/window.hh>
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <time.h>
-#include <stdlib.h>
-#include <random>
 
 int main(void)
 {
@@ -36,15 +34,14 @@ int main(void)
         gl::Buffer vbo, vbo_uv, ebo;
         gl::VAO vao;
 
-        std::mt19937_64 mtgen((unsigned long long)time(nullptr));
-        const size_t nb = 512 * 512;
-        uint32_t *pixels = new uint32_t[nb];
-        for(size_t i = 0; i < nb; i++) {
-            pixels[i] = (mtgen() >> 16) & 0xFFFFFFFF;
+        util::Image img;
+        if(!img.load("./textures/stub.jpg")) {
+            logger::log("%s", img.get_error());
+            return 1;
         }
 
         gl::Texture texture;
-        texture.load_rgba<uint8_t>(512, 512, pixels);
+        texture.load_rgba<uint8_t>(img.get_width(), img.get_height(), img.get_pixels());
         texture.set_filter(true);
 
         vert.set_binary(vert_bin.data(), vert_bin.size());
@@ -80,7 +77,7 @@ int main(void)
             vec2_t(0.0, 0.0),
             vec2_t(0.0, 1.0),
             vec2_t(1.0, 1.0),
-            vec2_t(0.0, 1.0),
+            vec2_t(1.0, 0.0),
         };
 
         unsigned int indices[6] = {
@@ -120,8 +117,6 @@ int main(void)
             
             window::end_frame();
         }
-
-        delete[] pixels;
     }
 
     return 0;
