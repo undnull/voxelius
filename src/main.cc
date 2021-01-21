@@ -20,10 +20,6 @@ int main(void)
 
     resources::init();
 
-    // Everything related to OpenGL wrappers should
-    // be created INSIDE this scope so we safely
-    // release everything before destroying the window
-    // with the context using the AD (see window.cc) class.
     {
         const vec3_t positions[4] = {
             vec3_t(-0.75, -0.75, 0.00),

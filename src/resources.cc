@@ -32,7 +32,7 @@ namespace resources
         size_t count = 0;
         for(const resource<T> &res : list) {
             if(res.ptr.use_count() > 1) {
-                logger::dlog("resources: warning: resource %s (%zX) is still referenced", res.path.c_str(), res.hash);
+                logger::dlog("resources: warning: %s (%zX) is still referenced", res.path.c_str(), res.hash);
                 count++;
             }
         }
@@ -130,7 +130,7 @@ namespace resources
         int width, height, comp;
         stbi_uc *pixels = stbi_load(filename.c_str(), &width, &height, &comp, STBI_rgb_alpha);
         if(!pixels) {
-            logger::dlog("resources: error: stb: %s (%s)", stbi_failure_reason(), path);
+            logger::dlog("resources: error: %s (%s)", stbi_failure_reason(), path);
             return nullptr;
         }
 

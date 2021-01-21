@@ -13,13 +13,6 @@ namespace window
 {
     static GLFWwindow *window;
 
-    // The window must be literally the first thing created
-    // and the last thing destroyed, thus we would need to have
-    // a pocket destructor to specifically destroy the GLFW window
-    // and shut down the library.
-    // And due to this "rule" everything that somewhat related to
-    // the GL wrappers should be initialized/used/destroyed inside
-    // a brand new scope (go back to main.cc and see the braces).
     static class AD final {
     public:
         ~AD()
@@ -29,19 +22,27 @@ namespace window
         }
     } ad;
 
-    static void glfw_error(int code, const char *message)
+    static void glfw_error_callback(int code, const char *msg)
     {
-        logger::log("glfw error %d: %s", code, message);
+        logger::log("window: glfw error %d: %s", code, msg);
     }
 
-    static void gl_debug_callback(GLenum src, GLenum type, GLuint id, GLenum severity, GLsizei length, const char *msg, const void *gay)
+    static void gl_debug_callback(unsigned int src, unsigned int type, unsigned int id, unsigned int severity, int length, const char *msg, const void *arg)
     {
-        logger::log("gl: %s", msg);
+        switch(severity) {
+            case GL_DEBUG_SEVERITY_HIGH:
+            case GL_DEBUG_SEVERITY_MEDIUM:
+                logger::log("opengl: %s", msg);
+                break;
+            default:
+                logger::dlog("opengl: %s", msg);
+                break;
+        }
     }
 
     bool init()
     {
-        glfwSetErrorCallback(glfw_error);
+        glfwSetErrorCallback(glfw_error_callback);
         if(glfwInit() != GLFW_TRUE) {
             glfwTerminate();
             return false;
@@ -63,7 +64,7 @@ namespace window
         }
 
         if(!GLAD_GL_VERSION_4_6) {
-            logger::log("gl: OpenGL 4.6 is required!");
+            logger::log("opengl: opengl version 4.6 is required");
             glfwDestroyWindow(window);
             glfwTerminate();
             return false;
