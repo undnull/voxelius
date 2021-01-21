@@ -15,9 +15,9 @@ namespace resources
 {
     template<typename T>
     struct resource final {
-        const size_t hash;
-        const std::string path;
-        std::shared_ptr<T> ptr = nullptr;
+        size_t hash;
+        std::string path;
+        std::shared_ptr<T> ptr;
     };
 
     template<typename T>
@@ -27,16 +27,32 @@ namespace resources
     static resource_list<gl::Texture> textures;
 
     template<typename T>
-    static inline const size_t cleanup_list(resource_list<T> &list)
+    static inline const size_t release_all(resource_list<T> &list)
     {
         size_t count = 0;
         for(const resource<T> &res : list) {
             if(res.ptr.use_count() > 1) {
-                logger::dlog("resources: warning: %s (%zX) is still referenced", res.path.c_str(), res.hash);
+                logger::dlog("resources: warning: %s (%zu) is still used", res.path.c_str(), res.hash);
                 count++;
             }
         }
-        list.clear();
+
+        return count;
+    }
+
+    template<typename T>
+    static inline const size_t release_unused(resource_list<T> &list)
+    {
+        size_t count = 0, pos = 0;
+        for(const resource<T> &res : list) {
+            if(res.ptr.use_count() == 1) {
+                list.erase(list.cbegin() + pos);
+                count++;
+            }
+
+            pos++;
+        }
+        
         return count;
     }
 
@@ -46,12 +62,20 @@ namespace resources
         textures.clear();
     }
 
-    void cleanup()
+    void release_all()
     {
         size_t count = 0;
-        count += cleanup_list<gl::Program>(programs);
-        count += cleanup_list<gl::Texture>(textures);
-        logger::dlog("resources: found %zu still referenced resources", count);
+        count += release_all<gl::Program>(programs);
+        count += release_all<gl::Texture>(textures);
+        logger::dlog("resources: found %zu still used resources", count);
+    }
+
+    void release_unused()
+    {
+        size_t count = 0;
+        count += release_unused<gl::Program>(programs);
+        count += release_unused<gl::Texture>(textures);
+        logger::dlog("resources: found and released %zu unused resources", count);
     }
 
     template<>

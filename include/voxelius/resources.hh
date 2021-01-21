@@ -10,7 +10,8 @@
 namespace resources
 {
     void init();
-    void cleanup();
+    void release_all();
+    void release_unused();
 
     template<typename T>
     std::shared_ptr<T> get_resource(const char *path);

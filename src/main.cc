@@ -86,7 +86,7 @@ int main(void)
         }
     }
     
-    resources::cleanup();
+    resources::release_all();
 
     return 0;
 }
