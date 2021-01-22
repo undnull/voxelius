@@ -26,8 +26,6 @@ namespace gl
         void set_attrib_format(unsigned int attrib_index, size_t count, bool normalized);
         void set_attrib_binding(unsigned int attrib_index, unsigned int binding_index);
 
-        void bind() const;
-
         inline constexpr unsigned int get_vao() const
         {
             return vao;

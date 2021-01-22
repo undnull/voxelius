@@ -3,7 +3,7 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/gfx/mesh.hh>
+#include <voxelius/gfx/renderer.hh>
 #include <voxelius/gl/program.hh>
 #include <voxelius/gl/texture.hh>
 #include <voxelius/globals.hh>
@@ -53,12 +53,8 @@ int main(void)
             model = glm::rotate<float>(model, globals::frame_time * 0.25f, vec3_t(0.25, 1.0, 0.5));
 
             glClear(GL_COLOR_BUFFER_BIT);
-
-            prog->bind();
-            prog->set_uniform(0, model);
-            texture->bind(0);
-            mesh.vao.bind();
-            glDrawElements(GL_TRIANGLES, (GLsizei)mesh.get_num_indices(), GL_UNSIGNED_INT, nullptr);
+            gfx::renderer::bind_texture(texture.get(), 0);
+            gfx::renderer::render(mesh, model, prog.get());
 
             window::end_frame();
         }

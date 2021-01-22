@@ -59,9 +59,4 @@ namespace gl
         glTextureStorage2D(texture, 1, GL_RGBA16F, width, height);
         glTextureSubImage2D(texture, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
     }
-
-    void Texture::bind(unsigned int unit) const
-    {
-        glBindTextureUnit(unit, texture);
-    }
 }

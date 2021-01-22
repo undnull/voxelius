@@ -5,4 +5,5 @@
 #
 target_sources(voxelius PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}/mesh.cc"
+    "${CMAKE_CURRENT_LIST_DIR}/renderer.cc"
 )

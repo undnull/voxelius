@@ -62,9 +62,4 @@ namespace gl
     {
         glVertexArrayAttribBinding(vao, attrib_index, binding_index);
     }
-
-    void VAO::bind() const
-    {
-        glBindVertexArray(vao);
-    }
 }

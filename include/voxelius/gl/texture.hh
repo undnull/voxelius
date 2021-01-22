@@ -25,8 +25,6 @@ namespace gl
         template<typename T>
         void load_rgba(int width, int height, const void *data);
 
-        void bind(unsigned int unit) const;
-
         inline constexpr unsigned int get_texture() const
         {
             return texture;

@@ -22,8 +22,6 @@ namespace gl
         void attach(const Shader &shader);
         bool link();
 
-        void bind() const;
-
         void set_uniform(int location, const int value) const;
         void set_uniform(int location, const float value) const;
         void set_uniform(int location, const vec2_t &value) const;

@@ -15,10 +15,12 @@ namespace gfx
         int width = 0;
         int height = 0;
         float aspect = 0.0;
+        float fov = 0.0;
         float z_far = 0.0;
         float z_near = 0.0;
         vec3_t position = vec3_t(0.0, 0.0, 0.0);
         quat_t rotation = quat_t(0.0, 0.0, 0.0, 0.0);
+        mat4x4_t matrix = mat4x4_t(1.0);
     };
 }
 

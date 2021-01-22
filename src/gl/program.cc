@@ -69,11 +69,6 @@ namespace gl
         return true;
     }
 
-    void Program::bind() const
-    {
-        glUseProgram(program);
-    }
-
     void Program::set_uniform(int location, const int value) const
     {
         glProgramUniform1i(program, location, value);
