@@ -1,87 +1,42 @@
 #!/bin/bash
-# buildshaders.sh
-# Created: 2021-01-20, 13:10:00.
-# Copyright (C) 2021, Kirill GPRB.
-#
 
-# This is optional, you may manually download a newer GLSLC build there.
-PATH=$PATH:"$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )/../tools/"
-
-target_env="opengl4.5"
-output_dir="./out"
-run_linker=false
-
-while getopts "E:o:h" option
-do
-    if [[ "$option" = "E" ]]
-    then
-        target_env="$OPTARG"
-        continue
-    fi
-
-    if [[ "$option" = "o" ]]
-    then
-        output_dir="$OPTARG"
-        continue
-    fi
-
-    >&2 echo "usage: $0 [options] <input_dir>"
-    >&2 echo "options:"
-    >&2 echo "    -E <env>    : set the target environment [default: opengl4.5]"
-    >&2 echo "    -o <output> : set the output directory [default: ./out]"
-    >&2 echo "    -h          : print this message and exit"
-    exit 1
-done
+# note: if you don't want to install the whole vulkan sdk, just download
+# the latest glslc build and place it in the directory where
+# the script is, then run the script: it should work like a champ.
+# https://github.com/google/shaderc/blob/main/downloads.md
+PATH=$PATH:"$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 shift $((OPTIND - 1))
-input_dir="$@"
+work_dir="$@"
 
-if [[ -z "$input_dir" ]]
+if [[ -z "$work_dir" ]] || [[ ! -d "$work_dir" ]]
 then
-    >&2 echo "$0: input directory name required."
+    echo "$0: fatal: invalid directory $work_dir"
     exit 1
 fi
 
-if [[ -z "$output_dir" ]]
+sources=$(find "$work_dir/src" -name *.glsl)
+if [[ -z "$sources" ]]
 then
-    >&2 echo "$0: invalid output directory name."
+    echo "$0: fatal: no shaders found in $work_dir/src/"
     exit 1
 fi
 
-if [[ ! -d "$input_dir" ]]
-then
-    >&2 echo "$0: $input_dir is not a directory or doesn't exist."
-    exit 1
-fi
-
-mkdir -p "$output_dir"
-
-vert_srcs=$(find "$input_dir" -maxdepth 1 -iname *.vert)
-if [[ -z "$vert_srcs" ]]
-then
-    >&2 echo ">> No vertex shaders found in $input_dir"
-else
-    >&2 echo ">> Building vertex shaders"
-    for vert_src in $vert_srcs
-    do
-        filename="$(basename $vert_src)"
-        vert_spv="$output_dir/${filename%.*}.vspv"
-        >&2 echo ">>> $vert_src -> $vert_spv"
-        glslc "--target-env=$target_env" "-fshader-stage=vert" "-o" "$vert_spv" "$vert_src"
-    done
-fi
-
-frag_srcs=$(find "$input_dir" -maxdepth 1 -iname *.frag)
-if [[ -z "$frag_srcs" ]]
-then
-    >&2 echo ">> No fragment shaders found in $input_dir"
-else
-    >&2 echo ">> Building fragment shaders"
-    for frag_src in $frag_srcs
-    do
-        filename="$(basename $frag_src)"
-        frag_spv="$output_dir/${filename%.*}.fspv"
-        >&2 echo ">>> $frag_src -> $frag_spv"
-        glslc "--target-env=$target_env" "-fshader-stage=frag" "-o" "$frag_spv" "$frag_src"
-    done
-fi
+for src in $sources
+do
+    xspv=$(basename "$src" .glsl)
+    if [[ "$xspv" == *"_vs" ]]
+    then
+        stage="vert"
+        ext="vspv"
+    elif [[ "$xspv" == *"_fs" ]]
+    then
+        stage="frag"
+        ext="fspv"
+    else
+        echo "$0: warning: ignoring $xspv"
+        continue
+    fi
+    glslc -o "$work_dir/${xspv%_*}.$ext" --target-env=opengl -fshader-stage="$stage" "$src"
+done
+exit 0
