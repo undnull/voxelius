@@ -11,5 +11,6 @@ target_sources(voxelius PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}/window.cc"
 )
 
+add_subdirectory(gfx)
 add_subdirectory(gl)
 add_subdirectory(util)

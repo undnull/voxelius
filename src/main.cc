@@ -3,9 +3,9 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
+#include <voxelius/gfx/mesh.hh>
 #include <voxelius/gl/program.hh>
 #include <voxelius/gl/texture.hh>
-#include <voxelius/gl/vao.hh>
 #include <voxelius/globals.hh>
 #include <voxelius/logger.hh>
 #include <voxelius/resources.hh>
@@ -21,44 +21,22 @@ int main(void)
     resources::init();
 
     {
-        const vec3_t positions[4] = {
-            vec3_t(-0.75, -0.75, 0.00),
-            vec3_t(-0.75,  0.75, 0.00),
-            vec3_t( 0.75,  0.75, 0.00),
-            vec3_t( 0.75, -0.75, 0.00),
-        };
+        gfx::Mesh mesh;
 
-        const vec2_t texcoords[4] = {
-            vec2_t(0.0, 0.0),
-            vec2_t(0.0, 1.0),
-            vec2_t(1.0, 1.0),
-            vec2_t(1.0, 0.0),
-        };
+        mesh.add_vertex(gfx::vertex { vec3_t(-0.75, -0.75, 0.00), vec2_t(0.0, 0.0) });
+        mesh.add_vertex(gfx::vertex { vec3_t(-0.75,  0.75, 0.00), vec2_t(0.0, 1.0) });
+        mesh.add_vertex(gfx::vertex { vec3_t( 0.75,  0.75, 0.00), vec2_t(1.0, 1.0) });
+        mesh.add_vertex(gfx::vertex { vec3_t( 0.75, -0.75, 0.00), vec2_t(1.0, 0.0) });
 
-        const unsigned int indices[6] = {
-            0, 1, 2,
-            0, 2, 3,
-        };
+        mesh.add_index(0);
+        mesh.add_index(1);
+        mesh.add_index(2);
+        mesh.add_index(0);
+        mesh.add_index(2);
+        mesh.add_index(3);
 
-        gl::Buffer vbo, vbo_uv;
-        gl::Buffer ebo;
-        gl::VAO vao;
+        mesh.update();
 
-        vbo.set_data(positions, sizeof(positions));
-        vao.bind_vbo(vbo, 0, 0, sizeof(vec3_t));
-        vao.enable_attrib(0);
-        vao.set_attrib_format<float>(0, 3, false);
-        vao.set_attrib_binding(0, 0);
-
-        vbo_uv.set_data(texcoords, sizeof(texcoords));
-        vao.bind_vbo(vbo_uv, 1, 0, sizeof(vec2_t));
-        vao.enable_attrib(1);
-        vao.set_attrib_format<float>(1, 2, false);
-        vao.set_attrib_binding(1, 1);
-
-        ebo.set_data(indices, sizeof(indices));
-        vao.bind_ebo(ebo);
-    
         std::shared_ptr<gl::Program> prog = resources::get_resource<gl::Program>("sandbox");
         if(!prog)
             return 1;
@@ -79,8 +57,8 @@ int main(void)
             prog->bind();
             prog->set_uniform(0, model);
             texture->bind(0);
-            vao.bind();
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+            mesh.vao.bind();
+            glDrawElements(GL_TRIANGLES, (GLsizei)mesh.get_num_indices(), GL_UNSIGNED_INT, nullptr);
 
             window::end_frame();
         }
