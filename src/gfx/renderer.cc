@@ -61,6 +61,28 @@ namespace gfx::renderer
         return view_fov;
     }
 
+    void clear_color(const vec3_t &color)
+    {
+        glClearColor(color.r, color.g, color.b, 1.0);
+    }
+
+    void clear_color(const vec4_t &color)
+    {
+        glClearColor(color.r, color.g, color.b, color.a);
+    }
+
+    void clear(bool color, bool depth, bool stencil)
+    {
+        GLbitfield bits = 0;
+        if(color)
+            bits |= GL_COLOR_BUFFER_BIT;
+        if(depth)
+            bits |= GL_DEPTH_BUFFER_BIT;
+        if(stencil)
+            bits |= GL_STENCIL_BUFFER_BIT;
+        glClear(bits);
+    }
+
     // This should be removed as soon as the material system is implemented
     void bind_texture(const gl::Texture *texture, unsigned int unit)
     {

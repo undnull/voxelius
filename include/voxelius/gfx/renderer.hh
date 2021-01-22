@@ -20,6 +20,10 @@ namespace gfx::renderer
     void set_fov(float fov);
     float get_fov();
 
+    void clear_color(const vec3_t &color);
+    void clear_color(const vec4_t &color);
+    void clear(bool color = true, bool depth = false, bool stencil = false);
+
     // This should be removed as soon as the material system is implemented
     void bind_texture(const gl::Texture *texture, unsigned int unit);
 

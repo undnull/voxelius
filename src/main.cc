@@ -50,14 +50,16 @@ int main(void)
         renderer::setup_view(640, 480, 0.01, 100.0);
         renderer::use_2d_view(vec3_t(0.0, 0.0, -1.0), quat_t());
 
+        renderer::clear_color(vec3_t(0.0, 0.0, 0.1));
+
         while(window::is_open()) {
             window::begin_frame();
 
             model = glm::rotate<float>(model, globals::frame_time * 0.25f, vec3_t(0.25, 1.0, 0.5));
 
-            glClear(GL_COLOR_BUFFER_BIT);
-            gfx::renderer::bind_texture(texture.get(), 0);
-            gfx::renderer::render(mesh, model, prog.get());
+            renderer::clear();
+            renderer::bind_texture(texture.get(), 0);
+            renderer::render(mesh, model, prog.get());
 
             window::end_frame();
         }
