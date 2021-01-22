@@ -47,6 +47,9 @@ int main(void)
         
         mat4x4_t model = mat4x4_t(1.0);
 
+        renderer::setup_view(640, 480, 0.01, 100.0);
+        renderer::use_2d_view(vec3_t(0.0, 0.0, -1.0), quat_t());
+
         while(window::is_open()) {
             window::begin_frame();
 

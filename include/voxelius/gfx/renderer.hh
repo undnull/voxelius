@@ -6,20 +6,26 @@
 #ifndef VOXELIUS_GFX_RENDERER_HH
 #define VOXELIUS_GFX_RENDERER_HH 1
 #include <voxelius/gfx/mesh.hh>
-#include <voxelius/gfx/view.hh>
 #include <voxelius/gl/program.hh>
 #include <voxelius/gl/texture.hh>
 
 namespace gfx::renderer
 {
-    void push_2d_view(int width, int height, int top = 0, int left = 0, float z_near = 0.1, float z_far = 1.0);
-    void push_3d_view(int width, int height, float fov, float z_near = 0.1, float z_far = 1.0);
-    void pop_view();
+    void setup_view(int width, int height, float z_near, float z_far);
+    void store_view();
+    void restore_view();
+    void use_2d_view(const vec3_t &cam_position, const quat_t &cam_rotation);
+    void use_3d_view(const vec3_t &cam_position, const quat_t &cam_rotation);
+
+    void set_fov(float fov);
+    float get_fov();
 
     // This should be removed as soon as the material system is implemented
     void bind_texture(const gl::Texture *texture, unsigned int unit);
 
     void render(const Mesh &mesh, const mat4x4_t &mm, const gl::Program *program);
 }
+
+namespace renderer = gfx::renderer;
 
 #endif

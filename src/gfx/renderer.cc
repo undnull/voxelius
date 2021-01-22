@@ -4,54 +4,64 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <voxelius/gfx/renderer.hh>
-#include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <stack>
+#include <glad/glad.h>
 
 namespace gfx::renderer
 {
-    static std::stack<view> view_stack;
+    static int view_width = 0;
+    static int view_height = 0;
+    static float view_aspect = 0.0;
+    static float view_fov = 0.0;
+    static float view_z_near = 0.0;
+    static float view_z_far = 0.0;
 
-    static inline const mat4x4_t get_view()
+    static mat4x4_t view_matrix = mat4x4_t(1.0);
+
+    void setup_view(int width, int height, float z_near, float z_far)
     {
-        if(view_stack.empty())
-            return mat4x4_t(1.0);
-        return view_stack.top().matrix;
+        view_width = width;
+        view_height = height;
+        view_aspect = (float)width / (float)height;
+        view_z_near = z_near;
+        view_z_far = z_far;
     }
 
-    void push_2d_view(int width, int height, int top, int left, float z_near, float z_far)
+    void store_view()
     {
-        view view;
-        view.top = top;
-        view.left = left;
-        view.width = width;
-        view.height = height;
-        view.z_near = z_near;
-        view.z_far = z_far;
-        view.matrix = glm::ortho<float>(view.left, view.width, view.height, view.top, view.z_near, view.z_far);
-        view_stack.push(view);
+        // unimplemented
     }
 
-    void push_3d_view(int width, int height, float fov, float z_near, float z_far)
+    void restore_view()
     {
-        view view;
-        view.width = width;
-        view.height = height;
-        view.aspect = (float)view.width / (float)view.height;
-        view.fov = fov;
-        view.z_near = z_near;
-        view.z_far = z_far;
-        view.matrix = glm::perspective<float>(view.fov, view.aspect, view.z_near, view.z_far);
-        view_stack.push(view);
+        // unimplemented
     }
 
-    void pop_view()
+    void use_2d_view(const vec3_t &cam_position, const quat_t &cam_rotation)
     {
-        if(view_stack.empty())
-            return;
-        view_stack.pop();
+        view_matrix = glm::ortho<float>(-1.0, 1.0, 1.0 * view_aspect, -1.0 * view_aspect, view_z_near, view_z_far);
+        view_matrix = glm::translate(view_matrix, cam_position);
+        view_matrix = view_matrix * glm::mat4_cast(cam_rotation);
     }
 
+    void use_3d_view(const vec3_t &cam_position, const quat_t &cam_rotation)
+    {
+        view_matrix = glm::perspective<float>(view_fov, view_aspect, view_z_near, view_z_far);
+        view_matrix = glm::translate(view_matrix, cam_position);
+        view_matrix = view_matrix * glm::mat4_cast(cam_rotation);
+    }
+
+    void set_fov(float fov)
+    {
+        view_fov = fov;
+    }
+
+    float get_fov()
+    {
+        return view_fov;
+    }
+
+    // This should be removed as soon as the material system is implemented
     void bind_texture(const gl::Texture *texture, unsigned int unit)
     {
         glBindTextureUnit(unit, texture ? texture->get_texture() : 0);
@@ -61,7 +71,7 @@ namespace gfx::renderer
     {
         if(program) {
             glUseProgram(program->get_program());
-            program->set_uniform(0, get_view());
+            program->set_uniform(0, view_matrix);
             program->set_uniform(1, mm);
         }
 
