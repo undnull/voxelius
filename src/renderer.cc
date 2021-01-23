@@ -42,6 +42,7 @@ namespace renderer
         view_matrix = glm::ortho<float>(-1.0, 1.0, 1.0 * view_aspect, -1.0 * view_aspect, view_z_near, view_z_far);
         view_matrix = glm::translate(view_matrix, cam_position);
         view_matrix = view_matrix * glm::mat4_cast(cam_rotation);
+        glDisable(GL_DEPTH_TEST);
     }
 
     void use_3d_view(const vec3_t &cam_position, const quat_t &cam_rotation)
@@ -49,6 +50,7 @@ namespace renderer
         view_matrix = glm::perspective<float>(glm::radians(view_fov), view_aspect, view_z_near, view_z_far);
         view_matrix = glm::translate(view_matrix, cam_position);
         view_matrix = view_matrix * glm::mat4_cast(cam_rotation);
+        glEnable(GL_DEPTH_TEST);
     }
 
     void set_fov(float fov)
@@ -83,21 +85,23 @@ namespace renderer
         glClear(bits);
     }
 
-    // This should be removed as soon as the material system is implemented
     void bind_texture(const gl::Texture *texture, unsigned int unit)
     {
-        glBindTextureUnit(unit, texture ? texture->get_texture() : 0);
+        if(!texture)
+            return;
+        glBindTextureUnit(unit, texture->get_texture());
     }
 
     void render(const Mesh &mesh, const mat4x4_t &mm, const gl::Program *program)
     {
         if(program) {
             glUseProgram(program->get_program());
+
             program->set_uniform(0, view_matrix);
             program->set_uniform(1, mm);
-        }
 
-        glBindVertexArray(mesh.vao.get_vao());
-        glDrawElements(GL_TRIANGLES, (GLsizei)mesh.get_num_indices(), GL_UNSIGNED_INT, nullptr);
+            glBindVertexArray(mesh.vao.get_vao());
+            glDrawElements(GL_TRIANGLES, (GLsizei)mesh.get_num_indices(), GL_UNSIGNED_INT, nullptr);
+        }
     }
 }

@@ -57,7 +57,7 @@ int main(void)
 
             model = glm::rotate<float>(model, globals::frame_time * 0.25f, vec3_t(0.25, 1.0, 0.5));
 
-            renderer::clear();
+            renderer::clear(true, true, false);
             renderer::bind_texture(texture, 0);
             renderer::render(mesh, model, prog);
 

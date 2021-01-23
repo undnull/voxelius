@@ -22,9 +22,8 @@ namespace renderer
 
     void clear_color(const vec3_t &color);
     void clear_color(const vec4_t &color);
-    void clear(bool color = true, bool depth = false, bool stencil = false);
+    void clear(bool color, bool depth, bool stencil);
 
-    // This should be removed as soon as the material system is implemented
     void bind_texture(const gl::Texture *texture, unsigned int unit);
 
     void render(const Mesh &mesh, const mat4x4_t &mm, const gl::Program *program);
