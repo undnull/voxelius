@@ -3,13 +3,13 @@
  * Created: 2021-01-22, 23:06:41.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_GFX_RENDERER_HH
-#define VOXELIUS_GFX_RENDERER_HH 1
-#include <voxelius/gfx/mesh.hh>
+#ifndef VOXELIUS_RENDERER_HH
+#define VOXELIUS_RENDERER_HH 1
 #include <voxelius/gl/program.hh>
 #include <voxelius/gl/texture.hh>
+#include <voxelius/mesh.hh>
 
-namespace gfx::renderer
+namespace renderer
 {
     void setup_view(int width, int height, float z_near, float z_far);
     void store_view();
@@ -29,7 +29,5 @@ namespace gfx::renderer
 
     void render(const Mesh &mesh, const mat4x4_t &mm, const gl::Program *program);
 }
-
-namespace renderer = gfx::renderer;
 
 #endif

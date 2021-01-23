@@ -30,4 +30,6 @@ typedef glm::vec<3, uint8_t, glm::packed_highp> ucoord_t;
 
 typedef uint8_t voxel_t;
 
+typedef size_t hash_t;
+
 #endif

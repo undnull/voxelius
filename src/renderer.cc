@@ -3,11 +3,11 @@
  * Created: 2021-01-22, 23:16:03.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/gfx/renderer.hh>
+#include <voxelius/renderer.hh>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>
 
-namespace gfx::renderer
+namespace renderer
 {
     static int view_width = 0;
     static int view_height = 0;

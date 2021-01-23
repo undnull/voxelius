@@ -3,11 +3,11 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/gfx/renderer.hh>
 #include <voxelius/gl/program.hh>
 #include <voxelius/gl/texture.hh>
 #include <voxelius/globals.hh>
 #include <voxelius/logger.hh>
+#include <voxelius/renderer.hh>
 #include <voxelius/resources.hh>
 #include <voxelius/window.hh>
 #include <glad/glad.h>
@@ -19,12 +19,12 @@ int main(void)
         return 1;
 
     {
-        gfx::Mesh mesh;
+        Mesh mesh;
 
-        mesh.add_vertex(gfx::vertex { vec3_t(-0.75, -0.75, 0.00), vec2_t(0.0, 0.0) });
-        mesh.add_vertex(gfx::vertex { vec3_t(-0.75,  0.75, 0.00), vec2_t(0.0, 1.0) });
-        mesh.add_vertex(gfx::vertex { vec3_t( 0.75,  0.75, 0.00), vec2_t(1.0, 1.0) });
-        mesh.add_vertex(gfx::vertex { vec3_t( 0.75, -0.75, 0.00), vec2_t(1.0, 0.0) });
+        mesh.add_vertex(vertex { vec3_t(-0.75, -0.75, 0.00), vec2_t(0.0, 0.0) });
+        mesh.add_vertex(vertex { vec3_t(-0.75,  0.75, 0.00), vec2_t(0.0, 1.0) });
+        mesh.add_vertex(vertex { vec3_t( 0.75,  0.75, 0.00), vec2_t(1.0, 1.0) });
+        mesh.add_vertex(vertex { vec3_t( 0.75, -0.75, 0.00), vec2_t(1.0, 0.0) });
 
         mesh.add_index(0);
         mesh.add_index(1);
