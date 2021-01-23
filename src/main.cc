@@ -35,14 +35,14 @@ int main(void)
 
         mesh.update();
 
-        gl::Program *prog = resources::load_and_get<gl::Program>("sandbox");
+        gl::Program *prog = resources::acquire<gl::Program>("sandbox");
         if(!prog)
             return 1;
 
-        gl::Texture *texture = resources::load_and_get<gl::Texture>("bgrid.png");
+        gl::Texture *texture = resources::acquire<gl::Texture>("bgrid.png");
         if(!texture)
             return 1;
-        
+
         mat4x4_t model = mat4x4_t(1.0);
 
         renderer::set_fov(90.0);
@@ -68,7 +68,7 @@ int main(void)
         resources::release(prog);
     }
     
-    resources::cleanup();
+    resources::cleanup(true);
 
     return 0;
 }

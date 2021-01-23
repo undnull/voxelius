@@ -15,69 +15,71 @@ namespace resources
 {
     template<typename T>
     struct resource final {
-        size_t hash;
-        std::string path;
+        hash_t hash;
         size_t use_count;
+        bool cached;
+        std::string path;
         T *ptr;
     };
 
     template<typename T>
     using resource_list = std::vector<resource<T>>;
 
-    static resource_list<gl::Program> programs;
-    static resource_list<gl::Texture> textures;
-
     template<typename T>
-    static inline size_t cleanup(resource_list<T> &list)
+    static inline size_t cleanup(resource_list<T> &list, bool cached)
     {
         size_t count = 0, idx = 0;
-        for(const resource<T> &res : list) {
-            if(res.use_count > 0) {
+        for(resource<T> &res : list) {
+            if(res.use_count == 0 && (cached || !res.cached)) {
+                delete res.ptr;
+                list.erase(list.cbegin() + idx);
                 count++;
-                continue;
             }
-            list.erase(list.cbegin() + idx++);
+            idx++;
         }
         return count;
     }
 
     template<typename T>
-    static inline T * get(size_t hash, resource_list<T> &list)
+    static inline T * acquire(resource_list<T> &list, hash_t hash)
     {
-        if(hash != 0) {
-            for(resource<T> &res : list) {
-                if(res.hash == hash)
-                    return res.ptr;
+        for(resource<T> &res : list) {
+            if(res.hash == hash) {
+                res.use_count++;
+                return res.ptr;
             }
         }
         return nullptr;
     }
 
     template<typename T>
-    static inline void release(T *ptr, resource_list<T> &list)
+    static inline void release(resource_list<T> &list, T *obj)
     {
         for(resource<T> &res : list) {
-            if(res.ptr == ptr && res.use_count > 0) {
-                res.use_count--;
+            if(res.ptr == obj) {
+                if(!res.cached && res.use_count != 0)
+                    res.use_count--;
                 return;
             }
         }
     }
 
-    void cleanup()
+    static resource_list<gl::Program> programs;
+    static resource_list<gl::Texture> textures;
+
+    void cleanup(bool cached)
     {
         size_t count = 0;
-        count += cleanup<gl::Program>(programs);
-        count += cleanup<gl::Texture>(textures);
-        logger::dlog("resources: %zu resources are still used", count);
+        count += cleanup<gl::Program>(programs, cached);
+        count += cleanup<gl::Texture>(textures, cached);
+        logger::dlog("resources: cleaned up %zu resources", count);
     }
 
     template<>
-    size_t load<gl::Program>(const char *path)
+    hash_t load<gl::Program>(const char *path, bool cached)
     {
         const size_t hash = std::hash<const char *>{}(path);
 
-        // try to find an existing program
         for(const resource<gl::Program> &res : programs) {
             if(res.hash == hash)
                 return hash;
@@ -88,6 +90,7 @@ namespace resources
 
         filename = util::format("./shaders/%s.vspv", path);
         vspv = util::file_read_bin(filename.c_str());
+
         if(vspv.empty()) {
             logger::dlog("resources: error: %s contains no data", filename.c_str());
             return 0;
@@ -95,95 +98,100 @@ namespace resources
 
         filename = util::format("./shaders/%s.fspv", path);
         fspv = util::file_read_bin(filename.c_str());
+
         if(fspv.empty()) {
             logger::dlog("resources: error: %s contains no data", filename.c_str());
             return 0;
         }
 
-        gl::VertexShader vert;
-        gl::FragmentShader frag;
+        gl::VertexShader vs;
+        gl::FragmentShader fs;
 
-        vert.set_binary(vspv.data(), vspv.size());
-        if(!vert.specialize("main")) {
-            logger::dlog("opengl %s", vert.get_info_log());
+        vs.set_binary(vspv.data(), vspv.size());
+        if(!vs.specialize("main")) {
+            logger::dlog("opengl: %s", vs.get_info_log());
             return 0;
         }
 
-        frag.set_binary(fspv.data(), fspv.size());
-        if(!frag.specialize("main")) {
-            logger::dlog("opengl: %s", frag.get_info_log());
+        fs.set_binary(fspv.data(), fspv.size());
+        if(!fs.specialize("main")) {
+            logger::dlog("opengl: %s", fs.get_info_log());
             return 0;
         }
 
-        resource<gl::Program> res = { hash, path, 0, new gl::Program() };
-        res.ptr->attach(vert);
-        res.ptr->attach(frag);
+        resource<gl::Program> res = { hash, 0, cached, path, new gl::Program() };
+
+        res.ptr->attach(vs);
+        res.ptr->attach(fs);
+
         if(!res.ptr->link()) {
-            logger::dlog("opengl %s", res.ptr->get_info_log());
+            logger::dlog("opengl: %s", res.ptr->get_info_log());
             delete res.ptr;
             return 0;
         }
 
-        frag.release();
-        vert.release();
+        fs.release();
+        vs.release();
 
         programs.push_back(res);
+
         return hash;
     }
 
     template<>
-    gl::Program * get(size_t hash)
+    gl::Program * acquire(hash_t hash)
     {
-        return get<gl::Program>(hash, programs);
+        return acquire(programs, hash);
     }
 
     template<>
-    void release(gl::Program *ptr)
+    void release(gl::Program *obj)
     {
-        release<gl::Program>(ptr, programs);
+        release(programs, obj);
     }
 
     template<>
-    size_t load<gl::Texture>(const char *path)
+    hash_t load<gl::Texture>(const char *path, bool cached)
     {
         const size_t hash = std::hash<const char *>{}(path);
 
-        // try to find an existing texture
         for(const resource<gl::Texture> &res : textures) {
             if(res.hash == hash)
                 return hash;
         }
 
         const std::string filename = util::format("./textures/%s", path);
-        int width, height, channels;
-        stbi_uc *pixels;
 
         stbi_set_flip_vertically_on_load(1);
-        pixels = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+
+        int width, height, comp;
+        stbi_uc *pixels = stbi_load(filename.c_str(), &width, &height, &comp, STBI_rgb_alpha);
+
         if(!pixels) {
-            logger::dlog("resources: error: %s (%s)", stbi_failure_reason(), filename.c_str());
+            logger::dlog("stb: error: %s (%s)", stbi_failure_reason(), filename.c_str());
             return 0;
         }
 
-        resource<gl::Texture> res = { hash, path, 0, new gl::Texture() };
+        resource<gl::Texture> res = { hash, 0, cached, path, new gl::Texture };
+
         res.ptr->load_rgba<uint8_t>(width, height, pixels);
+
+        stbi_image_free(pixels);
 
         textures.push_back(res);
 
-        stbi_image_free(pixels);
-        
         return hash;
     }
 
     template<>
-    gl::Texture * get(size_t hash)
+    gl::Texture * acquire(hash_t hash)
     {
-        return get<gl::Texture>(hash, textures);
+        return acquire(textures, hash);
     }
 
     template<>
-    void release(gl::Texture *ptr)
+    void release(gl::Texture *obj)
     {
-        release<gl::Texture>(ptr, textures);
+        release(textures, obj);
     }
 }

@@ -9,21 +9,21 @@
 
 namespace resources
 {
-    void cleanup();
+    void cleanup(bool cached = false);
 
     template<typename T>
-    size_t load(const char *path);
+    hash_t load(const char *path, bool cached = false);
 
     template<typename T>
-    T * get(size_t hash);
+    T * acquire(hash_t hash);
 
     template<typename T>
-    void release(T *ptr);
+    void release(T *obj);
 
     template<typename T>
-    static inline T * load_and_get(const char *path)
+    T * acquire(const char *path)
     {
-        return get<T>(load<T>(path));
+        return acquire<T>(load<T>(path, false));
     }
 }
 
