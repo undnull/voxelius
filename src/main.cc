@@ -18,8 +18,6 @@ int main(void)
     if(!window::init())
         return 1;
 
-    resources::init();
-
     {
         gfx::Mesh mesh;
 
@@ -37,18 +35,20 @@ int main(void)
 
         mesh.update();
 
-        std::shared_ptr<gl::Program> prog = resources::get_resource<gl::Program>("sandbox");
+        gl::Program *prog = resources::load_and_get<gl::Program>("sandbox");
         if(!prog)
             return 1;
 
-        std::shared_ptr<gl::Texture> texture = resources::get_resource<gl::Texture>("bgrid.png");
+        gl::Texture *texture = resources::load_and_get<gl::Texture>("bgrid.png");
         if(!texture)
             return 1;
         
         mat4x4_t model = mat4x4_t(1.0);
 
+        renderer::set_fov(90.0);
         renderer::setup_view(640, 480, 0.01, 100.0);
-        renderer::use_2d_view(vec3_t(0.0, 0.0, -1.0), quat_t());
+        
+        renderer::use_3d_view(vec3_t(0.0, 0.0, -1.0), quat_t());
 
         renderer::clear_color(vec3_t(0.0, 0.0, 0.1));
 
@@ -58,14 +58,17 @@ int main(void)
             model = glm::rotate<float>(model, globals::frame_time * 0.25f, vec3_t(0.25, 1.0, 0.5));
 
             renderer::clear();
-            renderer::bind_texture(texture.get(), 0);
-            renderer::render(mesh, model, prog.get());
+            renderer::bind_texture(texture, 0);
+            renderer::render(mesh, model, prog);
 
             window::end_frame();
         }
+
+        resources::release(texture);
+        resources::release(prog);
     }
     
-    resources::release_all();
+    resources::cleanup();
 
     return 0;
 }

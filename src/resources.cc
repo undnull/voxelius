@@ -17,7 +17,8 @@ namespace resources
     struct resource final {
         size_t hash;
         std::string path;
-        std::shared_ptr<T> ptr;
+        size_t use_count;
+        T *ptr;
     };
 
     template<typename T>
@@ -27,66 +28,59 @@ namespace resources
     static resource_list<gl::Texture> textures;
 
     template<typename T>
-    static inline const size_t release_all(resource_list<T> &list)
+    static inline size_t cleanup(resource_list<T> &list)
     {
-        size_t count = 0;
+        size_t count = 0, idx = 0;
         for(const resource<T> &res : list) {
-            if(res.ptr.use_count() > 1) {
-                logger::dlog("resources: warning: %s (%zu) is still used", res.path.c_str(), res.hash);
+            if(res.use_count > 0) {
                 count++;
+                continue;
             }
+            list.erase(list.cbegin() + idx++);
         }
-
         return count;
     }
 
     template<typename T>
-    static inline const size_t release_unused(resource_list<T> &list)
+    static inline T * get(size_t hash, resource_list<T> &list)
     {
-        size_t count = 0, pos = 0;
-        for(const resource<T> &res : list) {
-            if(res.ptr.use_count() == 1) {
-                list.erase(list.cbegin() + pos);
-                count++;
+        if(hash != 0) {
+            for(resource<T> &res : list) {
+                if(res.hash == hash)
+                    return res.ptr;
             }
-
-            pos++;
         }
-        
-        return count;
+        return nullptr;
     }
 
-    void init()
+    template<typename T>
+    static inline void release(T *ptr, resource_list<T> &list)
     {
-        programs.clear();
-        textures.clear();
+        for(resource<T> &res : list) {
+            if(res.ptr == ptr && res.use_count > 0) {
+                res.use_count--;
+                return;
+            }
+        }
     }
 
-    void release_all()
-    {
-        size_t count = 0;
-        count += release_all<gl::Program>(programs);
-        count += release_all<gl::Texture>(textures);
-        logger::dlog("resources: found %zu still used resources", count);
-    }
-
-    void release_unused()
+    void cleanup()
     {
         size_t count = 0;
-        count += release_unused<gl::Program>(programs);
-        count += release_unused<gl::Texture>(textures);
-        logger::dlog("resources: found and released %zu unused resources", count);
+        count += cleanup<gl::Program>(programs);
+        count += cleanup<gl::Texture>(textures);
+        logger::dlog("resources: %zu resources are still used", count);
     }
 
     template<>
-    std::shared_ptr<gl::Program> get_resource(const char *path)
+    size_t load<gl::Program>(const char *path)
     {
         const size_t hash = std::hash<const char *>{}(path);
 
         // try to find an existing program
-        for(resource<gl::Program> &res : programs) {
+        for(const resource<gl::Program> &res : programs) {
             if(res.hash == hash)
-                return res.ptr;
+                return hash;
         }
 
         std::string filename;
@@ -96,14 +90,14 @@ namespace resources
         vspv = util::file_read_bin(filename.c_str());
         if(vspv.empty()) {
             logger::dlog("resources: error: %s contains no data", filename.c_str());
-            return nullptr;
+            return 0;
         }
 
         filename = util::format("./shaders/%s.fspv", path);
         fspv = util::file_read_bin(filename.c_str());
         if(fspv.empty()) {
             logger::dlog("resources: error: %s contains no data", filename.c_str());
-            return nullptr;
+            return 0;
         }
 
         gl::VertexShader vert;
@@ -112,56 +106,84 @@ namespace resources
         vert.set_binary(vspv.data(), vspv.size());
         if(!vert.specialize("main")) {
             logger::dlog("opengl %s", vert.get_info_log());
-            return nullptr;
+            return 0;
         }
 
         frag.set_binary(fspv.data(), fspv.size());
         if(!frag.specialize("main")) {
             logger::dlog("opengl: %s", frag.get_info_log());
-            return nullptr;
+            return 0;
         }
 
-        resource<gl::Program> res = { hash, path, std::make_shared<gl::Program>() };
-        
+        resource<gl::Program> res = { hash, path, 0, new gl::Program() };
         res.ptr->attach(vert);
         res.ptr->attach(frag);
         if(!res.ptr->link()) {
-            logger::dlog("opengl: %s", res.ptr->get_info_log());
-            return nullptr;
+            logger::dlog("opengl %s", res.ptr->get_info_log());
+            delete res.ptr;
+            return 0;
         }
 
         frag.release();
         vert.release();
 
         programs.push_back(res);
-        return res.ptr;
+        return hash;
     }
 
     template<>
-    std::shared_ptr<gl::Texture> get_resource(const char *path)
+    gl::Program * get(size_t hash)
+    {
+        return get<gl::Program>(hash, programs);
+    }
+
+    template<>
+    void release(gl::Program *ptr)
+    {
+        release<gl::Program>(ptr, programs);
+    }
+
+    template<>
+    size_t load<gl::Texture>(const char *path)
     {
         const size_t hash = std::hash<const char *>{}(path);
 
         // try to find an existing texture
-        for(resource<gl::Texture> &res : textures) {
+        for(const resource<gl::Texture> &res : textures) {
             if(res.hash == hash)
-                return res.ptr;
+                return hash;
         }
-
-        stbi_set_flip_vertically_on_load(1);
 
         const std::string filename = util::format("./textures/%s", path);
-        int width, height, comp;
-        stbi_uc *pixels = stbi_load(filename.c_str(), &width, &height, &comp, STBI_rgb_alpha);
+        int width, height, channels;
+        stbi_uc *pixels;
+
+        stbi_set_flip_vertically_on_load(1);
+        pixels = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb_alpha);
         if(!pixels) {
-            logger::dlog("resources: error: %s (%s)", stbi_failure_reason(), path);
-            return nullptr;
+            logger::dlog("resources: error: %s (%s)", stbi_failure_reason(), filename.c_str());
+            return 0;
         }
 
-        resource<gl::Texture> res = { hash, path, std::make_shared<gl::Texture>() };
+        resource<gl::Texture> res = { hash, path, 0, new gl::Texture() };
         res.ptr->load_rgba<uint8_t>(width, height, pixels);
 
         textures.push_back(res);
-        return res.ptr;
+
+        stbi_image_free(pixels);
+        
+        return hash;
+    }
+
+    template<>
+    gl::Texture * get(size_t hash)
+    {
+        return get<gl::Texture>(hash, textures);
+    }
+
+    template<>
+    void release(gl::Texture *ptr)
+    {
+        release<gl::Texture>(ptr, textures);
     }
 }

@@ -46,7 +46,7 @@ namespace gfx::renderer
 
     void use_3d_view(const vec3_t &cam_position, const quat_t &cam_rotation)
     {
-        view_matrix = glm::perspective<float>(view_fov, view_aspect, view_z_near, view_z_far);
+        view_matrix = glm::perspective<float>(glm::radians(view_fov), view_aspect, view_z_near, view_z_far);
         view_matrix = glm::translate(view_matrix, cam_position);
         view_matrix = view_matrix * glm::mat4_cast(cam_rotation);
     }

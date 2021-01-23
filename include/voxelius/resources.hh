@@ -9,12 +9,22 @@
 
 namespace resources
 {
-    void init();
-    void release_all();
-    void release_unused();
+    void cleanup();
 
     template<typename T>
-    std::shared_ptr<T> get_resource(const char *path);
+    size_t load(const char *path);
+
+    template<typename T>
+    T * get(size_t hash);
+
+    template<typename T>
+    void release(T *ptr);
+
+    template<typename T>
+    static inline T * load_and_get(const char *path)
+    {
+        return get<T>(load<T>(path));
+    }
 }
 
 #endif
