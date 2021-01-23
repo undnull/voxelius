@@ -9,7 +9,7 @@
 
 namespace gl
 {
-    class VAO final : public Resource {
+    class VAO final : public Object {
     public:
         VAO();
         ~VAO();

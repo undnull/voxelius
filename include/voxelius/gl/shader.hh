@@ -5,12 +5,12 @@
  */
 #ifndef VOXELIUS_GL_SHADER_HH
 #define VOXELIUS_GL_SHADER_HH 1
-#include <voxelius/gl/resource.hh>
+#include <voxelius/gl/object.hh>
 #include <voxelius/types.hh>
 
 namespace gl
 {
-    class Shader : public Resource {
+    class Shader : public Object {
     public:
         Shader(unsigned int type);
         virtual ~Shader();

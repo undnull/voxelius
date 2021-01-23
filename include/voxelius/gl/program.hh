@@ -5,12 +5,11 @@
  */
 #ifndef VOXELIUS_GL_PROGRAM_HH
 #define VOXELIUS_GL_PROGRAM_HH 1
-#include <voxelius/gl/resource.hh>
 #include <voxelius/gl/shader.hh>
 
 namespace gl
 {
-    class Program final : public Resource {
+    class Program final : public Object {
     public:
         Program();
         ~Program();

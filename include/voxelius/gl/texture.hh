@@ -5,12 +5,12 @@
  */
 #ifndef VOXELIUS_GL_TEXTURE_HH
 #define VOXELIUS_GL_TEXTURE_HH 1
-#include <voxelius/gl/resource.hh>
+#include <voxelius/gl/object.hh>
 #include <voxelius/types.hh>
 
 namespace gl
 {
-    class Texture final : public Resource {
+    class Texture final : public Object {
     public:
         Texture();
         ~Texture();

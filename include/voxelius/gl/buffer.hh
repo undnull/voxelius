@@ -5,12 +5,12 @@
  */
 #ifndef VOXELIUS_GL_BUFFER_HH
 #define VOXELIUS_GL_BUFFER_HH 1
-#include <voxelius/gl/resource.hh>
+#include <voxelius/gl/object.hh>
 #include <voxelius/types.hh>
 
 namespace gl
 {
-    class Buffer final : public Resource {
+    class Buffer final : public Object {
     public:
         Buffer();
         ~Buffer();
