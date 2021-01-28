@@ -6,6 +6,7 @@
 #include <voxelius/util/file.hh>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <sstream>
 
 namespace util
