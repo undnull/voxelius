@@ -19,6 +19,8 @@ namespace window
     void end_frame();
 
     GLFWwindow * get_window();
+
+    void get_size(int &width, int &height);
 }
 
 #endif

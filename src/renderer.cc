@@ -25,6 +25,7 @@ namespace renderer
         view_aspect = (float)width / (float)height;
         view_z_near = z_near;
         view_z_far = z_far;
+        glViewport(0, 0, width, height);
     }
 
     void store_view()

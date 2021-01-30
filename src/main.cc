@@ -5,6 +5,7 @@
  */
 #include <voxelius/gl/program.hh>
 #include <voxelius/gl/texture.hh>
+#include <voxelius/cmdline.hh>
 #include <voxelius/globals.hh>
 #include <voxelius/logger.hh>
 #include <voxelius/renderer.hh>
@@ -13,8 +14,10 @@
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-int main(void)
+int main(int argc, char **argv)
 {
+    cmdline::init(argc, argv);
+
     if(!window::init())
         return 1;
 
@@ -45,8 +48,11 @@ int main(void)
 
         mat4x4_t model = mat4x4_t(1.0);
 
+        int width, height;
+        window::get_size(width, height);
+
         renderer::set_fov(90.0);
-        renderer::setup_view(640, 480, 0.01, 100.0);
+        renderer::setup_view(width, height, 0.01, 100.0);
         
         renderer::use_3d_view(vec3_t(0.0, 0.0, -1.0), quat_t());
 

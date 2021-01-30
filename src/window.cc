@@ -3,11 +3,13 @@
  * Created: 2021-01-16, 15:42:43.
  * Copyright (C) 2021, Kirill GPRB.
  */
+#include <voxelius/cmdline.hh>
 #include <voxelius/globals.hh>
 #include <voxelius/logger.hh>
 #include <voxelius/window.hh>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <stdlib.h>
 
 namespace window
 {
@@ -50,7 +52,28 @@ namespace window
 
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-        window = glfwCreateWindow(800, 600, "Voxelius", nullptr, nullptr);
+        const char *argument;
+        int width = 640;
+        int height = 480;
+        bool fullscreen = false;
+        bool vsync = true;
+
+        argument = cmdline::get_argument("--width");
+        if(argument)
+            width = atoi(argument);
+
+        argument = cmdline::get_argument("--height");
+        if(argument)
+            height = atoi(argument);
+        
+        if(cmdline::has_option("--fullscreen"))
+            fullscreen = true;
+        
+        if(cmdline::has_option("--vsync"))
+            vsync = true;
+
+        GLFWmonitor *monitor = fullscreen ? glfwGetPrimaryMonitor() : nullptr;
+        window = glfwCreateWindow(width, height, "Voxelius", monitor, nullptr);
         if(!window) {
             glfwTerminate();
             return false;
@@ -70,11 +93,17 @@ namespace window
             return false;
         }
 
-        glfwSwapInterval(1);
+        glfwSwapInterval(vsync ? 1 : 0);
 
         glEnable(GL_DEBUG_OUTPUT);
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
         glDebugMessageCallback(gl_debug_callback, nullptr);
+
+        // todo: debug
+        glfwSetKeyCallback(window, [](GLFWwindow *w, int key, int, int action, int) {
+            if(action == GLFW_PRESS && key == GLFW_KEY_ESCAPE)
+                glfwSetWindowShouldClose(w, GLFW_TRUE);
+        });
 
         return true;
     }
@@ -108,5 +137,10 @@ namespace window
     GLFWwindow * get_window()
     {
         return window;
+    }
+
+    void get_size(int &width, int &height)
+    {
+        glfwGetWindowSize(window, &width, &height);
     }
 }
