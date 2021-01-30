@@ -6,7 +6,7 @@
 #include <voxelius/cmdline.hh>
 #include <voxelius/globals.hh>
 #include <voxelius/logger.hh>
-#include <voxelius/window.hh>
+#include <voxelius/client/window.hh>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stdlib.h>

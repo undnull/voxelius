@@ -3,9 +3,9 @@
  * Created: 2021-01-22, 22:40:49.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_MESH_HH
-#define VOXELIUS_MESH_HH 1
-#include <voxelius/gl/vao.hh>
+#ifndef VOXELIUS_CLIENT_MESH_HH
+#define VOXELIUS_CLIENT_MESH_HH 1
+#include <voxelius/client/gl/vao.hh>
 #include <voxelius/types.hh>
 #include <vector>
 

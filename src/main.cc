@@ -3,14 +3,14 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/gl/program.hh>
-#include <voxelius/gl/texture.hh>
+#include <voxelius/client/gl/program.hh>
+#include <voxelius/client/gl/texture.hh>
+#include <voxelius/client/renderer.hh>
+#include <voxelius/client/resources.hh>
+#include <voxelius/client/window.hh>
 #include <voxelius/cmdline.hh>
 #include <voxelius/globals.hh>
 #include <voxelius/logger.hh>
-#include <voxelius/renderer.hh>
-#include <voxelius/resources.hh>
-#include <voxelius/window.hh>
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 

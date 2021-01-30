@@ -3,8 +3,8 @@
  * Created: 2021-01-20, 20:34:25.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_RESOURCES_HH
-#define VOXELIUS_RESOURCES_HH 1
+#ifndef VOXELIUS_CLIENT_RESOURCES_HH
+#define VOXELIUS_CLIENT_RESOURCES_HH 1
 #include <voxelius/types.hh>
 
 namespace resources

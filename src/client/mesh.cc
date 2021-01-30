@@ -3,7 +3,7 @@
  * Created: 2021-01-22, 22:52:16.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/mesh.hh>
+#include <voxelius/client/mesh.hh>
 
 void Mesh::clear()
 {

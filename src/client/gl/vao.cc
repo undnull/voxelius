@@ -3,7 +3,7 @@
  * Created: 2021-01-19, 12:13:10.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/gl/vao.hh>
+#include <voxelius/client/gl/vao.hh>
 #include <glad/glad.h>
 
 namespace gl
