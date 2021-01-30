@@ -1,5 +1,6 @@
 # Voxelius
-**TODO:** insert here a fancy voxel game description.
+**TODO:** insert here a fancy voxel game description.  
+A voxel game that doesn't have any voxels yet.
 # Building
 ## Prerequisites
 1. Git
