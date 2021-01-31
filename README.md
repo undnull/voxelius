@@ -1,6 +1,3 @@
-# Voxelius
-**TODO:** insert here a fancy voxel game description.  
-A voxel game that doesn't have any voxels yet.
 # Building
 ## Prerequisites
 1. Git
@@ -24,5 +21,3 @@ And that means you can build the entire project by using the one simple command:
 ```bash
 cmake --build build
 ```
-# Et cetera
-**TODO:** insert here a fancy "also try"-ish links, license notice and more.
