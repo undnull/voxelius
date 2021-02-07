@@ -65,8 +65,11 @@ namespace client
             model = glm::rotate<float>(model, globals::frame_time * 0.25, vec3_t(0.25, 1.0, 0.5));
 
             renderer::clear(true, true, false);
-            renderer::bind_texture(texture, 0);
-            renderer::render(mesh, model, program);
+
+            renderer::set_program(program);
+
+            renderer::set_texture(texture, 0);
+            renderer::render(mesh, model);
 
             window::end_frame();
         }
