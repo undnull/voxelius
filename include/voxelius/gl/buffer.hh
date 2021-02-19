@@ -3,9 +3,9 @@
  * Created: 2021-01-19, 10:35:53.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_CLIENT_GL_BUFFER_HH
-#define VOXELIUS_CLIENT_GL_BUFFER_HH 1
-#include <voxelius/client/gl/object.hh>
+#ifndef VOXELIUS_GL_BUFFER_HH
+#define VOXELIUS_GL_BUFFER_HH 1
+#include <voxelius/gl/object.hh>
 #include <voxelius/types.hh>
 
 namespace gl

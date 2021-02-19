@@ -3,10 +3,10 @@
  * Created: 2021-01-16, 15:42:43.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/client/window.hh>
 #include <voxelius/cmdline.hh>
 #include <voxelius/globals.hh>
 #include <voxelius/logger.hh>
+#include <voxelius/window.hh>
 
 // clang-format off
 // glad must be included first

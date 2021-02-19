@@ -3,7 +3,7 @@
  * Created: 2021-01-22, 23:16:03.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/client/renderer.hh>
+#include <voxelius/renderer.hh>
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>

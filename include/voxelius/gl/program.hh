@@ -3,9 +3,9 @@
  * Created: 2021-01-19, 11:34:43.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_CLIENT_GL_PROGRAM_HH
-#define VOXELIUS_CLIENT_GL_PROGRAM_HH 1
-#include <voxelius/client/gl/shader.hh>
+#ifndef VOXELIUS_GL_PROGRAM_HH
+#define VOXELIUS_GL_PROGRAM_HH 1
+#include <voxelius/gl/shader.hh>
 
 namespace gl
 {

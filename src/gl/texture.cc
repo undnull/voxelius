@@ -3,7 +3,7 @@
  * Created: 2021-01-19, 15:04:24.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/client/gl/texture.hh>
+#include <voxelius/gl/texture.hh>
 
 #include <glad/glad.h>
 

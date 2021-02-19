@@ -3,7 +3,7 @@
  * Created: 2021-01-19, 11:48:54.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/client/gl/program.hh>
+#include <voxelius/gl/program.hh>
 
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>

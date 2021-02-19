@@ -3,9 +3,9 @@
  * Created: 2021-01-19, 11:56:58.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_CLIENT_GL_VAO_HH
-#define VOXELIUS_CLIENT_GL_VAO_HH 1
-#include <voxelius/client/gl/buffer.hh>
+#ifndef VOXELIUS_GL_VAO_HH
+#define VOXELIUS_GL_VAO_HH 1
+#include <voxelius/gl/buffer.hh>
 
 namespace gl
 {

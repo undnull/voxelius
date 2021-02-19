@@ -3,8 +3,8 @@
  * Created: 2021-01-16, 15:37:44.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_CLIENT_WINDOW_HH
-#define VOXELIUS_CLIENT_WINDOW_HH 1
+#ifndef VOXELIUS_WINDOW_HH
+#define VOXELIUS_WINDOW_HH 1
 
 struct GLFWwindow;
 

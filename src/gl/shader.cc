@@ -3,7 +3,7 @@
  * Created: 2021-01-19, 11:15:39.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/client/gl/shader.hh>
+#include <voxelius/gl/shader.hh>
 
 #include <glad/glad.h>
 
