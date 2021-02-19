@@ -16,25 +16,32 @@
 
 #include <stdlib.h>
 
-namespace window
+static void errorCallback(int code, const char *msg)
 {
-static GLFWwindow *window;
-
-static class AD final {
-public:
-    ~AD()
-    {
-        glfwDestroyWindow(window);
-        glfwTerminate();
-    }
-} ad;
-
-static void glfw_error_callback(int code, const char *msg)
-{
-    logger::log("window: glfw error %d: %s", code, msg);
+    logger::log("glfw error %d: %s", code, msg);
 }
 
-static void gl_debug_callback(unsigned int src, unsigned int type, unsigned int id, unsigned int severity, int length, const char *msg, const void *arg)
+static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
+{
+    static_cast<WindowBase *>(glfwGetWindowUserPointer(window))->onKey(key, scancode, action, mods);
+}
+
+static void charCallback(GLFWwindow *window, unsigned int unicode)
+{
+    static_cast<WindowBase *>(glfwGetWindowUserPointer(window))->onChar(unicode);
+}
+
+static void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
+{
+    static_cast<WindowBase *>(glfwGetWindowUserPointer(window))->onMouseButton(button, action, mods);
+}
+
+static void cursorPosCallback(GLFWwindow *window, double x, double y)
+{
+    static_cast<WindowBase *>(glfwGetWindowUserPointer(window))->onCursorPos((float)x, (float)y);
+}
+
+static void debugCallback(unsigned int src, unsigned int type, unsigned int id, unsigned int severity, int length, const char *msg, const void *arg)
 {
     switch(severity) {
         case GL_DEBUG_SEVERITY_HIGH:
@@ -47,105 +54,120 @@ static void gl_debug_callback(unsigned int src, unsigned int type, unsigned int 
     }
 }
 
-bool init()
-{
-    glfwSetErrorCallback(glfw_error_callback);
-    if(glfwInit() != GLFW_TRUE) {
+static class AD final {
+public:
+    ~AD()
+    {
         glfwTerminate();
-        return false;
     }
+
+    void init()
+    {
+        if(!init_called) {
+            init_called = true;
+            glfwSetErrorCallback(errorCallback);
+            glfwInit();
+        }
+    }
+
+    bool init_called = false;
+} ad;
+
+WindowBase::WindowBase(int width, int height, const char *title, bool fullscreen)
+{
+    ad.init();
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-    const char *argument;
-    int width = 640;
-    int height = 480;
-    bool fullscreen = false;
-    bool vsync = true;
+    window = glfwCreateWindow(width, height, title, fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
+    if(window) {
+        glfwSetWindowUserPointer(window, this);
 
-    argument = cmdline::getArgument("--width");
-    if(argument)
-        width = atoi(argument);
+        glfwSetKeyCallback(window, keyCallback);
+        glfwSetCharCallback(window, charCallback);
+        glfwSetMouseButtonCallback(window, mouseButtonCallback);
+        glfwSetCursorPosCallback(window, cursorPosCallback);
 
-    argument = cmdline::getArgument("--height");
-    if(argument)
-        height = atoi(argument);
+        glfwMakeContextCurrent(window);
+        
+        if(!gladLoadGL()) {
+            glfwDestroyWindow(window);
+            window = nullptr;
+            return;
+        }
 
-    if(cmdline::hasOption("--fullscreen"))
-        fullscreen = true;
+        if(!GLAD_GL_VERSION_4_6) {
+            logger::log("opengl: opengl version 4.6 is required");
+            glfwDestroyWindow(window);
+            window = nullptr;
+            return;
+        }
 
-    if(cmdline::hasOption("--vsync"))
-        vsync = true;
-
-    GLFWmonitor *monitor = fullscreen ? glfwGetPrimaryMonitor() : nullptr;
-    window = glfwCreateWindow(width, height, "Voxelius", monitor, nullptr);
-    if(!window) {
-        glfwTerminate();
-        return false;
+        glEnable(GL_DEBUG_OUTPUT);
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        glDebugMessageCallback(debugCallback, nullptr);
     }
-
-    glfwMakeContextCurrent(window);
-    if(!gladLoadGL()) {
-        glfwDestroyWindow(window);
-        glfwTerminate();
-        return false;
-    }
-
-    if(!GLAD_GL_VERSION_4_6) {
-        logger::log("opengl: opengl version 4.6 is required");
-        glfwDestroyWindow(window);
-        glfwTerminate();
-        return false;
-    }
-
-    glfwSwapInterval(vsync ? 1 : 0);
-
-    glEnable(GL_DEBUG_OUTPUT);
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-    glDebugMessageCallback(gl_debug_callback, nullptr);
-
-    // todo: debug
-    glfwSetKeyCallback(window, [](GLFWwindow *w, int key, int, int action, int) {
-        if(action == GLFW_PRESS && key == GLFW_KEY_ESCAPE)
-            glfwSetWindowShouldClose(w, GLFW_TRUE);
-    });
-
-    return true;
 }
 
-bool isOpen()
+WindowBase::~WindowBase()
 {
-    return glfwWindowShouldClose(window) != GLFW_TRUE;
+    if(window)
+        glfwDestroyWindow(window);
 }
 
-void close()
+void WindowBase::setVSyncEnabled(bool b)
+{
+    glfwSwapInterval(b ? 1 : 0);
+}
+
+bool WindowBase::isOpen() const
+{
+    if(window)
+        return glfwWindowShouldClose(window) == GLFW_FALSE;
+    return false;
+}
+
+void WindowBase::close()
 {
     glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-void beginFrame()
+void WindowBase::endFrame()
 {
-    globals::current_time = (float)glfwGetTime();
-    globals::frame_time = globals::current_time - globals::last_time;
-    globals::last_time = globals::current_time;
-}
-
-void endFrame()
-{
-    glfwSwapBuffers(window);
     if(glfwGetWindowAttrib(window, GLFW_FOCUSED) == GLFW_TRUE)
         glfwPollEvents();
     else
         glfwWaitEventsTimeout(0.05);
+    glfwSwapBuffers(window);
 }
 
-GLFWwindow *getWindow()
+void WindowBase::getSize(int &width, int &height)
+{
+    glfwGetWindowSize(window, &width, &height);
+}
+
+GLFWwindow * WindowBase::getWindow() const
 {
     return window;
 }
 
-void getSize(int &width, int &height)
+void WindowBase::onKey(int key, int scancode, int action, int mods)
 {
-    glfwGetWindowSize(window, &width, &height);
+    if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        close();
 }
-} // namespace window
+
+void WindowBase::onChar(unsigned int unicode)
+{
+
+}
+
+void WindowBase::onMouseButton(int button, int action, int mods)
+{
+
+}
+
+void WindowBase::onCursorPos(float x, float y)
+{
+
+}

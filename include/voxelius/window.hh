@@ -8,19 +8,29 @@
 
 struct GLFWwindow;
 
-namespace window
-{
-bool init();
+class WindowBase {
+public:
+    WindowBase(int width, int height, const char *title, bool fullscreen);
+    virtual ~WindowBase();
+    
+    void setVSyncEnabled(bool b);
 
-bool isOpen();
-void close();
+    bool isOpen() const;
+    void close();
 
-void beginFrame();
-void endFrame();
+    void endFrame();
 
-GLFWwindow *getWindow();
+    void getSize(int &width, int &height);
 
-void getSize(int &width, int &height);
-} // namespace window
+    GLFWwindow * getWindow() const;
+
+    virtual void onKey(int key, int scancode, int action, int mods);
+    virtual void onChar(unsigned int unicode);
+    virtual void onMouseButton(int button, int action, int mods);
+    virtual void onCursorPos(float x, float y);
+
+private:
+    GLFWwindow *window;
+};
 
 #endif

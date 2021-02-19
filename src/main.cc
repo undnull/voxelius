@@ -17,8 +17,11 @@ int main(int argc, char **argv)
 {
     cmdline::init(argc, argv);
 
-    if(!window::init())
+    WindowBase window(640, 480, "Voxelius", cmdline::hasOption("--fullscreen"));
+    if(!window.isOpen())
         return 1;
+    
+    window.setVSyncEnabled(!cmdline::hasOption("--no-vsync"));
 
     Mesh mesh;
 
@@ -47,7 +50,7 @@ int main(int argc, char **argv)
     mat4x4_t model = mat4x4_t(1.0);
 
     int width, height;
-    window::getSize(width, height);
+    window.getSize(width, height);
 
     renderer::setupView(width, height, 0.01, 100.0);
     renderer::setFOV(90.0);
@@ -56,10 +59,9 @@ int main(int argc, char **argv)
 
     renderer::clearColor(vec3_t(0.0, 0.0, 0.25));
 
-    while(window::isOpen()) {
-        window::beginFrame();
-
-        model = glm::rotate<float>(model, globals::frame_time * 0.25, vec3_t(0.25, 1.0, 0.5));
+    while(window.isOpen()) {
+        // fixme: implement sfml-ish clock class?
+        model = glm::rotate<float>(model, 0.01666 * 0.25, vec3_t(0.25, 1.0, 0.5));
 
         renderer::clear(true, true, false);
 
@@ -68,7 +70,7 @@ int main(int argc, char **argv)
         renderer::setTexture(texture, 0);
         renderer::render(mesh, model);
 
-        window::endFrame();
+        window.endFrame();
     }
 
     resources::release<gl::Texture>(texture);
