@@ -71,6 +71,9 @@ int main(int argc, char **argv)
         window::endFrame();
     }
 
+    resources::release<gl::Texture>(texture);
+    resources::release<gl::Program>(program);
+
     resources::cleanup(true);
     return 0;
 }
