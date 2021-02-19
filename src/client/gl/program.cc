@@ -38,14 +38,14 @@ void Program::release()
     }
 }
 
-bool Program::is_good() const
+bool Program::isGood() const
 {
     return program != 0;
 }
 
 void Program::attach(const Shader &shader)
 {
-    glAttachShader(program, shader.get_shader());
+    glAttachShader(program, shader.getShader());
 }
 
 bool Program::link()
@@ -72,32 +72,32 @@ bool Program::link()
     return true;
 }
 
-void Program::set_uniform(int location, const int value) const
+void Program::setUniform(int location, const int value) const
 {
     glProgramUniform1i(program, location, value);
 }
 
-void Program::set_uniform(int location, const float value) const
+void Program::setUniform(int location, const float value) const
 {
     glProgramUniform1f(program, location, value);
 }
 
-void Program::set_uniform(int location, const vec2_t &value) const
+void Program::setUniform(int location, const vec2_t &value) const
 {
     glProgramUniform2fv(program, location, 1, glm::value_ptr(value));
 }
 
-void Program::set_uniform(int location, const vec3_t &value) const
+void Program::setUniform(int location, const vec3_t &value) const
 {
     glProgramUniform3fv(program, location, 1, glm::value_ptr(value));
 }
 
-void Program::set_uniform(int location, const vec4_t &value) const
+void Program::setUniform(int location, const vec4_t &value) const
 {
     glProgramUniform4fv(program, location, 1, glm::value_ptr(value));
 }
 
-void Program::set_uniform(int location, const mat4x4_t &value) const
+void Program::setUniform(int location, const mat4x4_t &value) const
 {
     glProgramUniformMatrix4fv(program, location, 1, GL_FALSE, glm::value_ptr(value));
 }

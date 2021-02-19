@@ -63,18 +63,18 @@ bool init()
     bool fullscreen = false;
     bool vsync = true;
 
-    argument = cmdline::get_argument("--width");
+    argument = cmdline::getArgument("--width");
     if(argument)
         width = atoi(argument);
 
-    argument = cmdline::get_argument("--height");
+    argument = cmdline::getArgument("--height");
     if(argument)
         height = atoi(argument);
 
-    if(cmdline::has_option("--fullscreen"))
+    if(cmdline::hasOption("--fullscreen"))
         fullscreen = true;
 
-    if(cmdline::has_option("--vsync"))
+    if(cmdline::hasOption("--vsync"))
         vsync = true;
 
     GLFWmonitor *monitor = fullscreen ? glfwGetPrimaryMonitor() : nullptr;
@@ -113,7 +113,7 @@ bool init()
     return true;
 }
 
-bool is_open()
+bool isOpen()
 {
     return glfwWindowShouldClose(window) != GLFW_TRUE;
 }
@@ -123,14 +123,14 @@ void close()
     glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-void begin_frame()
+void beginFrame()
 {
     globals::current_time = (float)glfwGetTime();
     globals::frame_time = globals::current_time - globals::last_time;
     globals::last_time = globals::current_time;
 }
 
-void end_frame()
+void endFrame()
 {
     glfwSwapBuffers(window);
     if(glfwGetWindowAttrib(window, GLFW_FOCUSED) == GLFW_TRUE)
@@ -139,12 +139,12 @@ void end_frame()
         glfwWaitEventsTimeout(0.05);
 }
 
-GLFWwindow *get_window()
+GLFWwindow *getWindow()
 {
     return window;
 }
 
-void get_size(int &width, int &height)
+void getSize(int &width, int &height)
 {
     glfwGetWindowSize(window, &width, &height);
 }

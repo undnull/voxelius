@@ -34,33 +34,33 @@ void VAO::release()
     }
 }
 
-bool VAO::is_good() const
+bool VAO::isGood() const
 {
     return vao != 0;
 }
 
-void VAO::bind_vbo(const Buffer &buffer, unsigned int binding_index, size_t offset, size_t stride)
+void VAO::bindVBO(const Buffer &buffer, unsigned int binding_index, size_t offset, size_t stride)
 {
-    glVertexArrayVertexBuffer(vao, binding_index, buffer.get_buffer(), (GLintptr)offset, (GLsizei)stride);
+    glVertexArrayVertexBuffer(vao, binding_index, buffer.getBuffer(), (GLintptr)offset, (GLsizei)stride);
 }
 
-void VAO::bind_ebo(const Buffer &buffer)
+void VAO::bindEBO(const Buffer &buffer)
 {
-    glVertexArrayElementBuffer(vao, buffer.get_buffer());
+    glVertexArrayElementBuffer(vao, buffer.getBuffer());
 }
 
-void VAO::enable_attrib(unsigned int attrib_index)
+void VAO::enableAttrib(unsigned int attrib_index)
 {
     glEnableVertexArrayAttrib(vao, attrib_index);
 }
 
 template<>
-void VAO::set_attrib_format<float>(unsigned int attrib_index, size_t count, bool normalized)
+void VAO::setAttribFormat<float>(unsigned int attrib_index, size_t count, bool normalized)
 {
     glVertexArrayAttribFormat(vao, attrib_index, (GLint)count, GL_FLOAT, normalized ? GL_TRUE : GL_FALSE, 0);
 }
 
-void VAO::set_attrib_binding(unsigned int attrib_index, unsigned int binding_index)
+void VAO::setAttribBinding(unsigned int attrib_index, unsigned int binding_index)
 {
     glVertexArrayAttribBinding(vao, attrib_index, binding_index);
 }

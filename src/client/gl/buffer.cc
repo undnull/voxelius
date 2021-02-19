@@ -34,12 +34,12 @@ void Buffer::release()
     }
 }
 
-bool Buffer::is_good() const
+bool Buffer::isGood() const
 {
     return buffer != 0;
 }
 
-void Buffer::set_data(const void *data, size_t size)
+void Buffer::setData(const void *data, size_t size)
 {
     glNamedBufferData(buffer, (GLsizeiptr)size, data, GL_STATIC_DRAW);
 }

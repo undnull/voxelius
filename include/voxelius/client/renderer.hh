@@ -20,17 +20,17 @@ class Mesh final {
 public:
     void clear();
 
-    void add_vertex(const vertex &vertex);
-    void add_index(unsigned int index);
+    void addVertex(const vertex &vertex);
+    void addIndex(unsigned int index);
 
     void update();
 
-    inline const size_t get_num_vertices() const
+    inline const size_t getNumVertices() const
     {
         return vertices.size();
     }
 
-    inline const size_t get_num_indices() const
+    inline const size_t getNumIndices() const
     {
         return indices.size();
     }
@@ -46,19 +46,19 @@ private:
 
 namespace renderer
 {
-void setup_view(int width, int height, float z_near, float z_far);
-void use_2d_view(const vec3_t &cam_position, const quat_t &cam_rotation);
-void use_3d_view(const vec3_t &cam_position, const quat_t &cam_rotation);
+void setupView(int width, int height, float z_near, float z_far);
+void use2dView(const vec3_t &cam_position, const quat_t &cam_rotation);
+void use3dView(const vec3_t &cam_position, const quat_t &cam_rotation);
 
-void set_fov(float fov);
-float get_fov();
+void setFOV(float fov);
+float getFOV();
 
-void clear_color(const vec3_t &color);
-void clear_color(const vec4_t &color);
+void clearColor(const vec3_t &color);
+void clearColor(const vec4_t &color);
 void clear(bool color, bool depth, bool stencil);
 
-void set_program(const gl::Program *program);
-void set_texture(const gl::Texture *texture, unsigned int unit);
+void setProgram(const gl::Program *program);
+void setTexture(const gl::Texture *texture, unsigned int unit);
 
 void render(const Mesh &mesh, const mat4x4_t &model);
 } // namespace renderer

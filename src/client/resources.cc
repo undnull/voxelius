@@ -91,7 +91,7 @@ hash_t load<gl::Program>(const char *path, bool cached)
     std::vector<uint8_t> vspv, fspv;
 
     filename = util::format("./shaders/%s.vspv", path);
-    vspv = util::file_read_bin(filename.c_str());
+    vspv = util::readBinaryFile(filename.c_str());
 
     if(vspv.empty()) {
         logger::dlog("resources: error: %s contains no data", filename.c_str());
@@ -99,7 +99,7 @@ hash_t load<gl::Program>(const char *path, bool cached)
     }
 
     filename = util::format("./shaders/%s.fspv", path);
-    fspv = util::file_read_bin(filename.c_str());
+    fspv = util::readBinaryFile(filename.c_str());
 
     if(fspv.empty()) {
         logger::dlog("resources: error: %s contains no data", filename.c_str());
@@ -109,13 +109,13 @@ hash_t load<gl::Program>(const char *path, bool cached)
     gl::VertexShader vs;
     gl::FragmentShader fs;
 
-    vs.set_binary(vspv.data(), vspv.size());
+    vs.setBinary(vspv.data(), vspv.size());
     if(!vs.specialize("main")) {
         logger::dlog("opengl: %s", vs.get_info_log());
         return 0;
     }
 
-    fs.set_binary(fspv.data(), fspv.size());
+    fs.setBinary(fspv.data(), fspv.size());
     if(!fs.specialize("main")) {
         logger::dlog("opengl: %s", fs.get_info_log());
         return 0;
@@ -127,7 +127,7 @@ hash_t load<gl::Program>(const char *path, bool cached)
     res.ptr->attach(fs);
 
     if(!res.ptr->link()) {
-        logger::dlog("opengl: %s", res.ptr->get_info_log());
+        logger::dlog("opengl: %s", res.ptr->getInfoLog());
         delete res.ptr;
         return 0;
     }
@@ -176,7 +176,7 @@ hash_t load<gl::Texture>(const char *path, bool cached)
 
     resource<gl::Texture> res = { hash, 0, cached, path, new gl::Texture };
 
-    res.ptr->load_rgba<uint8_t>(width, height, pixels);
+    res.ptr->loadRGBA<uint8_t>(width, height, pixels);
 
     stbi_image_free(pixels);
 

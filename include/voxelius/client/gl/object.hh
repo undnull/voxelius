@@ -12,7 +12,7 @@ class Object {
 public:
     virtual void create() = 0;
     virtual void release() = 0;
-    virtual bool is_good() const = 0;
+    virtual bool isGood() const = 0;
 };
 } // namespace gl
 

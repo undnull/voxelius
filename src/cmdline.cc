@@ -19,7 +19,7 @@ struct option final {
 
 static std::vector<option> options;
 
-static inline const bool is_option(const char *option)
+static inline const bool isOption(const char *option)
 {
     if(!option || *option != '-')
         return false;
@@ -31,12 +31,12 @@ static inline const bool is_option(const char *option)
 void init(int argc, char **argv)
 {
     for(int i = 1; i < argc; i++) {
-        if(is_option(argv[i])) {
+        if(isOption(argv[i])) {
             option opt;
             opt.opt = argv[i];
             opt.has_argument = false;
             int j = i + 1;
-            if(j < argc && !is_option(argv[j])) {
+            if(j < argc && !isOption(argv[j])) {
                 opt.has_argument = true;
                 opt.argument = argv[j];
                 i++;
@@ -46,7 +46,7 @@ void init(int argc, char **argv)
     }
 }
 
-bool has_option(const char *opt)
+bool hasOption(const char *opt)
 {
     for(const auto &it : options) {
         if(it.opt == opt)
@@ -55,7 +55,7 @@ bool has_option(const char *opt)
     return false;
 }
 
-bool has_argument(const char *opt)
+bool hasArgument(const char *opt)
 {
     for(const auto &it : options) {
         if(it.opt == opt && it.has_argument)
@@ -64,7 +64,7 @@ bool has_argument(const char *opt)
     return false;
 }
 
-const char *get_argument(const char *opt)
+const char *getArgument(const char *opt)
 {
     for(const auto &it : options) {
         if(it.opt == opt && it.has_argument)

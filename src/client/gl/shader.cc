@@ -38,12 +38,12 @@ void Shader::release()
     }
 }
 
-bool Shader::is_good() const
+bool Shader::isGood() const
 {
     return shader != 0;
 }
 
-void Shader::set_binary(const void *binary, size_t size)
+void Shader::setBinary(const void *binary, size_t size)
 {
     // GL4.6: SPIR-V shaders
     glShaderBinary(1, &shader, GL_SHADER_BINARY_FORMAT_SPIR_V, binary, (GLsizei)size);

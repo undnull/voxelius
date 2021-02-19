@@ -12,13 +12,13 @@
 
 namespace util
 {
-bool file_exists(const char *filename)
+bool fileExists(const char *filename)
 {
     std::ifstream ifs(filename, std::ios::in);
     return ifs.good();
 }
 
-const std::string file_read_txt(const char *filename)
+const std::string readTextFile(const char *filename)
 {
     std::ifstream ifs(filename, std::ios::in);
     if(!ifs.good())
@@ -30,7 +30,7 @@ const std::string file_read_txt(const char *filename)
     return ss.str();
 }
 
-const std::vector<uint8_t> file_read_bin(const char *filename)
+const std::vector<uint8_t> readBinaryFile(const char *filename)
 {
     std::ifstream ifs(filename, std::ios::in | std::ios::binary);
     if(!ifs.good())

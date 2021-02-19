@@ -26,17 +26,17 @@ int run()
 {
     Mesh mesh;
 
-    mesh.add_vertex(vertex { vec3_t(-0.75, -0.75, 0.00), vec2_t(0.0, 0.0) });
-    mesh.add_vertex(vertex { vec3_t(-0.75, 0.75, 0.00), vec2_t(0.0, 1.0) });
-    mesh.add_vertex(vertex { vec3_t(0.75, 0.75, 0.00), vec2_t(1.0, 1.0) });
-    mesh.add_vertex(vertex { vec3_t(0.75, -0.75, 0.00), vec2_t(1.0, 0.0) });
+    mesh.addVertex(vertex { vec3_t(-0.75, -0.75, 0.00), vec2_t(0.0, 0.0) });
+    mesh.addVertex(vertex { vec3_t(-0.75, 0.75, 0.00), vec2_t(0.0, 1.0) });
+    mesh.addVertex(vertex { vec3_t(0.75, 0.75, 0.00), vec2_t(1.0, 1.0) });
+    mesh.addVertex(vertex { vec3_t(0.75, -0.75, 0.00), vec2_t(1.0, 0.0) });
 
-    mesh.add_index(0);
-    mesh.add_index(1);
-    mesh.add_index(2);
-    mesh.add_index(0);
-    mesh.add_index(2);
-    mesh.add_index(3);
+    mesh.addIndex(0);
+    mesh.addIndex(1);
+    mesh.addIndex(2);
+    mesh.addIndex(0);
+    mesh.addIndex(2);
+    mesh.addIndex(3);
 
     mesh.update();
 
@@ -51,28 +51,28 @@ int run()
     mat4x4_t model = mat4x4_t(1.0);
 
     int width, height;
-    window::get_size(width, height);
+    window::getSize(width, height);
 
-    renderer::setup_view(width, height, 0.01, 100.0);
-    renderer::set_fov(90.0);
+    renderer::setupView(width, height, 0.01, 100.0);
+    renderer::setFOV(90.0);
 
-    renderer::use_3d_view(vec3_t(0.0, 0.0, -1.0), quat_t());
+    renderer::use3dView(vec3_t(0.0, 0.0, -1.0), quat_t());
 
-    renderer::clear_color(vec3_t(0.0, 0.0, 0.25));
+    renderer::clearColor(vec3_t(0.0, 0.0, 0.25));
 
-    while(window::is_open()) {
-        window::begin_frame();
+    while(window::isOpen()) {
+        window::beginFrame();
 
         model = glm::rotate<float>(model, globals::frame_time * 0.25, vec3_t(0.25, 1.0, 0.5));
 
         renderer::clear(true, true, false);
 
-        renderer::set_program(program);
+        renderer::setProgram(program);
 
-        renderer::set_texture(texture, 0);
+        renderer::setTexture(texture, 0);
         renderer::render(mesh, model);
 
-        window::end_frame();
+        window::endFrame();
     }
 
     resources::cleanup(true);

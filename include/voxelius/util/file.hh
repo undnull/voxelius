@@ -12,9 +12,9 @@
 
 namespace util
 {
-bool file_exists(const char *filename);
-const std::string file_read_txt(const char *filename);
-const std::vector<uint8_t> file_read_bin(const char *filename);
+bool fileExists(const char *filename);
+const std::string readTextFile(const char *filename);
+const std::vector<uint8_t> readBinaryFile(const char *filename);
 } // namespace util
 
 #endif

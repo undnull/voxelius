@@ -12,15 +12,15 @@ namespace window
 {
 bool init();
 
-bool is_open();
+bool isOpen();
 void close();
 
-void begin_frame();
-void end_frame();
+void beginFrame();
+void endFrame();
 
-GLFWwindow *get_window();
+GLFWwindow *getWindow();
 
-void get_size(int &width, int &height);
+void getSize(int &width, int &height);
 } // namespace window
 
 #endif

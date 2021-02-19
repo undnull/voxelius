@@ -17,17 +17,17 @@ public:
 
     void create() override;
     void release() override;
-    bool is_good() const override;
+    bool isGood() const override;
 
-    void set_binary(const void *binary, size_t size);
+    void setBinary(const void *binary, size_t size);
     bool specialize(const char *entry);
 
-    inline constexpr unsigned int get_type() const
+    inline constexpr unsigned int getType() const
     {
         return type;
     }
 
-    inline constexpr unsigned int get_shader() const
+    inline constexpr unsigned int getShader() const
     {
         return shader;
     }

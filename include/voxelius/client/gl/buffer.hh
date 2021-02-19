@@ -17,11 +17,11 @@ public:
 
     void create() override;
     void release() override;
-    bool is_good() const override;
+    bool isGood() const override;
 
-    void set_data(const void *data, size_t size);
+    void setData(const void *data, size_t size);
 
-    inline constexpr unsigned int get_buffer() const
+    inline constexpr unsigned int getBuffer() const
     {
         return buffer;
     }

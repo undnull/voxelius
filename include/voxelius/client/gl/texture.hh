@@ -17,15 +17,15 @@ public:
 
     void create() override;
     void release() override;
-    bool is_good() const override;
+    bool isGood() const override;
 
-    void set_repeat(bool enable);
-    void set_filter(bool enable);
+    void setRepeat(bool enable);
+    void setFilter(bool enable);
 
     template<typename T>
-    void load_rgba(int width, int height, const void *data);
+    void loadRGBA(int width, int height, const void *data);
 
-    inline constexpr unsigned int get_texture() const
+    inline constexpr unsigned int getTexture() const
     {
         return texture;
     }

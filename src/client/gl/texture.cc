@@ -13,8 +13,8 @@ Texture::Texture() :
     texture(0)
 {
     create();
-    set_repeat(false);
-    set_filter(false);
+    setRepeat(false);
+    setFilter(false);
 }
 
 Texture::~Texture()
@@ -36,19 +36,19 @@ void Texture::release()
     }
 }
 
-bool Texture::is_good() const
+bool Texture::isGood() const
 {
     return texture != 0;
 }
 
-void Texture::set_repeat(bool enable)
+void Texture::setRepeat(bool enable)
 {
     unsigned int param = enable ? GL_REPEAT : GL_CLAMP_TO_EDGE;
     glTextureParameteri(texture, GL_TEXTURE_WRAP_S, param);
     glTextureParameteri(texture, GL_TEXTURE_WRAP_T, param);
 }
 
-void Texture::set_filter(bool enable)
+void Texture::setFilter(bool enable)
 {
     unsigned int param = enable ? GL_LINEAR : GL_NEAREST;
     glTextureParameteri(texture, GL_TEXTURE_MIN_FILTER, param);
@@ -56,7 +56,7 @@ void Texture::set_filter(bool enable)
 }
 
 template<>
-void Texture::load_rgba<uint8_t>(int width, int height, const void *data)
+void Texture::loadRGBA<uint8_t>(int width, int height, const void *data)
 {
     glTextureStorage2D(texture, 1, GL_RGBA16F, width, height);
     glTextureSubImage2D(texture, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);

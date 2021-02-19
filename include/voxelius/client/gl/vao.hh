@@ -16,17 +16,17 @@ public:
 
     void create() override;
     void release() override;
-    bool is_good() const override;
+    bool isGood() const override;
 
-    void bind_vbo(const Buffer &buffer, unsigned int binding_index, size_t offset, size_t stride);
-    void bind_ebo(const Buffer &buffer);
+    void bindVBO(const Buffer &buffer, unsigned int binding_index, size_t offset, size_t stride);
+    void bindEBO(const Buffer &buffer);
 
-    void enable_attrib(unsigned int attrib_index);
+    void enableAttrib(unsigned int attrib_index);
     template<typename T>
-    void set_attrib_format(unsigned int attrib_index, size_t count, bool normalized);
-    void set_attrib_binding(unsigned int attrib_index, unsigned int binding_index);
+    void setAttribFormat(unsigned int attrib_index, size_t count, bool normalized);
+    void setAttribBinding(unsigned int attrib_index, unsigned int binding_index);
 
-    inline constexpr unsigned int get_vao() const
+    inline constexpr unsigned int getVAO() const
     {
         return vao;
     }

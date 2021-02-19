@@ -16,24 +16,24 @@ public:
 
     void create() override;
     void release() override;
-    bool is_good() const override;
+    bool isGood() const override;
 
     void attach(const Shader &shader);
     bool link();
 
-    void set_uniform(int location, const int value) const;
-    void set_uniform(int location, const float value) const;
-    void set_uniform(int location, const vec2_t &value) const;
-    void set_uniform(int location, const vec3_t &value) const;
-    void set_uniform(int location, const vec4_t &value) const;
-    void set_uniform(int location, const mat4x4_t &value) const;
+    void setUniform(int location, const int value) const;
+    void setUniform(int location, const float value) const;
+    void setUniform(int location, const vec2_t &value) const;
+    void setUniform(int location, const vec3_t &value) const;
+    void setUniform(int location, const vec4_t &value) const;
+    void setUniform(int location, const mat4x4_t &value) const;
 
-    inline constexpr unsigned int get_program() const
+    inline constexpr unsigned int getProgram() const
     {
         return program;
     }
 
-    inline constexpr const char *get_info_log() const
+    inline constexpr const char *getInfoLog() const
     {
         return info_log;
     }
