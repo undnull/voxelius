@@ -1,0 +1,11 @@
+{
+    "C_Cpp.default.includePath": [
+        "./include",
+        "./external/glad/include",
+        "./external/glfw/include",
+        "./external/glm",
+        "./external/stb/stb"
+    ],
+    "C_Cpp.default.cStandard": "gnu99",
+    "C_Cpp.default.cppStandard": "gnu++17"
+}
