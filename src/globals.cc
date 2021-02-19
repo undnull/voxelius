@@ -7,7 +7,7 @@
 
 namespace globals
 {
-    float frame_time = 0.0;
-    float current_time = 0.0;
-    float last_time = 0.0;
-}
+float frame_time = 0.0;
+float current_time = 0.0;
+float last_time = 0.0;
+} // namespace globals

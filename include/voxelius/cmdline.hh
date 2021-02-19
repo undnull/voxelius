@@ -8,12 +8,12 @@
 
 namespace cmdline
 {
-    void init(int argc, char **argv);
-    
-    bool has_option(const char *opt);
-    bool has_argument(const char *opt);
-    
-    const char * get_argument(const char *opt);
-}
+void init(int argc, char **argv);
+
+bool has_option(const char *opt);
+bool has_argument(const char *opt);
+
+const char *get_argument(const char *opt);
+} // namespace cmdline
 
 #endif

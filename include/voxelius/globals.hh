@@ -9,9 +9,9 @@
 
 namespace globals
 {
-    extern float frame_time;
-    extern float current_time;
-    extern float last_time;
-}
+extern float frame_time;
+extern float current_time;
+extern float last_time;
+} // namespace globals
 
 #endif

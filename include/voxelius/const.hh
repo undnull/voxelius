@@ -6,8 +6,8 @@
 #ifndef VOXELIUS_CONST_HH
 #define VOXELIUS_CONST_HH
 
-#define CHUNK_SIZE 16
-#define CHUNK_AREA 256
+#define CHUNK_SIZE   16
+#define CHUNK_AREA   256
 #define CHUNK_VOLUME 4096
 
 #endif

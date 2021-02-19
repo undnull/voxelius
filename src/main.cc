@@ -12,6 +12,6 @@ int main(int argc, char **argv)
 
     if(!client::init())
         return 1;
-    
+
     return client::run();
 }

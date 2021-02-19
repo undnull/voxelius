@@ -8,8 +8,8 @@
 
 namespace client
 {
-    bool init();
-    int run();
-}
+bool init();
+int run();
+} // namespace client
 
 #endif

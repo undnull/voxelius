@@ -5,15 +5,16 @@
  */
 #ifndef VOXELIUS_TYPES_HH
 #define VOXELIUS_TYPES_HH 1
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/quaternion.hpp>
+
+#include <memory>
 #include <stddef.h>
 #include <stdint.h>
-#include <memory>
 #include <string>
 
 typedef glm::mat<4, 4, float, glm::packed_highp> mat4x4_t;

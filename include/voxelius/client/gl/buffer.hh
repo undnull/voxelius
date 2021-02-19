@@ -10,25 +10,25 @@
 
 namespace gl
 {
-    class Buffer final : public Object {
-    public:
-        Buffer();
-        ~Buffer();
+class Buffer final : public Object {
+public:
+    Buffer();
+    ~Buffer();
 
-        void create() override;
-        void release() override;
-        bool is_good() const override;
+    void create() override;
+    void release() override;
+    bool is_good() const override;
 
-        void set_data(const void *data, size_t size);
+    void set_data(const void *data, size_t size);
 
-        inline constexpr unsigned int get_buffer() const
-        {
-            return buffer;
-        }
+    inline constexpr unsigned int get_buffer() const
+    {
+        return buffer;
+    }
 
-    private:
-        unsigned int buffer;
-    };
-}
+private:
+    unsigned int buffer;
+};
+} // namespace gl
 
 #endif

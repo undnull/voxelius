@@ -10,29 +10,29 @@
 
 namespace gl
 {
-    class Texture final : public Object {
-    public:
-        Texture();
-        ~Texture();
+class Texture final : public Object {
+public:
+    Texture();
+    ~Texture();
 
-        void create() override;
-        void release() override;
-        bool is_good() const override;
+    void create() override;
+    void release() override;
+    bool is_good() const override;
 
-        void set_repeat(bool enable);
-        void set_filter(bool enable);
+    void set_repeat(bool enable);
+    void set_filter(bool enable);
 
-        template<typename T>
-        void load_rgba(int width, int height, const void *data);
+    template<typename T>
+    void load_rgba(int width, int height, const void *data);
 
-        inline constexpr unsigned int get_texture() const
-        {
-            return texture;
-        }
+    inline constexpr unsigned int get_texture() const
+    {
+        return texture;
+    }
 
-    private:
-        unsigned int texture;
-    };
-}
+private:
+    unsigned int texture;
+};
+} // namespace gl
 
 #endif

@@ -11,18 +11,18 @@
 
 namespace util
 {
-    template<typename... Args>
-    static inline constexpr const std::string format(const std::string &fmt, Args... args)
-    {
-        const int count = snprintf(nullptr, 0, fmt.c_str(), args...);
-        if(count <= 0)
-            return fmt;
-        
-        std::vector<char> buffer((size_t)count + 1);
-        snprintf(buffer.data(), buffer.size(), fmt.c_str(), args...);
+template<typename... Args>
+static inline constexpr const std::string format(const std::string &fmt, Args... args)
+{
+    const int count = snprintf(nullptr, 0, fmt.c_str(), args...);
+    if(count <= 0)
+        return fmt;
 
-        return std::string(buffer.data());
-    }
+    std::vector<char> buffer((size_t)count + 1);
+    snprintf(buffer.data(), buffer.size(), fmt.c_str(), args...);
+
+    return std::string(buffer.data());
 }
+} // namespace util
 
 #endif

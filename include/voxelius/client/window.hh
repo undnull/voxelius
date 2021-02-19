@@ -10,17 +10,17 @@ struct GLFWwindow;
 
 namespace window
 {
-    bool init();
+bool init();
 
-    bool is_open();
-    void close();
+bool is_open();
+void close();
 
-    void begin_frame();
-    void end_frame();
+void begin_frame();
+void end_frame();
 
-    GLFWwindow * get_window();
+GLFWwindow *get_window();
 
-    void get_size(int &width, int &height);
-}
+void get_size(int &width, int &height);
+} // namespace window
 
 #endif
