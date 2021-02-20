@@ -17,7 +17,7 @@ static std::mutex mutex;
 static std::ofstream logfile("./voxelius.log", std::ios::out | std::ios::app);
 static std::ofstream logfile_l("./voxelius.latest.log", std::ios::out);
 
-void detail::log(const std::string &str)
+void log(const std::string &str)
 {
     std::lock_guard<std::mutex> al(mutex);
 

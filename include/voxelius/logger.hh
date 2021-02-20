@@ -9,22 +9,19 @@
 
 namespace logger
 {
-namespace detail
-{
 void log(const std::string &str);
-}
 
 template<typename... Args>
 static inline constexpr void log(const std::string &fmt, Args... args)
 {
-    detail::log(util::format(fmt, args...));
+    log(util::format(fmt, args...));
 }
 
 template<typename... Args>
 static inline constexpr void dlog(const std::string &fmt, Args... args)
 {
 #ifndef NDEBUG
-    detail::log(util::format(fmt, args...));
+    log(util::format(fmt, args...));
 #endif
 }
 } // namespace logger
