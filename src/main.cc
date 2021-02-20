@@ -3,7 +3,7 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/cmdline.hh>
+#include <voxelius/commandline.hh>
 #include <voxelius/gl/program.hh>
 #include <voxelius/gl/texture.hh>
 #include <voxelius/globals.hh>
@@ -15,13 +15,13 @@
 
 int main(int argc, char **argv)
 {
-    cmdline::init(argc, argv);
+    CommandLine cl(argc, argv);
 
-    WindowBase window(640, 480, "Voxelius", cmdline::hasOption("--fullscreen"));
+    WindowBase window(640, 480, "Voxelius", cl.hasOption("--fullscreen"));
     if(!window.isOpen())
         return 1;
 
-    window.setVSyncEnabled(!cmdline::hasOption("--no-vsync"));
+    window.setVSyncEnabled(!cl.hasOption("--no-vsync"));
 
     Mesh mesh;
 

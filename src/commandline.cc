@@ -1,23 +1,13 @@
 /*
- * cmdline.cc
+ * commandline.cc
  * Created: 2021-01-30, 14:52:00
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/cmdline.hh>
+#include <voxelius/commandline.hh>
 
 #include <string.h>
 #include <string>
 #include <vector>
-
-namespace cmdline
-{
-struct option final {
-    std::string opt;
-    std::string argument;
-    bool has_argument;
-};
-
-static std::vector<option> options;
 
 static inline const bool isOption(const char *option)
 {
@@ -28,7 +18,8 @@ static inline const bool isOption(const char *option)
     return option[-1] != '-';
 }
 
-void init(int argc, char **argv)
+CommandLine::CommandLine(int argc, char **argv) :
+    options()
 {
     for(int i = 1; i < argc; i++) {
         if(isOption(argv[i])) {
@@ -46,7 +37,7 @@ void init(int argc, char **argv)
     }
 }
 
-bool hasOption(const char *opt)
+bool CommandLine::hasOption(const char *opt)
 {
     for(const auto &it : options) {
         if(it.opt == opt)
@@ -55,7 +46,7 @@ bool hasOption(const char *opt)
     return false;
 }
 
-bool hasArgument(const char *opt)
+bool CommandLine::hasArgument(const char *opt)
 {
     for(const auto &it : options) {
         if(it.opt == opt && it.has_argument)
@@ -64,7 +55,7 @@ bool hasArgument(const char *opt)
     return false;
 }
 
-const char *getArgument(const char *opt)
+const char *CommandLine::getArgument(const char *opt)
 {
     for(const auto &it : options) {
         if(it.opt == opt && it.has_argument)
@@ -72,4 +63,3 @@ const char *getArgument(const char *opt)
     }
     return nullptr;
 }
-} // namespace cmdline
