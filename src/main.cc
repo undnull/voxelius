@@ -20,7 +20,7 @@ int main(int argc, char **argv)
     WindowBase window(640, 480, "Voxelius", cmdline::hasOption("--fullscreen"));
     if(!window.isOpen())
         return 1;
-    
+
     window.setVSyncEnabled(!cmdline::hasOption("--no-vsync"));
 
     Mesh mesh;

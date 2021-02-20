@@ -89,7 +89,7 @@ WindowBase::WindowBase(int width, int height, const char *title, bool fullscreen
         glfwSetCursorPosCallback(window, cursorPosCallback);
 
         glfwMakeContextCurrent(window);
-        
+
         if(!gladLoadGL()) {
             glfwDestroyWindow(window);
             window = nullptr;
@@ -146,7 +146,7 @@ void WindowBase::getSize(int &width, int &height)
     glfwGetWindowSize(window, &width, &height);
 }
 
-GLFWwindow * WindowBase::getWindow() const
+GLFWwindow *WindowBase::getWindow() const
 {
     return window;
 }
@@ -159,15 +159,12 @@ void WindowBase::onKey(int key, int scancode, int action, int mods)
 
 void WindowBase::onChar(unsigned int unicode)
 {
-
 }
 
 void WindowBase::onMouseButton(int button, int action, int mods)
 {
-
 }
 
 void WindowBase::onCursorPos(float x, float y)
 {
-
 }

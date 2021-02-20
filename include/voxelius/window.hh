@@ -12,7 +12,7 @@ class WindowBase {
 public:
     WindowBase(int width, int height, const char *title, bool fullscreen);
     virtual ~WindowBase();
-    
+
     void setVSyncEnabled(bool b);
 
     bool isOpen() const;
@@ -22,7 +22,7 @@ public:
 
     void getSize(int &width, int &height);
 
-    GLFWwindow * getWindow() const;
+    GLFWwindow *getWindow() const;
 
     virtual void onKey(int key, int scancode, int action, int mods);
     virtual void onChar(unsigned int unicode);
