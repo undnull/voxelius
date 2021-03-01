@@ -3,8 +3,7 @@
  * Created: 2021-01-16, 21:28:14.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef LOGGER_HH
-#define LOGGER_HH 1
+#pragma once
 #include <util/format.hh>
 
 namespace logger
@@ -25,5 +24,3 @@ static inline constexpr void dlog(const std::string &fmt, Args... args)
 #endif
 }
 } // namespace logger
-
-#endif

@@ -3,8 +3,7 @@
  * Created: 2021-01-19, 11:56:58.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef GL_VAO_HH
-#define GL_VAO_HH 1
+#pragma once
 #include <gl/buffer.hh>
 
 namespace gl
@@ -35,5 +34,3 @@ private:
     unsigned int vao;
 };
 } // namespace gl
-
-#endif

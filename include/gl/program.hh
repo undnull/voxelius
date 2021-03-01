@@ -3,8 +3,7 @@
  * Created: 2021-01-19, 11:34:43.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef GL_PROGRAM_HH
-#define GL_PROGRAM_HH 1
+#pragma once
 #include <gl/shader.hh>
 
 namespace gl
@@ -43,5 +42,3 @@ private:
     char *info_log;
 };
 } // namespace gl
-
-#endif

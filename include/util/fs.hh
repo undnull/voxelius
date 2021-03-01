@@ -3,8 +3,7 @@
  * Created: 2021-01-16, 21:14:19.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef UTIL_FS_HH
-#define UTIL_FS_HH 1
+#pragma once
 #include <types.hh>
 
 #include <string>
@@ -16,5 +15,3 @@ bool fileExists(const char *filename);
 const std::string readTextFile(const char *filename);
 const std::vector<uint8_t> readBinaryFile(const char *filename);
 } // namespace util
-
-#endif

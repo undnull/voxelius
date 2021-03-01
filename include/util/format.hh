@@ -3,8 +3,7 @@
  * Created: 2021-01-16, 21:24:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef UTIL_FORMAT_HH
-#define UTIL_FORMAT_HH 1
+#pragma once
 #include <stdio.h>
 #include <string>
 #include <vector>
@@ -24,5 +23,3 @@ static inline constexpr const std::string format(const std::string &fmt, Args...
     return std::string(buffer.data());
 }
 } // namespace util
-
-#endif

@@ -3,8 +3,7 @@
  * Created: 2021-01-19, 10:35:53.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef GL_BUFFER_HH
-#define GL_BUFFER_HH 1
+#pragma once
 #include <gl/object.hh>
 #include <types.hh>
 
@@ -30,5 +29,3 @@ private:
     unsigned int buffer;
 };
 } // namespace gl
-
-#endif

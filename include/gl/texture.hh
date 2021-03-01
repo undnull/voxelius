@@ -3,8 +3,7 @@
  * Created: 2021-01-19, 14:54:44.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef GL_TEXTURE_HH
-#define GL_TEXTURE_HH 1
+#pragma once
 #include <gl/object.hh>
 #include <types.hh>
 
@@ -34,5 +33,3 @@ private:
     unsigned int texture;
 };
 } // namespace gl
-
-#endif

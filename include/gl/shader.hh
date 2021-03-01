@@ -3,8 +3,7 @@
  * Created: 2021-01-19, 10:51:22.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef GL_SHADER_HH
-#define GL_SHADER_HH 1
+#pragma once
 #include <gl/object.hh>
 #include <types.hh>
 
@@ -53,5 +52,3 @@ public:
     FragmentShader();
 };
 } // namespace gl
-
-#endif

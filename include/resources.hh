@@ -3,8 +3,7 @@
  * Created: 2021-01-20, 20:34:25.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef RESOURCES_HH
-#define RESOURCES_HH 1
+#pragma once
 #include <types.hh>
 
 namespace resources
@@ -26,5 +25,3 @@ T *acquire(const char *path)
     return acquire<T>(load<T>(path, false));
 }
 } // namespace resources
-
-#endif

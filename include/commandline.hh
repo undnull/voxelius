@@ -3,8 +3,7 @@
  * Created: 2021-01-30, 14:49:00
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef COMMANDLINE_HH
-#define COMMANDLINE_HH 1
+#pragma once
 #include <string>
 #include <vector>
 
@@ -26,5 +25,3 @@ public:
 private:
     std::vector<option> options;
 };
-
-#endif

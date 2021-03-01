@@ -3,8 +3,7 @@
  * Created: 2021-01-16, 15:37:44.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef WINDOW_HH
-#define WINDOW_HH 1
+#pragma once
 
 struct GLFWwindow;
 
@@ -32,5 +31,3 @@ public:
 private:
     GLFWwindow *window;
 };
-
-#endif

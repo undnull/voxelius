@@ -3,8 +3,7 @@
  * Created: 2021-01-16, 15:28:51.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef TYPES_HH
-#define TYPES_HH 1
+#pragma once
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/mat4x4.hpp>
@@ -32,5 +31,3 @@ typedef glm::vec<3, uint8_t, glm::packed_highp> ucoord_t;
 typedef uint8_t voxel_t;
 
 typedef size_t hash_t;
-
-#endif

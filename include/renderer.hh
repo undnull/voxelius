@@ -3,8 +3,7 @@
  * Created: 2021-01-22, 23:06:41.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef RENDERER_HH
-#define RENDERER_HH 1
+#pragma once
 #include <gl/program.hh>
 #include <gl/texture.hh>
 #include <gl/vao.hh>
@@ -62,5 +61,3 @@ void setTexture(const gl::Texture *texture, unsigned int unit);
 
 void render(const Mesh &mesh, const mat4x4_t &model);
 } // namespace renderer
-
-#endif
