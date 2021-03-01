@@ -1,10 +1,10 @@
 /*
- * file.hh
+ * fs.hh
  * Created: 2021-01-16, 21:14:19.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef UTIL_FILE_HH
-#define UTIL_FILE_HH 1
+#ifndef UTIL_FS_HH
+#define UTIL_FS_HH 1
 #include <types.hh>
 
 #include <string>

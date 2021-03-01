@@ -7,7 +7,7 @@
 #include <gl/texture.hh>
 #include <logger.hh>
 #include <resources.hh>
-#include <util/file.hh>
+#include <util/fs.hh>
 
 #include <stb_image.h>
 
