@@ -28,6 +28,11 @@ static void debugCallback(unsigned int src, unsigned int type, unsigned int id, 
     }
 }
 
+struct mt final {
+    mat4x4_t model;
+    vec4_t color;
+};
+
 int main(int argc, char **argv)
 {
     CommandLine cl(argc, argv);
@@ -52,8 +57,8 @@ int main(int argc, char **argv)
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(debugCallback, nullptr);
 
-    std::vector<uint8_t> vspv = util::readBinaryFile("./shaders/sandbox.vspv");
-    std::vector<uint8_t> fspv = util::readBinaryFile("./shaders/sandbox.fspv");
+    std::vector<uint8_t> vspv = util::readBinaryFile("./shaders/sandbox.vert.spv");
+    std::vector<uint8_t> fspv = util::readBinaryFile("./shaders/sandbox.frag.spv");
 
     gfx::VertexShader vs;
     gfx::FragmentShader fs;
@@ -83,6 +88,15 @@ int main(int argc, char **argv)
     vao.setAttributeFormat<float>(0, 3, false);
     vao.setAttributeBinding(0, 0);
 
+    mt mubo;
+    mubo.model = glm::rotate(mat4x4_t(1.0f), 45.0f, vec3_t(0.0, 0.0, 1.0));
+    mubo.color = { 1.0, 0.0, 1.0, 1.0 };
+
+    gfx::Buffer ubo;
+    ubo.resize(sizeof(mubo));
+    ubo.write(0, &mubo, sizeof(mubo));
+
+    glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo.get());
     glBindProgramPipeline(pipeline.get());
     glBindVertexArray(vao.get());
 
