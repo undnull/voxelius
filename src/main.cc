@@ -4,78 +4,97 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <commandline.hh>
-#include <gl/program.hh>
-#include <gl/texture.hh>
-#include <globals.hh>
-#include <renderer.hh>
-#include <resources.hh>
-#include <window.hh>
+#include <gfx/pipeline.hh>
+#include <gfx/vertexarray.hh>
+#include <logger.hh>
+#include <util/fs.hh>
 
-#include <glm/gtc/matrix_transform.hpp>
+// clang-format off
+// glad should be included first
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+// clang-format on
+
+static void debugCallback(unsigned int src, unsigned int type, unsigned int id, unsigned int severity, int length, const char *msg, const void *arg)
+{
+    switch(severity) {
+        case GL_DEBUG_SEVERITY_HIGH:
+        case GL_DEBUG_SEVERITY_MEDIUM:
+            logger::log("opengl: %s", msg);
+            break;
+        default:
+            logger::dlog("opengl: %s", msg);
+            break;
+    }
+}
 
 int main(int argc, char **argv)
 {
     CommandLine cl(argc, argv);
 
-    WindowBase window(640, 480, "Voxelius", cl.hasOption("--fullscreen"));
-    if(!window.isOpen())
+    if(!glfwInit())
         return 1;
 
-    window.setVSyncEnabled(!cl.hasOption("--no-vsync"));
-
-    Mesh mesh;
-
-    mesh.addVertex(vertex { vec3_t(-0.75, -0.75, 0.00), vec2_t(0.0, 0.0) });
-    mesh.addVertex(vertex { vec3_t(-0.75, 0.75, 0.00), vec2_t(0.0, 1.0) });
-    mesh.addVertex(vertex { vec3_t(0.75, 0.75, 0.00), vec2_t(1.0, 1.0) });
-    mesh.addVertex(vertex { vec3_t(0.75, -0.75, 0.00), vec2_t(1.0, 0.0) });
-
-    mesh.addIndex(0);
-    mesh.addIndex(1);
-    mesh.addIndex(2);
-    mesh.addIndex(0);
-    mesh.addIndex(2);
-    mesh.addIndex(3);
-
-    mesh.update();
-
-    gl::Program *program = resources::acquire<gl::Program>("sandbox");
-    if(!program)
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    GLFWwindow *window = glfwCreateWindow(800, 600, "Voxelius", nullptr, nullptr);
+    if(!window) {
+        glfwTerminate();
         return 1;
-
-    gl::Texture *texture = resources::acquire<gl::Texture>("bgrid.png");
-    if(!texture)
-        return 1;
-
-    mat4x4_t model = mat4x4_t(1.0);
-
-    int width, height;
-    window.getSize(width, height);
-
-    renderer::setupView(width, height, 0.01, 100.0);
-    renderer::setFOV(90.0);
-
-    renderer::use3dView(vec3_t(0.0, 0.0, -1.0), quat_t());
-
-    renderer::clearColor(vec3_t(0.0, 0.0, 0.25));
-
-    while(window.isOpen()) {
-        // fixme: implement sfml-ish clock class?
-        model = glm::rotate<float>(model, 0.01666 * 0.25, vec3_t(0.25, 1.0, 0.5));
-
-        renderer::clear(true, true, false);
-
-        renderer::setProgram(program);
-
-        renderer::setTexture(texture, 0);
-        renderer::render(mesh, model);
-
-        window.endFrame();
     }
 
-    resources::release<gl::Texture>(texture);
-    resources::release<gl::Program>(program);
+    glfwMakeContextCurrent(window);
+    if(!gladLoadGL()) {
+        glfwTerminate();
+        return 1;
+    }
 
-    resources::cleanup(true);
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(debugCallback, nullptr);
+
+    std::vector<uint8_t> vspv = util::readBinaryFile("./shaders/sandbox.vspv");
+    std::vector<uint8_t> fspv = util::readBinaryFile("./shaders/sandbox.fspv");
+
+    gfx::VertexShader vs;
+    gfx::FragmentShader fs;
+
+    if(!vs.link(vspv.data(), vspv.size()) || !fs.link(fspv.data(), fspv.size())) {
+        glfwTerminate();
+        return 1;
+    }
+
+    gfx::Pipeline pipeline;
+    pipeline.setStage(vs);
+    pipeline.setStage(fs);
+
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+        0.0f, 0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f
+    };
+
+    gfx::Buffer vbo;
+    vbo.resize(sizeof(vertices));
+    vbo.write(0, vertices, sizeof(vertices));
+
+    gfx::VertexArray vao;
+    vao.bindVertexBuffer(vbo, 0, 0, sizeof(float) * 3);
+    vao.enableAttribute(0);
+    vao.setAttributeFormat<float>(0, 3, false);
+    vao.setAttributeBinding(0, 0);
+
+    glBindProgramPipeline(pipeline.get());
+    glBindVertexArray(vao.get());
+
+    while(!glfwWindowShouldClose(window)) {
+        glClear(GL_COLOR_BUFFER_BIT);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
+
     return 0;
 }

@@ -8,7 +8,7 @@ AlignEscapedNewlines: Left
 AlignOperands: 'true'
 AlignTrailingComments: 'true'
 AllowAllArgumentsOnNextLine: 'false'
-AllowAllConstructorInitializersOnNextLine: 'false'
+AllowAllConstructorInitializersOnNextLine: 'true'
 AllowAllParametersOfDeclarationOnNextLine: 'false'
 AllowShortBlocksOnASingleLine: 'false'
 AllowShortCaseLabelsOnASingleLine: 'false'
@@ -27,12 +27,11 @@ BraceWrapping:
   AfterFunction: true
   AfterNamespace: true
 BreakBeforeTernaryOperators: 'true'
-BreakConstructorInitializers: AfterColon
-BreakInheritanceList: AfterColon
+ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
+BreakInheritanceList: BeforeColon
 BreakStringLiterals: 'false'
 ColumnLimit: '0'
 CompactNamespaces: 'false'
-ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
 ContinuationIndentWidth: '4'
 Cpp11BracedListStyle: 'false'
 DerivePointerAlignment: 'false'
