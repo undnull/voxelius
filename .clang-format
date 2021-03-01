@@ -50,7 +50,7 @@ PointerAlignment: Right
 ReflowComments: 'true'
 SortIncludes: 'true'
 IncludeCategories:
-  - Regex: '<voxelius\/.+>'
+  - Regex: '<.+\.hh>'
     Priority: 0
   - Regex: '<(GLFW|glad|glm)\/.+>'
     Priority: 1

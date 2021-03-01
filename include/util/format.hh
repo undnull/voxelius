@@ -3,8 +3,8 @@
  * Created: 2021-01-16, 21:24:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_UTIL_FORMAT_HH
-#define VOXELIUS_UTIL_FORMAT_HH 1
+#ifndef UTIL_FORMAT_HH
+#define UTIL_FORMAT_HH 1
 #include <stdio.h>
 #include <string>
 #include <vector>

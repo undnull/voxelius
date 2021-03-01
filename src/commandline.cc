@@ -3,7 +3,7 @@
  * Created: 2021-01-30, 14:52:00
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/commandline.hh>
+#include <commandline.hh>
 
 #include <string.h>
 #include <string>

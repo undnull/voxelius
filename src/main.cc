@@ -3,13 +3,13 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/commandline.hh>
-#include <voxelius/gl/program.hh>
-#include <voxelius/gl/texture.hh>
-#include <voxelius/globals.hh>
-#include <voxelius/renderer.hh>
-#include <voxelius/resources.hh>
-#include <voxelius/window.hh>
+#include <commandline.hh>
+#include <gl/program.hh>
+#include <gl/texture.hh>
+#include <globals.hh>
+#include <renderer.hh>
+#include <resources.hh>
+#include <window.hh>
 
 #include <glm/gtc/matrix_transform.hpp>
 

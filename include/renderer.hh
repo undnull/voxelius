@@ -3,11 +3,11 @@
  * Created: 2021-01-22, 23:06:41.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_RENDERER_HH
-#define VOXELIUS_RENDERER_HH 1
-#include <voxelius/gl/program.hh>
-#include <voxelius/gl/texture.hh>
-#include <voxelius/gl/vao.hh>
+#ifndef RENDERER_HH
+#define RENDERER_HH 1
+#include <gl/program.hh>
+#include <gl/texture.hh>
+#include <gl/vao.hh>
 
 #include <vector>
 

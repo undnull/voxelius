@@ -3,11 +3,11 @@
  * Created: 2021-01-20, 21:18:37.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/gl/program.hh>
-#include <voxelius/gl/texture.hh>
-#include <voxelius/logger.hh>
-#include <voxelius/resources.hh>
-#include <voxelius/util/file.hh>
+#include <gl/program.hh>
+#include <gl/texture.hh>
+#include <logger.hh>
+#include <resources.hh>
+#include <util/file.hh>
 
 #include <stb_image.h>
 

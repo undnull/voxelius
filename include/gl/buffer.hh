@@ -3,10 +3,10 @@
  * Created: 2021-01-19, 10:35:53.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_GL_BUFFER_HH
-#define VOXELIUS_GL_BUFFER_HH 1
-#include <voxelius/gl/object.hh>
-#include <voxelius/types.hh>
+#ifndef GL_BUFFER_HH
+#define GL_BUFFER_HH 1
+#include <gl/object.hh>
+#include <types.hh>
 
 namespace gl
 {

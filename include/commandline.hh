@@ -3,8 +3,8 @@
  * Created: 2021-01-30, 14:49:00
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_COMMANDLINE_HH
-#define VOXELIUS_COMMANDLINE_HH 1
+#ifndef COMMANDLINE_HH
+#define COMMANDLINE_HH 1
 #include <string>
 #include <vector>
 

@@ -3,8 +3,8 @@
  * Created: 2021-01-16, 15:28:51.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_TYPES_HH
-#define VOXELIUS_TYPES_HH 1
+#ifndef TYPES_HH
+#define TYPES_HH 1
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/mat4x4.hpp>

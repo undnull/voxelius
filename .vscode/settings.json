@@ -7,5 +7,10 @@
         "./external/stb/stb"
     ],
     "C_Cpp.default.cStandard": "gnu99",
-    "C_Cpp.default.cppStandard": "gnu++17"
+    "C_Cpp.default.cppStandard": "gnu++17",
+    "files.associations": {
+        "*.vsh": "glsl",
+        "*.fsh": "glsl",
+        "vector": "cpp"
+    }
 }

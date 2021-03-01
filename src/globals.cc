@@ -3,7 +3,7 @@
  * Created: 2021-01-16, 15:52:16.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/globals.hh>
+#include <globals.hh>
 
 namespace globals
 {

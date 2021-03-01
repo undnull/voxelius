@@ -3,7 +3,7 @@
  * Created: 2021-01-16, 21:17:06.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/util/file.hh>
+#include <util/file.hh>
 
 #include <fstream>
 #include <iostream>

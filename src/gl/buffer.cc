@@ -3,7 +3,7 @@
  * Created: 2021-01-19, 10:40:37.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/gl/buffer.hh>
+#include <gl/buffer.hh>
 
 #include <glad/glad.h>
 

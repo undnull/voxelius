@@ -3,9 +3,9 @@
  * Created: 2021-01-16, 21:28:14.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#ifndef VOXELIUS_LOGGER_HH
-#define VOXELIUS_LOGGER_HH 1
-#include <voxelius/util/format.hh>
+#ifndef LOGGER_HH
+#define LOGGER_HH 1
+#include <util/format.hh>
 
 namespace logger
 {

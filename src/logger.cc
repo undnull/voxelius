@@ -3,7 +3,7 @@
  * Created: 2021-01-16, 21:30:28.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <voxelius/logger.hh>
+#include <logger.hh>
 
 #include <fstream>
 #include <iostream>
