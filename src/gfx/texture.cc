@@ -41,4 +41,14 @@ void Texture::write(int width, int height, unsigned int format, unsigned int typ
 {
     glTextureSubImage2D(texture, 0, 0, 0, width, height, format, type, pixels);
 }
+
+void Texture::generateMipmap()
+{
+    glGenerateTextureMipmap(texture);
+}
+
+void Texture::setParameter(unsigned int param, int value)
+{
+    glTextureParameteri(texture, param, value);
+}
 } // namespace gfx

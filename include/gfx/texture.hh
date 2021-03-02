@@ -21,6 +21,8 @@ public:
 
     void resize(int width, int height, unsigned int format);
     void write(int width, int height, unsigned int format, unsigned int type, const void *pixels);
+    void generateMipmap();
+    void setParameter(unsigned int param, int value);
 
     inline constexpr unsigned int get() const
     {
