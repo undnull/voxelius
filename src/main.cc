@@ -145,15 +145,15 @@ int main(int argc, char **argv)
     util::Clock frametime_clock;
     util::Clock print_clock;
 
-    float framerate = 0.0f;
+    float avg_frametime = 0.0f;
 
     while(!glfwWindowShouldClose(window)) {
         float frametime = frametime_clock.reset();
-        framerate += 1.0f / frametime;
-        framerate /= 2.0f;
+        avg_frametime += frametime;
+        avg_frametime /= 2.0f;
 
         if(print_clock.getTime() >= 1.0f) {
-            logger::log("Avg. FPS: %.02f", framerate);
+            logger::log("FPS: %03.02f ms: %.08f", 1.0f / avg_frametime, avg_frametime);
             print_clock.reset();
         }
 
