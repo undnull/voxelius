@@ -58,7 +58,7 @@ template<ShaderStage T>
 inline Shader<T>::Shader(Shader &&rhs)
 {
     info_log = rhs.info_log;
-    program = info.program;
+    program = rhs.program;
     rhs.info_log = nullptr;
     rhs.program = 0;
 }
