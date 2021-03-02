@@ -5,6 +5,7 @@
  */
 #pragma once
 #include <types.hh>
+#include <glad/glad.h>
 
 namespace gfx
 {
@@ -22,12 +23,47 @@ public:
     void resize(size_t new_size);
     void write(size_t offset, const void *data, size_t size);
 
-    inline constexpr unsigned int get() const
-    {
-        return buffer;
-    }
+    constexpr unsigned int get() const;
 
 private:
     unsigned int buffer;
 };
+
+inline Buffer::Buffer()
+{
+    glCreateBuffers(1, &buffer);
+}
+
+inline Buffer::Buffer(Buffer &&rhs)
+{
+    buffer = rhs.buffer;
+    rhs.buffer = 0;
+}
+
+inline Buffer::~Buffer()
+{
+    glDeleteBuffers(1, &buffer);
+}
+
+inline Buffer &Buffer::operator=(Buffer &&rhs)
+{
+    Buffer copy(std::move(rhs));
+    std::swap(copy.buffer, buffer);
+    return *this;
+}
+
+inline void Buffer::resize(size_t new_size)
+{
+    glNamedBufferData(buffer, static_cast<GLsizeiptr>(new_size), nullptr, GL_STATIC_DRAW);
+}
+
+inline void Buffer::write(size_t offset, const void *data, size_t size)
+{
+    glNamedBufferSubData(buffer, static_cast<GLintptr>(offset), static_cast<GLsizeiptr>(size), data);
+}
+
+inline constexpr unsigned int Buffer::get() const
+{
+    return buffer;
+}
 } // namespace gfx

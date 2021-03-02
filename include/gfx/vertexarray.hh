@@ -8,6 +8,11 @@
 
 namespace gfx
 {
+template<typename T>
+constexpr unsigned int GL_ATTRIBUTE_FORMAT = 0;
+template<>
+constexpr unsigned int GL_ATTRIBUTE_FORMAT<float> = GL_FLOAT;
+
 class VertexArray final {
 public:
     VertexArray();
@@ -28,12 +33,63 @@ public:
     void setAttributeFormat(unsigned int attrib, size_t count, bool normalized);
     void setAttributeBinding(unsigned int attrib, unsigned int binding);
 
-    inline constexpr unsigned int get() const
-    {
-        return vaobj;
-    }
+    constexpr unsigned int get() const;
 
 private:
     unsigned int vaobj;
 };
+
+inline VertexArray::VertexArray()
+{
+    glCreateVertexArrays(1, &vaobj);
+}
+
+inline VertexArray::VertexArray(VertexArray &&rhs)
+{
+    vaobj = rhs.vaobj;
+    rhs.vaobj = 0;
+}
+
+inline VertexArray::~VertexArray()
+{
+    glDeleteVertexArrays(1, &vaobj);
+}
+
+inline VertexArray &VertexArray::operator=(VertexArray &&rhs)
+{
+    VertexArray copy(std::move(rhs));
+    std::swap(copy.vaobj, vaobj);
+    return *this;
+}
+
+inline void VertexArray::bindElementBuffer(const Buffer &ebo)
+{
+    glVertexArrayElementBuffer(vaobj, ebo.get());
+}
+
+inline void VertexArray::bindVertexBuffer(const Buffer &vbo, unsigned int binding, size_t offset, size_t stride)
+{
+    glVertexArrayVertexBuffer(vaobj, binding, vbo.get(), static_cast<GLintptr>(offset), static_cast<GLsizei>(stride));
+}
+
+inline void VertexArray::enableAttribute(unsigned int attrib)
+{
+    glEnableVertexArrayAttrib(vaobj, attrib);
+}
+
+template<typename T>
+inline void VertexArray::setAttributeFormat(unsigned int attrib, size_t count, bool normalized)
+{
+    glVertexArrayAttribFormat(vaobj, attrib, static_cast<GLint>(count), GL_ATTRIBUTE_FORMAT<T>, normalized ? GL_TRUE : GL_FALSE, 0);
+}
+
+inline void VertexArray::setAttributeBinding(unsigned int attrib, unsigned int binding)
+{
+    glVertexArrayAttribBinding(vaobj, attrib, binding);
+}
+
+inline constexpr unsigned int VertexArray::get() const
+{
+    return vaobj;
+}
 } // namespace gfx

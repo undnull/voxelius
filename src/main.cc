@@ -95,8 +95,8 @@ int main(int argc, char **argv)
     }
 
     gfx::Pipeline pipeline;
-    pipeline.setStage(vs);
-    pipeline.setStage(fs);
+    pipeline.stage(vs);
+    pipeline.stage(fs);
 
     vertex vertices[] = {
         { { -0.5f, -0.5f, 0.0f }, { 0.0f, 0.0f } },
