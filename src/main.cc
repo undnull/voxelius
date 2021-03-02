@@ -127,18 +127,22 @@ int main(int argc, char **argv)
     ubo.resize(sizeof(ubo_data_0));
     ubo.write(0, &ubo_0, sizeof(ubo_0));
 
-    glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo.get());
-    glBindProgramPipeline(pipeline.get());
-    glBindVertexArray(vao.get());
-
-    glBindTextureUnit(0, texture.get());
-
     while(!glfwWindowShouldClose(window)) {
         ubo_0.model = glm::rotate(ubo_0.model, 0.016665f * glm::radians(45.0f), vec3_t(0.0f, 0.0f, 1.0f));
         ubo.write(offsetof(ubo_data_0, model), &ubo_0.model, sizeof(ubo_0.model));
 
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glUseProgram(0);
+        glBindProgramPipeline(pipeline.get());
+
+        glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo.get());
+        glBindVertexArray(vao.get());
+        glBindTextureUnit(0, texture.get());
         glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        glBindProgramPipeline(0);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
