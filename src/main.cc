@@ -28,7 +28,7 @@ static void debugCallback(unsigned int src, unsigned int type, unsigned int id, 
     }
 }
 
-struct mt final {
+struct alignas(16) mt final {
     mat4x4_t model;
     vec4_t color;
 };
@@ -89,8 +89,8 @@ int main(int argc, char **argv)
     vao.setAttributeBinding(0, 0);
 
     mt mubo;
-    mubo.model = glm::rotate(mat4x4_t(1.0f), 45.0f, vec3_t(0.0, 0.0, 1.0));
-    mubo.color = { 1.0, 0.0, 1.0, 1.0 };
+    mubo.model = glm::rotate(mat4x4_t(1.0f), 45.0f, vec3_t(0.0f, 0.0f, 1.0f));
+    mubo.color = { 1.0f, 0.0f, 1.0f, 1.0f };
 
     gfx::Buffer ubo;
     ubo.resize(sizeof(mubo));
@@ -101,6 +101,9 @@ int main(int argc, char **argv)
     glBindVertexArray(vao.get());
 
     while(!glfwWindowShouldClose(window)) {
+        mubo.model = glm::rotate(mubo.model, 0.016666f * glm::radians(15.0f), vec3_t(0.0f, 0.0f, 1.0f));
+        ubo.write(offsetof(mt, model), &mubo, sizeof(mubo));
+
         glClear(GL_COLOR_BUFFER_BIT);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glfwSwapBuffers(window);
