@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 
     while(!glfwWindowShouldClose(window)) {
         ubo_0.model = glm::rotate(ubo_0.model, 0.016665f * glm::radians(45.0f), vec3_t(0.0f, 0.0f, 1.0f));
-        ubo.write(offsetof(ubo_data_0, model), &ubo_0, sizeof(ubo_0));
+        ubo.write(offsetof(ubo_data_0, model), &ubo_0.model, sizeof(ubo_0.model));
 
         glClear(GL_COLOR_BUFFER_BIT);
         glDrawArrays(GL_TRIANGLES, 0, 3);
