@@ -153,7 +153,7 @@ int main(int argc, char **argv)
         avg_frametime /= 2.0f;
 
         if(print_clock.getTime() >= 1.0f) {
-            logger::log("FPS: %03.02f ms: %.08f", 1.0f / avg_frametime, avg_frametime);
+            logger::log("FPS: %03.02f dt: %.08f", 1.0f / avg_frametime, avg_frametime);
             print_clock.reset();
         }
 
