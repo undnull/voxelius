@@ -67,7 +67,8 @@ int main(int argc, char **argv)
     glDebugMessageCallback(debugCallback, nullptr);
 
     int width, height, comp;
-    stbi_uc *image = stbi_load("./textures/bgrid.png", &width, &height, &comp, STBI_rgb_alpha);
+    stbi_set_flip_vertically_on_load(1);
+    stbi_uc *image = stbi_load("./textures/bruh.jpg", &width, &height, &comp, STBI_rgb_alpha);
     if(!image) {
         logger::log(stbi_failure_reason());
         glfwTerminate();
@@ -101,14 +102,25 @@ int main(int argc, char **argv)
     vertex vertices[] = {
         { { -0.5f, -0.5f, 0.0f }, { 0.0f, 0.0f } },
         { { -0.5f,  0.5f, 0.0f }, { 0.0f, 1.0f } },
-        { {  0.5f,  0.5f, 0.0f }, { 1.0f, 1.0f } }
+        { {  0.5f,  0.5f, 0.0f }, { 1.0f, 1.0f } },
+        { {  0.5f, -0.5f, 0.0f }, { 1.0f, 0.0f } }
+    };
+
+    unsigned int indices[] = {
+        0, 1, 2,
+        0, 2, 3
     };
 
     gfx::Buffer vbo;
     vbo.resize(sizeof(vertices));
     vbo.write(0, vertices, sizeof(vertices));
 
+    gfx::Buffer ebo;
+    ebo.resize(sizeof(indices));
+    ebo.write(0, indices, sizeof(indices));
+
     gfx::VertexArray vao;
+    vao.bindElementBuffer(ebo);
     vao.bindVertexBuffer(vbo, 0, offsetof(vertex, position), sizeof(vertex));
     vao.bindVertexBuffer(vbo, 1, offsetof(vertex, uv), sizeof(vertex));
     vao.enableAttribute(0);
@@ -139,7 +151,7 @@ int main(int argc, char **argv)
         glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo.get());
         glBindVertexArray(vao.get());
         glBindTextureUnit(0, texture.get());
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         glBindProgramPipeline(0);
 
