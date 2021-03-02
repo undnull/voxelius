@@ -8,6 +8,7 @@
 #include <gfx/texture.hh>
 #include <gfx/vertexarray.hh>
 #include <logger.hh>
+#include <util/clock.hh>
 #include <util/fs.hh>
 
 // clang-format off
@@ -61,6 +62,8 @@ int main(int argc, char **argv)
         glfwTerminate();
         return 1;
     }
+
+    glfwSwapInterval(0);
 
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -139,8 +142,22 @@ int main(int argc, char **argv)
     ubo.resize(sizeof(ubo_data_0));
     ubo.write(0, &ubo_0, sizeof(ubo_0));
 
+    util::Clock frametime_clock;
+    util::Clock print_clock;
+
+    float framerate = 0.0f;
+
     while(!glfwWindowShouldClose(window)) {
-        ubo_0.model = glm::rotate(ubo_0.model, 0.016665f * glm::radians(45.0f), vec3_t(0.0f, 0.0f, 1.0f));
+        float frametime = frametime_clock.reset();
+        framerate += 1.0f / frametime;
+        framerate /= 2.0f;
+
+        if(print_clock.getTime() >= 1.0f) {
+            logger::log("Avg. FPS: %.02f", framerate);
+            print_clock.reset();
+        }
+
+        ubo_0.model = glm::rotate(ubo_0.model, frametime * glm::radians(45.0f), vec3_t(0.0f, 0.0f, 1.0f));
         ubo.write(offsetof(ubo_data_0, model), &ubo_0.model, sizeof(ubo_0.model));
 
         glClear(GL_COLOR_BUFFER_BIT);
