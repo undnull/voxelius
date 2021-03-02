@@ -5,6 +5,7 @@
  */
 #include <commandline.hh>
 #include <gfx/pipeline.hh>
+#include <gfx/texture.hh>
 #include <gfx/vertexarray.hh>
 #include <logger.hh>
 #include <util/fs.hh>
@@ -14,6 +15,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 // clang-format on
+
+#include <stb_image.h>
 
 static void debugCallback(unsigned int src, unsigned int type, unsigned int id, unsigned int severity, int length, const char *msg, const void *arg)
 {
@@ -28,9 +31,15 @@ static void debugCallback(unsigned int src, unsigned int type, unsigned int id, 
     }
 }
 
-struct alignas(16) mt final {
+struct alignas(16) ubo_data_0 final {
     mat4x4_t model;
-    vec4_t color;
+    mat4x4_t view;
+    mat4x4_t projection;
+};
+
+struct vertex final {
+    vec3_t position;
+    vec2_t uv;
 };
 
 int main(int argc, char **argv)
@@ -57,6 +66,19 @@ int main(int argc, char **argv)
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(debugCallback, nullptr);
 
+    int width, height, comp;
+    stbi_uc *image = stbi_load("./textures/bgrid.png", &width, &height, &comp, STBI_rgb_alpha);
+    if(!image) {
+        logger::log(stbi_failure_reason());
+        glfwTerminate();
+        return 1;
+    }
+
+    gfx::Texture texture;
+    texture.resize(width, height, GL_RGBA16F);
+    texture.write(width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
+    stbi_image_free(image);
+
     std::vector<uint8_t> vspv = util::readBinaryFile("./shaders/sandbox.vert.spv");
     std::vector<uint8_t> fspv = util::readBinaryFile("./shaders/sandbox.frag.spv");
 
@@ -72,10 +94,10 @@ int main(int argc, char **argv)
     pipeline.setStage(vs);
     pipeline.setStage(fs);
 
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.0f, 0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f
+    vertex vertices[] = {
+        { { -0.5f, -0.5f, 0.0f }, { 0.0f, 0.0f } },
+        { { -0.5f,  0.5f, 0.0f }, { 0.0f, 1.0f } },
+        { {  0.5f,  0.5f, 0.0f }, { 1.0f, 1.0f } }
     };
 
     gfx::Buffer vbo;
@@ -83,26 +105,33 @@ int main(int argc, char **argv)
     vbo.write(0, vertices, sizeof(vertices));
 
     gfx::VertexArray vao;
-    vao.bindVertexBuffer(vbo, 0, 0, sizeof(float) * 3);
+    vao.bindVertexBuffer(vbo, 0, offsetof(vertex, position), sizeof(vertex));
+    vao.bindVertexBuffer(vbo, 1, offsetof(vertex, uv), sizeof(vertex));
     vao.enableAttribute(0);
+    vao.enableAttribute(1);
     vao.setAttributeFormat<float>(0, 3, false);
+    vao.setAttributeFormat<float>(1, 2, false);
     vao.setAttributeBinding(0, 0);
+    vao.setAttributeBinding(1, 1);
 
-    mt mubo;
-    mubo.model = glm::rotate(mat4x4_t(1.0f), 45.0f, vec3_t(0.0f, 0.0f, 1.0f));
-    mubo.color = { 1.0f, 0.0f, 1.0f, 1.0f };
+    ubo_data_0 ubo_0;
+    ubo_0.model = mat4x4_t(1.0f);
+    ubo_0.projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f);
+    ubo_0.view = glm::translate(mat4x4_t(1.0f), vec3_t(0.0f, 0.0f, -1.0f));
 
     gfx::Buffer ubo;
-    ubo.resize(sizeof(mubo));
-    ubo.write(0, &mubo, sizeof(mubo));
+    ubo.resize(sizeof(ubo_data_0));
+    ubo.write(0, &ubo_0, sizeof(ubo_0));
 
     glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo.get());
     glBindProgramPipeline(pipeline.get());
     glBindVertexArray(vao.get());
 
+    glBindTextureUnit(0, texture.get());
+
     while(!glfwWindowShouldClose(window)) {
-        mubo.model = glm::rotate(mubo.model, 0.016666f * glm::radians(15.0f), vec3_t(0.0f, 0.0f, 1.0f));
-        ubo.write(offsetof(mt, model), &mubo, sizeof(mubo));
+        ubo_0.model = glm::rotate(ubo_0.model, 0.016665f * glm::radians(45.0f), vec3_t(0.0f, 0.0f, 1.0f));
+        ubo.write(offsetof(ubo_data_0, model), &ubo_0, sizeof(ubo_0));
 
         glClear(GL_COLOR_BUFFER_BIT);
         glDrawArrays(GL_TRIANGLES, 0, 3);
