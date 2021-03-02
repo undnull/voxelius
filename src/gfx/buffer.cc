@@ -7,8 +7,6 @@
 
 #include <glad/glad.h>
 
-#include <utility>
-
 namespace gfx
 {
 Buffer::Buffer()

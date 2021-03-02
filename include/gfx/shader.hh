@@ -26,9 +26,15 @@ public:
         return program;
     }
 
+    inline constexpr const char *getInfoLog() const
+    {
+        return info_log;
+    }
+
 private:
     unsigned int type;
     unsigned int program;
+    char *info_log;
 };
 
 class VertexShader final : public Shader {

@@ -4,40 +4,12 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <gfx/shader.hh>
-#include <logger.hh>
 
 #include <glad/glad.h>
 
-#include <utility>
-
 namespace gfx
 {
-static inline void shaderInfoLog(unsigned int shader)
-{
-    int length;
-    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
-
-    char *info_log = new char[length];
-    glGetShaderInfoLog(shader, length, nullptr, info_log);
-
-    logger::log(info_log);
-    delete[] info_log;
-}
-
-static inline void programInfoLog(unsigned int program)
-{
-    int length;
-    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
-
-    char *info_log = new char[length];
-    glGetProgramInfoLog(program, length, nullptr, info_log);
-
-    logger::log(info_log);
-    delete[] info_log;
-}
-
-Shader::Shader(unsigned int type)
-    : type(type), program(glCreateProgram())
+Shader::Shader(unsigned int type) : type(type), program(glCreateProgram()), info_log(nullptr)
 {
     glProgramParameteri(program, GL_PROGRAM_SEPARABLE, GL_TRUE);
 }
@@ -46,12 +18,16 @@ Shader::Shader(Shader &&rhs)
 {
     type = rhs.type;
     program = rhs.program;
+    info_log = rhs.info_log;
     rhs.type = 0;
     rhs.program = 0;
+    rhs.info_log = nullptr;
 }
 
 Shader::~Shader()
 {
+    if(info_log)
+        delete[] info_log;
     glDeleteProgram(program);
 }
 
@@ -60,6 +36,7 @@ Shader &Shader::operator=(Shader &&rhs)
     Shader copy(std::move(rhs));
     std::swap(copy.type, type);
     std::swap(copy.program, program);
+    std::swap(copy.info_log, info_log);
     return *this;
 }
 
@@ -73,7 +50,15 @@ bool Shader::link(const void *binary, size_t size)
 
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if(status == GL_FALSE) {
-        shaderInfoLog(shader);
+        if(info_log)
+            delete[] info_log;
+        
+        int length;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
+
+        info_log = new char[length];
+        glGetShaderInfoLog(shader, length, nullptr, info_log);
+
         glDeleteShader(shader);
         return false;
     }
@@ -85,20 +70,26 @@ bool Shader::link(const void *binary, size_t size)
 
     glGetProgramiv(program, GL_LINK_STATUS, &status);
     if(status == GL_FALSE) {
-        programInfoLog(program);
+        if(info_log)
+            delete[] info_log;
+        
+        int length;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+
+        info_log = new char[length];
+        glGetProgramInfoLog(program, length, nullptr, info_log);
+
         return false;
     }
 
     return true;
 }
 
-VertexShader::VertexShader()
-    : Shader(GL_VERTEX_SHADER)
+VertexShader::VertexShader() : Shader(GL_VERTEX_SHADER)
 {
 }
 
-FragmentShader::FragmentShader()
-    : Shader(GL_FRAGMENT_SHADER)
+FragmentShader::FragmentShader() : Shader(GL_FRAGMENT_SHADER)
 {
 }
 } // namespace gfx
