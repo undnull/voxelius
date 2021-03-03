@@ -1,5 +1,6 @@
 {
     "path": "./textures/ts.png",
+    "filter": false,
     "tiles": [
         {
             "x0": 0,
