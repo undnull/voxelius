@@ -33,14 +33,14 @@ static void debugCallback(unsigned int src, unsigned int type, unsigned int id, 
 }
 
 struct alignas(16) ubo_data_0 final {
-    mat4x4_t model;
-    mat4x4_t view;
-    mat4x4_t projection;
+    float4x4_t model;
+    float4x4_t view;
+    float4x4_t projection;
 };
 
 struct vertex final {
-    vec3_t position;
-    vec2_t uv;
+    float3_t position;
+    float2_t uv;
 };
 
 int main(int argc, char **argv)
@@ -134,9 +134,9 @@ int main(int argc, char **argv)
     vao.setAttributeBinding(1, 1);
 
     ubo_data_0 ubo_0;
-    ubo_0.model = mat4x4_t(1.0f);
+    ubo_0.model = float4x4_t(1.0f);
     ubo_0.projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f);
-    ubo_0.view = glm::translate(mat4x4_t(1.0f), vec3_t(0.0f, 0.0f, -1.0f));
+    ubo_0.view = glm::translate(float4x4_t(1.0f), float3_t(0.0f, 0.0f, -1.0f));
 
     gfx::Buffer ubo;
     ubo.resize(sizeof(ubo_data_0));
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
             print_clock.reset();
         }
 
-        ubo_0.model = glm::rotate(ubo_0.model, frametime * glm::radians(45.0f), vec3_t(0.0f, 0.0f, 1.0f));
+        ubo_0.model = glm::rotate(ubo_0.model, frametime * glm::radians(45.0f), float3_t(0.0f, 0.0f, 1.0f));
         ubo.write(offsetof(ubo_data_0, model), &ubo_0.model, sizeof(ubo_0.model));
 
         glClear(GL_COLOR_BUFFER_BIT);
