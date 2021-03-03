@@ -10,6 +10,7 @@
 #include <logger.hh>
 #include <util/clock.hh>
 #include <util/fs.hh>
+#include <render/final.hh>
 
 // clang-format off
 // glad should be included first
@@ -148,6 +149,8 @@ int main(int argc, char **argv)
 
     float avg_frametime = 0.0f;
 
+    render::FinalRenderer fr(800, 600);
+
     while(!glfwWindowShouldClose(window)) {
         float frametime = frametime_clock.reset();
         avg_frametime += frametime;
@@ -161,6 +164,8 @@ int main(int argc, char **argv)
         ubo_0.model = glm::rotate(ubo_0.model, frametime * glm::radians(45.0f), float3_t(0.0f, 0.0f, 1.0f));
         ubo.write(offsetof(ubo_data_0, model), &ubo_0.model, sizeof(ubo_0.model));
 
+        glBindFramebuffer(GL_FRAMEBUFFER, fr.getFramebuffer().get());
+
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(0);
@@ -170,6 +175,8 @@ int main(int argc, char **argv)
         glBindVertexArray(vao.get());
         glBindTextureUnit(0, texture.get());
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+        fr.render();
 
         glBindProgramPipeline(0);
 
