@@ -18,4 +18,3 @@ private:
     float start;
 };
 } // namespace util
-

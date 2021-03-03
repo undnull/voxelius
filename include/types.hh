@@ -12,10 +12,10 @@
 #include <glm/vec4.hpp>
 
 #include <memory>
-#include <utility>
 #include <stddef.h>
 #include <stdint.h>
 #include <string>
+#include <utility>
 
 typedef glm::mat<4, 4, float, glm::packed_highp> float4x4_t;
 

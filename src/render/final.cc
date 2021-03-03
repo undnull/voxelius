@@ -16,9 +16,9 @@ struct vertex final {
 
 static const vertex quad_vertices[] = {
     { { -1.0f, -1.0f }, { 0.0f, 0.0f } },
-    { { -1.0f,  1.0f }, { 0.0f, 1.0f } },
-    { {  1.0f,  1.0f }, { 1.0f, 1.0f } },
-    { {  1.0f, -1.0f }, { 1.0f, 0.0f } }
+    { { -1.0f, 1.0f }, { 0.0f, 1.0f } },
+    { { 1.0f, 1.0f }, { 1.0f, 1.0f } },
+    { { 1.0f, -1.0f }, { 1.0f, 0.0f } }
 };
 
 static const unsigned int quad_indices[] = {
@@ -62,7 +62,7 @@ FinalRenderer::FinalRenderer(int width, int height)
         util::log(vs.getInfoLog());
     if(!fs.link(fspv.data(), fspv.size()))
         util::log(fs.getInfoLog());
-    
+
     pipeline.stage(vs);
     pipeline.stage(fs);
 }

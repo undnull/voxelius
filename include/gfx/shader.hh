@@ -5,6 +5,7 @@
  */
 #pragma once
 #include <types.hh>
+
 #include <glad/glad.h>
 
 namespace gfx
@@ -35,7 +36,7 @@ public:
 
     bool link(const void *binary, size_t size);
 
-    constexpr const char * getInfoLog() const;
+    constexpr const char *getInfoLog() const;
     constexpr unsigned int get() const;
 
 private:
@@ -98,7 +99,7 @@ inline bool Shader<T>::link(const void *binary, size_t size)
     if(status == GL_FALSE) {
         int length;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
-        
+
         info_log = new char[length];
         glGetShaderInfoLog(shader, length, nullptr, info_log);
 
@@ -108,14 +109,14 @@ inline bool Shader<T>::link(const void *binary, size_t size)
 
     glAttachShader(program, shader);
     glLinkProgram(program);
-    
+
     glDeleteShader(shader);
 
     glGetProgramiv(program, GL_LINK_STATUS, &status);
     if(status == GL_FALSE) {
         int length;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
-        
+
         info_log = new char[length];
         glGetProgramInfoLog(program, length, nullptr, info_log);
 

@@ -5,6 +5,7 @@
  */
 #pragma once
 #include <types.hh>
+
 #include <glad/glad.h>
 
 namespace gfx

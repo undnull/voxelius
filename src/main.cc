@@ -3,14 +3,14 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <util/commandline.hh>
 #include <gfx/pipeline.hh>
 #include <gfx/texture.hh>
 #include <gfx/vertexarray.hh>
-#include <util/logger.hh>
-#include <util/clock.hh>
-#include <util/fs.hh>
 #include <render/final.hh>
+#include <util/clock.hh>
+#include <util/commandline.hh>
+#include <util/fs.hh>
+#include <util/logger.hh>
 
 // clang-format off
 // glad should be included first
@@ -106,9 +106,9 @@ int main(int argc, char **argv)
 
     vertex vertices[] = {
         { { -0.5f, -0.5f, 0.0f }, { 0.0f, 0.0f } },
-        { { -0.5f,  0.5f, 0.0f }, { 0.0f, 1.0f } },
-        { {  0.5f,  0.5f, 0.0f }, { 1.0f, 1.0f } },
-        { {  0.5f, -0.5f, 0.0f }, { 1.0f, 0.0f } }
+        { { -0.5f, 0.5f, 0.0f }, { 0.0f, 1.0f } },
+        { { 0.5f, 0.5f, 0.0f }, { 1.0f, 1.0f } },
+        { { 0.5f, -0.5f, 0.0f }, { 1.0f, 0.0f } }
     };
 
     unsigned int indices[] = {

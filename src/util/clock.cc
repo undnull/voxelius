@@ -4,6 +4,7 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <util/clock.hh>
+
 #include <GLFW/glfw3.h>
 
 namespace util
