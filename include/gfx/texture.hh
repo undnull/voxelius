@@ -21,7 +21,7 @@ public:
     Texture &operator=(Texture &&rhs);
     Texture &operator=(const Texture &rhs) = delete;
 
-    void resize(int width, int height, unsigned int format);
+    void init(int width, int height, unsigned int format);
     void write(int width, int height, unsigned int format, unsigned int type, const void *pixels);
 
     void setParameter(unsigned int pname, int value);
@@ -58,7 +58,7 @@ inline Texture &Texture::operator=(Texture &&rhs)
     return *this;
 }
 
-inline void Texture::resize(int width, int height, unsigned int format)
+inline void Texture::init(int width, int height, unsigned int format)
 {
     glTextureStorage2D(texture, 1, format, width, height);
 }

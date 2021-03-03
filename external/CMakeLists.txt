@@ -12,11 +12,16 @@ if(POLICY CMP0079)
 endif()
 
 add_subdirectory(glad)
-add_subdirectory(glfw)
-add_subdirectory(glm)
-add_subdirectory(stb)
-
 target_link_libraries(voxelius glad)
+
+add_subdirectory(glfw)
 target_link_libraries(voxelius glfw)
+
+add_subdirectory(glm)
 target_link_libraries(voxelius glm)
+
+add_subdirectory(json)
+target_link_libraries(voxelius json)
+
+add_subdirectory(stb)
 target_link_libraries(voxelius stb)

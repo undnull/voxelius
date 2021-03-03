@@ -4,6 +4,7 @@
         "./external/glad/include",
         "./external/glfw/include",
         "./external/glm",
+        "./external/json",
         "./external/stb/stb"
     ],
     "C_Cpp.default.cStandard": "gnu99",

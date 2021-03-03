@@ -16,11 +16,10 @@
 #include <stdint.h>
 #include <string>
 #include <utility>
+#include <vector>
 
-typedef glm::mat<4, 4, float, glm::packed_highp> float4x4_t;
+using float4x4_t = glm::mat<4, 4, float, glm::packed_highp>;
 
-typedef glm::vec<2, float, glm::packed_highp> float2_t;
-typedef glm::vec<3, float, glm::packed_highp> float3_t;
-typedef glm::vec<4, float, glm::packed_highp> float4_t;
-
-typedef glm::qua<float, glm::packed_highp> quat_t;
+using float2_t = glm::vec<2, float, glm::packed_highp>;
+using float3_t = glm::vec<3, float, glm::packed_highp>;
+using float4_t = glm::vec<4, float, glm::packed_highp>;
