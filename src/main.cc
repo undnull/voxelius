@@ -3,11 +3,11 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <commandline.hh>
+#include <util/commandline.hh>
 #include <gfx/pipeline.hh>
 #include <gfx/texture.hh>
 #include <gfx/vertexarray.hh>
-#include <logger.hh>
+#include <util/logger.hh>
 #include <util/clock.hh>
 #include <util/fs.hh>
 #include <render/final.hh>
@@ -25,10 +25,10 @@ static void debugCallback(unsigned int src, unsigned int type, unsigned int id, 
     switch(severity) {
         case GL_DEBUG_SEVERITY_HIGH:
         case GL_DEBUG_SEVERITY_MEDIUM:
-            logger::log("opengl: %s", msg);
+            util::log("opengl: %s", msg);
             break;
         default:
-            logger::dlog("opengl: %s", msg);
+            util::dlog("opengl: %s", msg);
             break;
     }
 }
@@ -46,7 +46,7 @@ struct vertex final {
 
 int main(int argc, char **argv)
 {
-    CommandLine cl(argc, argv);
+    util::CommandLine cl(argc, argv);
 
     if(!glfwInit())
         return 1;
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     stbi_set_flip_vertically_on_load(1);
     stbi_uc *image = stbi_load("./textures/bruh.jpg", &width, &height, &comp, STBI_rgb_alpha);
     if(!image) {
-        logger::log(stbi_failure_reason());
+        util::log(stbi_failure_reason());
         glfwTerminate();
         return 1;
     }
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
         avg_frametime /= 2.0f;
 
         if(print_clock.getTime() >= 1.0f) {
-            logger::log("FPS: %03.02f dt: %.08f", 1.0f / avg_frametime, avg_frametime);
+            util::log("FPS: %03.02f dt: %.08f", 1.0f / avg_frametime, avg_frametime);
             print_clock.reset();
         }
 

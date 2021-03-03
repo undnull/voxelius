@@ -4,8 +4,6 @@
 # Copyright (C) 2021, Kirill GPRB.
 #
 target_sources(voxelius PRIVATE
-    "${CMAKE_CURRENT_LIST_DIR}/commandline.cc"
-    "${CMAKE_CURRENT_LIST_DIR}/logger.cc"
     "${CMAKE_CURRENT_LIST_DIR}/main.cc")
 add_subdirectory(render)
 add_subdirectory(util)

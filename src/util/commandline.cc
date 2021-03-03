@@ -3,12 +3,14 @@
  * Created: 2021-01-30, 14:52:00
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <commandline.hh>
+#include <util/commandline.hh>
 
 #include <string.h>
 #include <string>
 #include <vector>
 
+namespace util
+{
 static inline const bool isOption(const char *option)
 {
     if(!option || *option != '-')
@@ -63,3 +65,4 @@ const char *CommandLine::getArgument(const char *opt)
     }
     return nullptr;
 }
+} // namespace util

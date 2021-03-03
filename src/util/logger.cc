@@ -3,7 +3,7 @@
  * Created: 2021-01-16, 21:30:28.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <logger.hh>
+#include <util/logger.hh>
 
 #include <fstream>
 #include <iostream>
@@ -11,7 +11,7 @@
 #include <sstream>
 #include <time.h>
 
-namespace logger
+namespace util
 {
 static std::mutex mutex;
 static std::ofstream logfile("./voxelius.log", std::ios::out | std::ios::app);
@@ -34,4 +34,4 @@ void log(const std::string &str)
     logfile << ss.str() << std::endl;
     logfile_l << ss.str() << std::endl;
 }
-} // namespace logger
+} // namespace util

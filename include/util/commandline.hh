@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+namespace util
+{
 class CommandLine final {
 public:
     struct option final {
@@ -25,3 +27,4 @@ public:
 private:
     std::vector<option> options;
 };
+} // namespace util

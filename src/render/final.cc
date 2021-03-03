@@ -5,7 +5,7 @@
  */
 #include <render/final.hh>
 #include <util/fs.hh>
-#include <logger.hh>
+#include <util/logger.hh>
 
 namespace render
 {
@@ -59,9 +59,9 @@ FinalRenderer::FinalRenderer(int width, int height)
     std::vector<uint8_t> fspv = util::readBinaryFile("./shaders/final.frag.spv");
 
     if(!vs.link(vspv.data(), vspv.size()))
-        logger::log(vs.getInfoLog());
+        util::log(vs.getInfoLog());
     if(!fs.link(fspv.data(), fspv.size()))
-        logger::log(fs.getInfoLog());
+        util::log(fs.getInfoLog());
     
     pipeline.stage(vs);
     pipeline.stage(fs);

@@ -6,7 +6,7 @@
 #pragma once
 #include <util/format.hh>
 
-namespace logger
+namespace util
 {
 void log(const std::string &str);
 
@@ -23,4 +23,4 @@ static inline constexpr void dlog(const std::string &fmt, Args... args)
     log(util::format(fmt, args...));
 #endif
 }
-} // namespace logger
+} // namespace util
