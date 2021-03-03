@@ -81,8 +81,9 @@ int main(int argc, char **argv)
     gfx::Texture texture;
     texture.resize(width, height, GL_RGBA16F);
     texture.write(width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    texture.setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    texture.setParameter(GL_TEXTURE_MAX_ANISOTROPY, 2.0f);
+    texture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     texture.setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
     texture.setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
     stbi_image_free(image);

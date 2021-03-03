@@ -24,6 +24,7 @@ public:
     void write(int width, int height, unsigned int format, unsigned int type, const void *pixels);
 
     void setParameter(unsigned int pname, int value);
+    void setParameter(unsigned int pname, float value);
 
     void generateMipmap();
 
@@ -66,9 +67,14 @@ inline void Texture::write(int width, int height, unsigned int format, unsigned 
     glTextureSubImage2D(texture, 0, 0, 0, width, height, format, type, pixels);
 }
 
-inline void Texture::setParameter(unsigned int param, int value)
+inline void Texture::setParameter(unsigned int pname, int value)
 {
-    glTextureParameteri(texture, param, value);
+    glTextureParameteri(texture, pname, value);
+}
+
+inline void Texture::setParameter(unsigned int pname, float value)
+{
+    glTextureParameterf(texture, pname, value);
 }
 
 inline void Texture::generateMipmap()
