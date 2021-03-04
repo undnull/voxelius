@@ -33,7 +33,7 @@ static void debugCallback(unsigned int src, unsigned int type, unsigned int id, 
 
 struct vertex final {
     float2_t position;
-    float2_t uv;
+    float2_t texcoord;
 };
 
 int main(int argc, char **argv)
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
     gfx::VertexArray vao;
     vao.bindElementBuffer(ebo);
     vao.bindVertexBuffer(vbo, 0, offsetof(vertex, position), sizeof(vertex));
-    vao.bindVertexBuffer(vbo, 1, offsetof(vertex, uv), sizeof(vertex));
+    vao.bindVertexBuffer(vbo, 1, offsetof(vertex, texcoord), sizeof(vertex));
     vao.enableAttribute(0);
     vao.enableAttribute(1);
     vao.setAttributeFormat<float>(0, 2, false);
