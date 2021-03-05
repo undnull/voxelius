@@ -10,11 +10,8 @@ namespace render
 {
 MapRenderer::MapRenderer(int width, int height)
 {
-    const float aspect = static_cast<float>(width) / static_cast<float>(height);
-
     data::ubo_transform t;
-    t.projection = glm::ortho(-aspect, aspect, -1.0f, 1.0f, -1.0f, 1.0f);
-
+    t.projection = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, -1.0f, 1.0f);
     transform.resize(sizeof(data::ubo_transform));
     transform.write(0, &t, sizeof(data::ubo_transform));
 }

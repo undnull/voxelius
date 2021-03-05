@@ -63,15 +63,12 @@ int main(int argc, char **argv)
         return 1;
 
     render::MapRenderer renderer(800, 600);
-    renderer.setView(glm::scale(float4x4_t(1.0f), float3_t(1.5f, 1.5f, 1.0f)));
 
     while(!glfwWindowShouldClose(window)) {
+        
         glClear(GL_COLOR_BUFFER_BIT);
-
         glUseProgram(0);
-
         renderer.render(map);
-
         glBindProgramPipeline(0);
 
         glfwSwapBuffers(window);

@@ -9,9 +9,9 @@ struct VS_OUTPUT {
 };
 
 cbuffer transform : register(b0) {
-    float4x4 model;
-    float4x4 view;
-    float4x4 projection;
+    row_major float4x4 model;
+    row_major float4x4 view;
+    row_major float4x4 projection;
 };
 
 VS_OUTPUT main(in VS_INPUT input)
