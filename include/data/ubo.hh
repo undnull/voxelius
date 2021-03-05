@@ -13,7 +13,4 @@ struct alignas(16) ubo_transform final {
     float4x4_t view = float4x4_t(1.0f);
     float4x4_t projection = float4x4_t(1.0f);
 };
-
-
-
 } // namespace data
