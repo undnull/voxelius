@@ -9,6 +9,7 @@
 #include <util/logger.hh>
 #include <gfx/pipeline.hh>
 #include <gfx/vertexarray.hh>
+#include <render/maprenderer.hh>
 
 // clang-format off
 // glad should be included first
@@ -61,22 +62,15 @@ int main(int argc, char **argv)
     if(!map.loadFromFile("maps/sandbox.json"))
         return 1;
 
-    const auto &layers = map.getLayers();
+    render::MapRenderer renderer(800, 600);
+    renderer.setView(glm::scale(float4x4_t(1.0f), float3_t(1.5f, 1.5f, 1.0f)));
 
     while(!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(0);
 
-        for(const auto &layer : layers) {
-            glBindProgramPipeline(layer.pipeline.get());
-
-            for(const auto &texture : layer.textures)
-                glBindTextureUnit(texture.first, texture.second.get());
-
-            glBindVertexArray(layer.geometry_vao.get());
-            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(layer.geometry_count), GL_UNSIGNED_INT, nullptr);
-        }
+        renderer.render(map);
 
         glBindProgramPipeline(0);
 
