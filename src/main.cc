@@ -53,6 +53,12 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    if(!GLAD_GL_VERSION_4_6) {
+        util::log("opengl: version 4.6 is required (while %d.%d is present)", GLVersion.major, GLVersion.minor);
+        glfwTerminate();
+        return false;
+    }
+
     glfwSwapInterval(0);
 
     glEnable(GL_DEBUG_OUTPUT);
