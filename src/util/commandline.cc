@@ -20,8 +20,7 @@ static inline const bool isOption(const char *option)
     return option[-1] != '-';
 }
 
-CommandLine::CommandLine(int argc, char **argv)
-    : options()
+CommandLine::CommandLine(int argc, char **argv) : options()
 {
     for(int i = 1; i < argc; i++) {
         if(isOption(argv[i])) {

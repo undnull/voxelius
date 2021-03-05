@@ -3,13 +3,9 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <data/map.hh>
-#include <util/fs.hh>
 #include <util/commandline.hh>
 #include <util/logger.hh>
-#include <gfx/pipeline.hh>
-#include <gfx/vertexarray.hh>
-#include <render/maprenderer.hh>
+#include <editor/editor.hh>
 
 // clang-format off
 // glad should be included first
@@ -25,6 +21,10 @@
 
 static void debugCallback(unsigned int src, unsigned int type, unsigned int id, unsigned int severity, int length, const char *msg, const void *arg)
 {
+    // NVIDIA: Buffer detailed info: Buffer object will use VIDEO memory as the source for buffer object operations.
+    if(id == 131185)
+        return;
+
     switch(severity) {
         case GL_DEBUG_SEVERITY_HIGH:
         case GL_DEBUG_SEVERITY_MEDIUM:
@@ -38,7 +38,7 @@ static void debugCallback(unsigned int src, unsigned int type, unsigned int id, 
 
 int main(int argc, char **argv)
 {
-    util::CommandLine cl(argc, argv);
+    util::CommandLine args(argc, argv);
 
     if(!glfwInit())
         return 1;
@@ -62,35 +62,19 @@ int main(int argc, char **argv)
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(debugCallback, nullptr);
 
-    data::Map map;
-    if(!map.loadFromFile("maps/sandbox.json"))
-        return 1;
+    const unsigned int nvidia_131185 = 131185;
+    glDebugMessageControl(GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_OTHER, GL_DONT_CARE, 1, &nvidia_131185, GL_FALSE);
 
-    render::MapRenderer renderer(800, 600);
-
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGui::StyleColorsDark();
-
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 460");
+    if(args.hasOption("--editor")) {
+        util::log("starting editor");
+        int code = editor::run(args, window);
+        glfwDestroyWindow(window);
+        glfwTerminate();
+        return code;
+    }
 
     while(!glfwWindowShouldClose(window)) {
-        
         glClear(GL_COLOR_BUFFER_BIT);
-        glUseProgram(0);
-        renderer.render(map);
-        glBindProgramPipeline(0);
-
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
-        ImGui::Text("yikes!");
-
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
