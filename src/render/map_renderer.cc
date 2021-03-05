@@ -24,7 +24,7 @@ void MapRenderer::setView(const float4x4_t &view)
 void MapRenderer::render(const data::Map &map)
 {
     glBindBufferBase(GL_UNIFORM_BUFFER, 0, transform.get());
-    
+
     const auto &layers = map.getLayers();
     for(const auto &layer : layers) {
         glBindProgramPipeline(layer.pipeline.get());

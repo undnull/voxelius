@@ -51,14 +51,10 @@ SortIncludes: 'true'
 IncludeCategories:
   - Regex: '<.+\.hh>'
     Priority: 0
-  - Regex: '<(GLFW|glad|glm)\/.+>'
-    Priority: 1
-  - Regex: '<stb_.+>'
-    Priority: 1
   - Regex: '<.+>'
-    Priority: 2
+    Priority: 1
   - Regex: '".+"'
-    Priority: 3
+    Priority: 2
 SortUsingDeclarations: 'true'
 SpaceAfterCStyleCast: 'false'
 SpaceAfterLogicalNot: 'false'

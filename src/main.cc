@@ -3,16 +3,14 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <util/logger.hh>
 #include <editor/editor.hh>
+#include <util/logger.hh>
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-
 #include <stb_image.h>
 
 static void debugCallback(unsigned int src, unsigned int type, unsigned int id, unsigned int severity, int length, const char *msg, const void *arg)

@@ -7,8 +7,8 @@
 #include <data/vertex.hh>
 #include <util/format.hh>
 #include <util/fs.hh>
-#include <util/logger.hh>
 #include <util/json.hh>
+#include <util/logger.hh>
 
 #include <stb_image.h>
 
@@ -90,8 +90,7 @@ bool Map::loadFromFile(const char *filename)
                 if(texture_filter != texture.cend() && texture_filter->get<bool>()) {
                     tex.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                     tex.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                }
-                else {
+                } else {
                     tex.setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
                     tex.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
                 }
@@ -99,8 +98,7 @@ bool Map::loadFromFile(const char *filename)
                 if(texture_repeat != texture.cend() && texture_repeat->get<bool>()) {
                     tex.setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
                     tex.setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
-                }
-                else {
+                } else {
                     tex.setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                     tex.setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                 }
@@ -129,10 +127,10 @@ bool Map::loadFromFile(const char *filename)
 
             size_t vbo_size = sizeof(vertex) * vertices.size();
             size_t ebo_size = sizeof(unsigned int) * indices.size();
-            
+
             l.geometry_vbo.resize(vbo_size);
             l.geometry_vbo.write(0, vertices.data(), vbo_size);
-            
+
             l.geometry_ebo.resize(ebo_size);
             l.geometry_ebo.write(0, indices.data(), ebo_size);
 
@@ -157,8 +155,7 @@ bool Map::loadFromFile(const char *filename)
         }
 
         return true;
-    }
-    catch(const std::exception &e) {
+    } catch(const std::exception &e) {
         util::log("map: %s", e.what());
         return false;
     }

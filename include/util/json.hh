@@ -4,9 +4,10 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #pragma once
-#include <nlohmann/json.hpp>
 #include <types.hh>
 #include <util/format.hh>
+
+#include <nlohmann/json.hpp>
 
 using nlohmann::json;
 

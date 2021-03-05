@@ -24,13 +24,12 @@ public:
     };
 
 public:
-
     bool loadFromFile(const char *filename);
 
     constexpr const std::vector<layer> &getLayers() const;
 
 private:
-    std::vector<layer> layers;    
+    std::vector<layer> layers;
 };
 
 inline constexpr const std::vector<Map::layer> &Map::getLayers() const

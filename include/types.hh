@@ -10,7 +10,6 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
-
 #include <memory>
 #include <stddef.h>
 #include <stdint.h>

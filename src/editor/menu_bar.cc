@@ -3,8 +3,8 @@
  * Created: 2021-03-05, 22:07:53.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <editor/menu_bar.hh>
 #include <config.hh>
+#include <editor/menu_bar.hh>
 
 namespace editor
 {
