@@ -7,11 +7,8 @@
 #include <util/logger.hh>
 #include <editor/editor.hh>
 
-// clang-format off
-// glad should be included first
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
-// clang-format on
+#include <glad/glad.h>
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>

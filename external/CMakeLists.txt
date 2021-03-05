@@ -16,6 +16,7 @@ target_link_libraries(voxelius glad)
 
 add_subdirectory(glfw)
 target_link_libraries(voxelius glfw)
+target_compile_definitions(voxelius PRIVATE GLFW_INCLUDE_NONE=1)
 
 add_subdirectory(glm)
 target_link_libraries(voxelius glm)
