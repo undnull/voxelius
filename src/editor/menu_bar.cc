@@ -20,15 +20,23 @@ void MenuBar::render(const ImGuiIO &io)
 
     if(ImGui::BeginMainMenuBar()) {
         if(ImGui::BeginMenu("File")) {
-            ImGui::MenuItem("WIP");
+            if(ImGui::BeginMenu("Open")) {
+                open_map = ImGui::MenuItem("Map");
+                open_script = ImGui::MenuItem("Script");
+                open_shader = ImGui::MenuItem("Shader");
+                ImGui::EndMenu();
+            }
+            close_opened = ImGui::MenuItem("Close");
             ImGui::Separator();
-            if(ImGui::MenuItem("Exit", "Alt+F4"))
-                wants_exit = true;
+            save_opened = ImGui::MenuItem("Save");
+            save_as_opened = ImGui::MenuItem("Save as");
+            ImGui::Separator();
+            should_exit = ImGui::MenuItem("Exit", "Alt+F4");
             ImGui::EndMenu();
         }
 
         if(ImGui::BeginMenu("View")) {
-            ImGui::MenuItem("WIP");
+            ImGui::MenuItem("FPS counter", nullptr, &fps_visible);
             ImGui::EndMenu();
         }
 
@@ -39,8 +47,10 @@ void MenuBar::render(const ImGuiIO &io)
             ImGui::EndMenu();
         }
 
-        ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize("DDDD.ddd ms/frame (DDDD.dd FPS)").x * 1.025f);
-        ImGui::Text("%4.03f ms/frame (%4.02f FPS)", fps_frametime, fps_framerate);
+        if(fps_visible) {
+            ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize("DDDD.ddd ms/frame (DDDD.dd FPS)").x * 1.025f);
+            ImGui::Text("%4.03f ms/frame (%4.02f FPS)", fps_frametime, fps_framerate);
+        }
 
         ImGui::EndMainMenuBar();
     }

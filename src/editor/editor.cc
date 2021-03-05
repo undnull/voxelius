@@ -40,7 +40,7 @@ int run(const util::CommandLine &args, GLFWwindow *window)
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        if(menu_bar.wants_exit)
+        if(menu_bar.should_exit)
             glfwSetWindowShouldClose(window, GLFW_TRUE);
 
         glfwSwapBuffers(window);
