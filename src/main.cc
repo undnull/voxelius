@@ -58,7 +58,7 @@ int main(int argc, char **argv)
         return false;
     }
 
-    glfwSwapInterval(0);
+    glfwSwapInterval(1);
 
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);

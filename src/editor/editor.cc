@@ -4,6 +4,7 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <editor/editor.hh>
+#include <editor/menu_bar.hh>
 #include <data/map.hh>
 #include <render/map_renderer.hh>
 
@@ -26,46 +27,22 @@ int run(const util::CommandLine &args, GLFWwindow *window)
     ImGui_ImplOpenGL3_Init("#version 460");
 
     ImGuiIO &io = ImGui::GetIO();
-
-    data::Map *map = nullptr;
-
-    render::MapRenderer renderer(800, 600);
+    MenuBar menu_bar;
 
     while(!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-
-        glUseProgram(0);
-        if(map)
-            renderer.render(*map);
-        glBindProgramPipeline(0);
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        if(ImGui::BeginMainMenuBar()) {
-            if(ImGui::BeginMenu("File")) {
-                if(ImGui::MenuItem("Load sandbox.json") && !map) {
-                    map = new data::Map();
-                    if(!map->loadFromFile("maps/sandbox.json")) {
-                        delete map;
-                        map = nullptr;
-                    }
-                }
-                if(ImGui::MenuItem("Unload map") && map) {
-                    delete map;
-                    map = nullptr;
-                }
-                if(ImGui::MenuItem("Exit", "Alt+F4"))
-                    glfwSetWindowShouldClose(window, GLFW_TRUE);
-                ImGui::EndMenu();
-            }
-
-            ImGui::EndMainMenuBar();
-        }
-
+        menu_bar.render(io);
+        
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        if(menu_bar.wants_exit)
+            glfwSetWindowShouldClose(window, GLFW_TRUE);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

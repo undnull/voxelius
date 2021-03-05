@@ -4,4 +4,5 @@
 # Copyright (C) 2021, Kirill GPRB.
 #
 target_sources(voxelius PRIVATE
-    "${CMAKE_CURRENT_LIST_DIR}/editor.cc")
+    "${CMAKE_CURRENT_LIST_DIR}/editor.cc"
+    "${CMAKE_CURRENT_LIST_DIR}/menu_bar.cc")

@@ -1,0 +1,12 @@
+/*
+ * config.hh
+ * Created: whatever_date, whatever_time.
+ * Copyright (C) 2021, Kirill GPRB.
+ */
+#pragma once
+
+#define VERSION_MAJOR @voxelius_VERSION_MAJOR@
+#define VERSION_MINOR @voxelius_VERSION_MINOR@
+#define VERSION_PATCH @voxelius_VERSION_PATCH@
+
+#define VERSION_STRING "@voxelius_VERSION@"
