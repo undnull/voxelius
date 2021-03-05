@@ -1,5 +1,5 @@
 /*
- * maprenderer.hh
+ * map_renderer.hh
  * Created: 2021-03-05, 14:25:12.
  * Copyright (C) 2021, Kirill GPRB.
  */

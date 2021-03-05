@@ -4,4 +4,4 @@
 # Copyright (C) 2021, Kirill GPRB.
 #
 target_sources(voxelius PRIVATE
-    "${CMAKE_CURRENT_LIST_DIR}/maprenderer.cc")
+    "${CMAKE_CURRENT_LIST_DIR}/map_renderer.cc")

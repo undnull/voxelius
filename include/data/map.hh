@@ -6,7 +6,7 @@
 #pragma once
 #include <gfx/pipeline.hh>
 #include <gfx/texture.hh>
-#include <gfx/vertexarray.hh>
+#include <gfx/vertex_array.hh>
 
 namespace data
 {

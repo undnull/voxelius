@@ -1,10 +1,10 @@
 /*
- * maprenderer.cc
+ * map_renderer.cc
  * Created: 2021-03-05, 14:27:35.
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <data/ubo.hh>
-#include <render/maprenderer.hh>
+#include <render/map_renderer.hh>
 
 namespace render
 {

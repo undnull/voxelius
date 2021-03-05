@@ -5,7 +5,7 @@
  */
 #include <editor/editor.hh>
 #include <data/map.hh>
-#include <render/maprenderer.hh>
+#include <render/map_renderer.hh>
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>

@@ -4,7 +4,7 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #pragma once
-#include <util/commandline.hh>
+#include <util/command_line.hh>
 
 struct GLFWwindow;
 

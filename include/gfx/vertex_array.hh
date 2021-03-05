@@ -1,5 +1,5 @@
 /*
- * vertexarray.hh
+ * vertex_array.hh
  * Created: 2021-03-01, 21:13:22.
  * Copyright (C) 2021, Kirill GPRB.
  */

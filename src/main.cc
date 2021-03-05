@@ -3,7 +3,6 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <util/commandline.hh>
 #include <util/logger.hh>
 #include <editor/editor.hh>
 
