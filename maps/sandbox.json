@@ -1,0 +1,52 @@
+{
+    "layers": [
+        {
+            "vertex": "shaders/sandbox.vert.spv",
+            "fragment": "shaders/sandbox.frag.spv",
+            "textures": [
+                {
+                    "path": "textures/bruh.jpg",
+                    "filter": true,
+                    "repeat": true,
+                    "unit": 0
+                }
+            ],
+            "geometry": {
+                "vbo": [
+                    { "xy": [ 0.0, 0.0 ], "uv": [ 0.0, 1.0 ] },
+                    { "xy": [ 0.0, 0.5 ], "uv": [ 0.0, 0.0 ] },
+                    { "xy": [ 0.5, 0.5 ], "uv": [ 1.0, 0.0 ] },
+                    { "xy": [ 0.5, 0.0 ], "uv": [ 1.0, 1.0 ] }
+                ],
+                "ebo": [
+                    0, 1, 2,
+                    0, 2, 3
+                ]
+            }
+        },
+        {
+            "vertex": "shaders/sandbox.vert.spv",
+            "fragment": "shaders/sandbox.frag.spv",
+            "textures": [
+                {
+                    "path": "textures/ts.png",
+                    "filter": false,
+                    "repeat": true,
+                    "unit": 0
+                }
+            ],
+            "geometry": {
+                "vbo": [
+                    { "xy": [ -0.4, -0.4 ], "uv": [ 0.0, 1.0 ] },
+                    { "xy": [ -0.4,  0.1 ], "uv": [ 0.0, 0.0 ] },
+                    { "xy": [  0.1,  0.1 ], "uv": [ 1.0, 0.0 ] },
+                    { "xy": [  0.1, -0.4 ], "uv": [ 1.0, 1.0 ] }
+                ],
+                "ebo": [
+                    0, 1, 2,
+                    0, 2, 3
+                ]
+            }
+        }
+    ]
+}
