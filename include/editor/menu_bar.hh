@@ -14,10 +14,12 @@ class MenuBar final {
 public:
     void render(const ImGuiIO &io);
 
-public:
+private:
     util::Clock fps_clock;
     float fps_framerate = 0.0f;
     float fps_frametime = 0.0f;
+
+public:
     bool wants_exit = false;
 };
 } // namespace editor

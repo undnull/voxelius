@@ -20,6 +20,8 @@ void MenuBar::render(const ImGuiIO &io)
 
     if(ImGui::BeginMainMenuBar()) {
         if(ImGui::BeginMenu("File")) {
+            ImGui::MenuItem("WIP");
+            ImGui::Separator();
             if(ImGui::MenuItem("Exit", "Alt+F4"))
                 wants_exit = true;
             ImGui::EndMenu();
@@ -37,8 +39,8 @@ void MenuBar::render(const ImGuiIO &io)
             ImGui::EndMenu();
         }
 
-        ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize("FPS: FFFF.ff time: DDDD.ddms").x * 1.025f);
-        ImGui::Text("FPS: %.02f time: %2.02fms", fps_framerate, fps_frametime);
+        ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize("DDDD.ddd ms/frame (DDDD.dd FPS)").x * 1.025f);
+        ImGui::Text("%4.03f ms/frame (%4.02f FPS)", fps_frametime, fps_framerate);
 
         ImGui::EndMainMenuBar();
     }
