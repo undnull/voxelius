@@ -20,6 +20,9 @@ target_link_libraries(voxelius glfw)
 add_subdirectory(glm)
 target_link_libraries(voxelius glm)
 
+add_subdirectory(imgui)
+target_link_libraries(voxelius imgui)
+
 add_subdirectory(json)
 target_link_libraries(voxelius json)
 

@@ -17,6 +17,10 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
 #include <stb_image.h>
 
 static void debugCallback(unsigned int src, unsigned int type, unsigned int id, unsigned int severity, int length, const char *msg, const void *arg)
@@ -64,12 +68,28 @@ int main(int argc, char **argv)
 
     render::MapRenderer renderer(800, 600);
 
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 460");
+
     while(!glfwWindowShouldClose(window)) {
         
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(0);
         renderer.render(map);
         glBindProgramPipeline(0);
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        ImGui::Text("yikes!");
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window);
         glfwPollEvents();
