@@ -14,6 +14,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string>
+#include <sstream>
 #include <unordered_map>
 #include <utility>
 #include <vector>

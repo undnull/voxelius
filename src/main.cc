@@ -33,8 +33,25 @@ int main(int argc, char **argv)
     if(!glfwInit())
         return 1;
 
+    int width = 800;
+    int height = 600;
+    GLFWmonitor *monitor = nullptr;
+
+    if(args.hasArgument("--width"))
+        width = atoi(args.getArgument("--width"));
+    if(args.hasArgument("--height"))
+        height = atoi(args.getArgument("--height"));
+    if(args.hasOption("--fullscreen"))
+        monitor = glfwGetPrimaryMonitor();
+
+    if(args.hasOption("--native")) {
+        const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        width = mode->width;
+        height = mode->height;
+    }
+
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    GLFWwindow *window = glfwCreateWindow(800, 600, "Voxelius", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(width, height, "Voxelius", monitor, nullptr);
     if(!window) {
         glfwTerminate();
         return 1;

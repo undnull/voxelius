@@ -16,6 +16,7 @@ namespace util
 static std::mutex mutex;
 static std::ofstream logfile("./voxelius.log", std::ios::out | std::ios::app);
 static std::ofstream logfile_l("./voxelius.latest.log", std::ios::out);
+static std::string last_log;
 
 void log(const std::string &str)
 {
@@ -30,8 +31,15 @@ void log(const std::string &str)
     ss << " ";
     ss << str;
 
-    std::cerr << ss.str() << std::endl;
-    logfile << ss.str() << std::endl;
-    logfile_l << ss.str() << std::endl;
+    last_log = ss.str();
+
+    std::cerr << last_log << std::endl;
+    logfile << last_log << std::endl;
+    logfile_l << last_log << std::endl;
+}
+
+const std::string &getLastLog()
+{
+    return last_log;
 }
 } // namespace util

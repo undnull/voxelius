@@ -5,7 +5,7 @@
  */
 #pragma once
 #include <util/fs.hh>
-#include <imgui.h>
+#include <util/imgui.hh>
 
 namespace editor
 {
@@ -19,7 +19,10 @@ private:
     };
 
 public:
-    FileBrowserDialog(const std::string &title, const char *filter);
+    FileBrowserDialog(const std::string &title);
+
+    void setFilter(const std::string &filter);
+    void clearFilter();
 
     void close();
     bool draw(const ImGuiIO &io, bool show);

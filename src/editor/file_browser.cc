@@ -10,13 +10,25 @@
 
 namespace editor
 {
-FileBrowserDialog::FileBrowserDialog(const std::string &title, const char *filter) : title(title), filter(filter)
+FileBrowserDialog::FileBrowserDialog(const std::string &title) : title(title)
 {
     visible = false;
     cwd = fs::current_path();
     selected = cwd;
     has_enumerated = false;
-    has_filter = filter != nullptr;
+    has_filter = false;
+}
+
+void FileBrowserDialog::setFilter(const std::string &filter)
+{
+    this->filter = filter;
+    has_filter = true;
+}
+
+void FileBrowserDialog::clearFilter()
+{
+    filter.clear();
+    has_filter = false;
 }
 
 void FileBrowserDialog::close()

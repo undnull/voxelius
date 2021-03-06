@@ -10,58 +10,53 @@
 
 namespace editor
 {
-static util::Clock fps_clock;
-static float fps_framerate = 0.0f;
-static float fps_frametime = 0.0f;
-static bool fps_visible = true;
+MenuBar::MenuBar()
+{
+    file_open = false;
+    file_close = false;
+    file_new = false;
+    file_save = false;
+    file_save_as = false;
+    file_exit = false;
+    view_fps = true;
 
-bool menu_bar_open_map = false;
-bool menu_bar_open_script = false;
-bool menu_bar_open_shader = false;
-bool menu_bar_new_map = false;
-bool menu_bar_new_script = false;
-bool menu_bar_new_shader = false;
-bool menu_bar_close = false;
-bool menu_bar_save = false;
-bool menu_bar_save_as = false;
-bool menu_bar_exit = false;
+    fps_framerate = 0.0f;
+    fps_frametime = 0.0f;
+}
 
-void drawMenuBar(const ImGuiIO &io)
+void MenuBar::draw(const ImGuiIO &io)
 {
     if(fps_clock.getTime() >= 0.025f) {
         fps_framerate += io.Framerate;
-        fps_framerate /= 2.0f;
+        fps_framerate *= 0.5f;
         fps_frametime += io.DeltaTime * 1000.0f;
-        fps_frametime /= 2.0f;
+        fps_frametime *= 0.5f;
         fps_clock.reset();
     }
 
     if(ImGui::BeginMainMenuBar()) {
         if(ImGui::BeginMenu("File")) {
-            if(ImGui::BeginMenu("Open")) {
-                menu_bar_open_map = ImGui::MenuItem("Map", "Ctrl+M");
-                menu_bar_open_script = ImGui::MenuItem("Script", "WIP");
-                menu_bar_open_shader = ImGui::MenuItem("Shader", "WIP");
-                ImGui::EndMenu();
-            }
-            menu_bar_close = ImGui::MenuItem("Close", "WIP");
+            file_open = ImGui::MenuItem("Open");
+            file_close = ImGui::MenuItem("Close", nullptr, false, false);
             ImGui::Separator();
-            if(ImGui::BeginMenu("New")) {
-                menu_bar_new_map = ImGui::MenuItem("Map", "WIP_NEW");
-                menu_bar_new_script = ImGui::MenuItem("Script", "WIP_NEW");
-                menu_bar_new_shader = ImGui::MenuItem("Shader", "WIP_NEW");
-                ImGui::EndMenu();
-            }
+            file_new = ImGui::MenuItem("New", nullptr, false, false);
             ImGui::Separator();
-            menu_bar_save = ImGui::MenuItem("Save", "WIP");
-            menu_bar_save_as = ImGui::MenuItem("Save as", "WIP");
-            ImGui::Separator();
-            menu_bar_exit = ImGui::MenuItem("Exit", "Shift+Esc");
+            file_exit = ImGui::MenuItem("Exit", "Shift+Esc");
             ImGui::EndMenu();
         }
 
         if(ImGui::BeginMenu("View")) {
-            ImGui::MenuItem("FPS counter", nullptr, &fps_visible);
+            if(ImGui::BeginMenu("Style")) {
+                if(ImGui::MenuItem("StyleColorsClassic"))
+                    ImGui::StyleColorsClassic();
+                if(ImGui::MenuItem("StyleColorsDark"))
+                    ImGui::StyleColorsDark();
+                if(ImGui::MenuItem("StyleColorsLight"))
+                    ImGui::StyleColorsLight();
+                ImGui::EndMenu();
+            }
+            ImGui::Separator();
+            ImGui::MenuItem("FPS counter", nullptr, &view_fps);
             ImGui::EndMenu();
         }
 
@@ -70,7 +65,7 @@ void drawMenuBar(const ImGuiIO &io)
             ImGui::EndMenu();
         }
 
-        if(fps_visible) {
+        if(view_fps) {
             ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize("DDDD.ddd ms/frame (DDDD.dd FPS)").x * 1.025f);
             ImGui::Text("%4.03f ms/frame (%4.02f FPS)", fps_frametime, fps_framerate);
         }
@@ -78,9 +73,6 @@ void drawMenuBar(const ImGuiIO &io)
         ImGui::EndMainMenuBar();
     }
 
-    if(io.KeyCtrl && io.KeysDown[GLFW_KEY_M])
-        menu_bar_open_map = true;
-    if(io.KeyShift && io.KeysDown[GLFW_KEY_ESCAPE])
-        menu_bar_exit = true;
+    file_exit = file_exit || (io.KeyShift && io.KeysDown[GLFW_KEY_ESCAPE]);
 }
 } // namespace editor

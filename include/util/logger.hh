@@ -23,4 +23,6 @@ static inline constexpr void dlog(const std::string &fmt, Args... args)
     log(util::format(fmt, args...));
 #endif
 }
+
+const std::string &getLastLog();
 } // namespace util

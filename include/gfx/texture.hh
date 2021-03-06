@@ -21,22 +21,25 @@ public:
     Texture &operator=(Texture &&rhs);
     Texture &operator=(const Texture &rhs) = delete;
 
-    void init(int width, int height, unsigned int format);
-    void write(int width, int height, unsigned int format, unsigned int type, const void *pixels);
+    void storage(int width, int height, unsigned int format);
+    void subImage(int width, int height, unsigned int format, unsigned int type, const void *pixels);
 
     void setParameter(unsigned int pname, int value);
     void setParameter(unsigned int pname, float value);
 
     void generateMipmap();
 
+    constexpr bool isInitialized() const;
     constexpr unsigned int get() const;
 
 private:
+    bool initialized;
     unsigned int texture;
 };
 
 inline Texture::Texture()
 {
+    initialized = false;
     glCreateTextures(GL_TEXTURE_2D, 1, &texture);
 }
 
@@ -58,12 +61,12 @@ inline Texture &Texture::operator=(Texture &&rhs)
     return *this;
 }
 
-inline void Texture::init(int width, int height, unsigned int format)
+inline void Texture::storage(int width, int height, unsigned int format)
 {
     glTextureStorage2D(texture, 1, format, width, height);
 }
 
-inline void Texture::write(int width, int height, unsigned int format, unsigned int type, const void *pixels)
+inline void Texture::subImage(int width, int height, unsigned int format, unsigned int type, const void *pixels)
 {
     glTextureSubImage2D(texture, 0, 0, 0, width, height, format, type, pixels);
 }
@@ -81,6 +84,11 @@ inline void Texture::setParameter(unsigned int pname, float value)
 inline void Texture::generateMipmap()
 {
     glGenerateTextureMipmap(texture);
+}
+
+inline constexpr bool Texture::isInitialized() const
+{
+    return initialized;
 }
 
 inline constexpr unsigned int Texture::get() const

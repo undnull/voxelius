@@ -4,9 +4,9 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <editor/editor.hh>
-#include <editor/map_editor.hh>
 #include <editor/menu_bar.hh>
 #include <editor/file_browser.hh>
+#include <editor/logger_out.hh>
 #include <util/logger.hh>
 
 #include <GLFW/glfw3.h>
@@ -20,7 +20,6 @@ namespace editor
 int run(const util::CommandLine &args, GLFWwindow *window)
 {
     glfwSetWindowTitle(window, "Voxelius (Editor)");
-    glfwSetWindowAttrib(window, GLFW_RESIZABLE, GLFW_TRUE);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -30,10 +29,12 @@ int run(const util::CommandLine &args, GLFWwindow *window)
     ImGui_ImplOpenGL3_Init("#version 460");
 
     ImGuiIO &io = ImGui::GetIO();
+    io.ConfigWindowsMoveFromTitleBarOnly = true;
 
-    FileBrowserDialog open_map_dialog("File Selection###file_selection_map", ".json");
+    LoggerOut logger_out;
 
-    render::MapRenderer map_renderer(800, 600);
+    MenuBar menu_bar;
+    FileBrowserDialog open_dialog("Open file##open_dialog");
 
     while(!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
@@ -42,18 +43,18 @@ int run(const util::CommandLine &args, GLFWwindow *window)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        drawMenuBar(io);
+        logger_out.draw(io);
 
-        drawMapEditor(io, map_renderer);
+        menu_bar.draw(io);
 
-        if(open_map_dialog.draw(io, menu_bar_open_map))
-            loadMap(open_map_dialog.getPath());
-        menu_bar_open_map = false;
+        if(open_dialog.draw(io, menu_bar.file_open))
+            util::log("file open stub for %s", open_dialog.getPath().string().c_str());
+        menu_bar.file_open = false;
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        if(menu_bar_exit)
+        if(menu_bar.file_exit)
             glfwSetWindowShouldClose(window, GLFW_TRUE);
 
         glfwSwapBuffers(window);
