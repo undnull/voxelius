@@ -18,7 +18,9 @@ MenuBar::MenuBar()
     file_save = false;
     file_save_as = false;
     file_exit = false;
+
     view_fps = true;
+    view_taking_screenshot = false;
 
     fps_framerate = 0.0f;
     fps_frametime = 0.0f;
@@ -57,6 +59,8 @@ void MenuBar::draw(const ImGuiIO &io)
             }
             ImGui::Separator();
             ImGui::MenuItem("FPS counter", nullptr, &view_fps);
+            ImGui::Separator();
+            view_taking_screenshot = ImGui::MenuItem("Screenshot", "F7");
             ImGui::EndMenu();
         }
 
@@ -74,5 +78,6 @@ void MenuBar::draw(const ImGuiIO &io)
     }
 
     file_exit = file_exit || (io.KeyShift && io.KeysDown[GLFW_KEY_ESCAPE]);
+    view_taking_screenshot = io.KeysDown[GLFW_KEY_F7];
 }
 } // namespace editor

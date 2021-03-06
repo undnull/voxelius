@@ -7,6 +7,7 @@
 #include <editor/menu_bar.hh>
 #include <editor/file_browser.hh>
 #include <editor/logger_out.hh>
+#include <render/screenshots.hh>
 #include <util/logger.hh>
 
 #include <GLFW/glfw3.h>
@@ -53,6 +54,10 @@ int run(const util::CommandLine &args, GLFWwindow *window)
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        if(menu_bar.view_taking_screenshot)
+            render::takeScreenshot();
+        menu_bar.view_taking_screenshot = false;
 
         if(menu_bar.file_exit)
             glfwSetWindowShouldClose(window, GLFW_TRUE);

@@ -23,6 +23,7 @@ public:
     bool file_save_as;
     bool file_exit;
     bool view_fps;
+    bool view_taking_screenshot;
 
 private:
     util::Clock fps_clock;

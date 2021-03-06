@@ -6,4 +6,5 @@
 target_sources(voxelius PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}/main.cc")
 add_subdirectory(editor)
+add_subdirectory(render)
 add_subdirectory(util)
