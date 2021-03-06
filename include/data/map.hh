@@ -7,6 +7,7 @@
 #include <gfx/pipeline.hh>
 #include <gfx/texture.hh>
 #include <gfx/vertex_array.hh>
+#include <util/fs.hh>
 
 namespace data
 {
@@ -24,7 +25,7 @@ public:
     };
 
 public:
-    bool loadFromFile(const char *filename);
+    bool loadFromFile(const fs::path &path);
 
     constexpr const std::vector<layer> &getLayers() const;
 

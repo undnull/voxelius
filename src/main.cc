@@ -15,10 +15,6 @@
 
 static void debugCallback(unsigned int src, unsigned int type, unsigned int id, unsigned int severity, int length, const char *msg, const void *arg)
 {
-    // NVIDIA: Buffer detailed info: Buffer object will use VIDEO memory as the source for buffer object operations.
-    if(id == 131185)
-        return;
-
     switch(severity) {
         case GL_DEBUG_SEVERITY_HIGH:
         case GL_DEBUG_SEVERITY_MEDIUM:

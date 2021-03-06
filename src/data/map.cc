@@ -14,17 +14,17 @@
 
 namespace data
 {
-bool Map::loadFromFile(const char *filename)
+bool Map::loadFromFile(const fs::path &path)
 {
     layers.clear();
 
-    if(!fs::exists(filename)) {
-        util::log("map: file %s doesn't exist", filename);
+    if(!fs::exists(path)) {
+        util::log("map: file %s doesn't exist", path.string().c_str());
         return false;
     }
 
     try {
-        const json &j = json::parse(util::readTextFile(filename));
+        const json &j = json::parse(util::readTextFile(path));
 
         const auto j_layers = util::jsonRequire(j, "layers");
         for(const auto &it_layer : j_layers->items()) {
@@ -43,7 +43,7 @@ bool Map::loadFromFile(const char *filename)
                 return false;
             }
 
-            const std::vector<uint8_t> vspv = util::readBinaryFile(s_vertex.c_str());
+            const std::vector<uint8_t> vspv = util::readBinaryFile(s_vertex);
             if(!l.vertex.link(vspv.data(), vspv.size())) {
                 util::log("map: %s", l.vertex.getInfoLog());
                 return false;
@@ -55,7 +55,7 @@ bool Map::loadFromFile(const char *filename)
                 return false;
             }
 
-            const std::vector<uint8_t> fspv = util::readBinaryFile(s_fragment.c_str());
+            const std::vector<uint8_t> fspv = util::readBinaryFile(s_fragment);
             if(!l.fragment.link(fspv.data(), fspv.size())) {
                 util::log("map: %s", l.fragment.getInfoLog());
                 return false;

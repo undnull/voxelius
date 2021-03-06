@@ -12,9 +12,9 @@
 
 namespace util
 {
-const std::string readTextFile(const char *filename)
+const std::string readTextFile(const fs::path &path)
 {
-    std::ifstream ifs(filename, std::ios::in);
+    std::ifstream ifs(path, std::ios::in);
     if(!ifs.good())
         return std::string();
 
@@ -24,9 +24,9 @@ const std::string readTextFile(const char *filename)
     return ss.str();
 }
 
-const std::vector<uint8_t> readBinaryFile(const char *filename)
+const std::vector<uint8_t> readBinaryFile(const fs::path &path)
 {
-    std::ifstream ifs(filename, std::ios::in | std::ios::binary);
+    std::ifstream ifs(path, std::ios::in | std::ios::binary);
     if(!ifs.good())
         return std::vector<uint8_t>();
 

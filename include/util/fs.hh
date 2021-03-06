@@ -14,6 +14,6 @@ namespace fs = std::filesystem;
 
 namespace util
 {
-const std::string readTextFile(const char *filename);
-const std::vector<uint8_t> readBinaryFile(const char *filename);
+const std::string readTextFile(const fs::path &path);
+const std::vector<uint8_t> readBinaryFile(const fs::path &path);
 } // namespace util
