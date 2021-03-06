@@ -4,6 +4,7 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <editor/editor.hh>
+#include <editor/map_editor.hh>
 #include <editor/menu_bar.hh>
 #include <editor/file_browser.hh>
 #include <util/logger.hh>
@@ -32,6 +33,8 @@ int run(const util::CommandLine &args, GLFWwindow *window)
 
     FileBrowserDialog open_map_dialog("File Selection###file_selection_map", ".json");
 
+    render::MapRenderer map_renderer(800, 600);
+
     while(!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -41,8 +44,10 @@ int run(const util::CommandLine &args, GLFWwindow *window)
 
         drawMenuBar(io);
 
+        drawMapEditor(io, map_renderer);
+
         if(open_map_dialog.draw(io, menu_bar_open_map))
-            util::log("map loading stub: %s", open_map_dialog.getPath().string().c_str());
+            loadMap(open_map_dialog.getPath());
         menu_bar_open_map = false;
 
         ImGui::Render();

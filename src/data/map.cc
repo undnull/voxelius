@@ -4,7 +4,6 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <data/map.hh>
-#include <data/vertex.hh>
 #include <util/format.hh>
 #include <util/fs.hh>
 #include <util/json.hh>
@@ -14,7 +13,7 @@
 
 namespace data
 {
-bool Map::loadFromFile(const fs::path &path)
+bool Map::loadFromFile(const fs::path &path, bool clear_vectors)
 {
     layers.clear();
 
@@ -109,9 +108,6 @@ bool Map::loadFromFile(const fs::path &path)
             const auto geometry_vbo = util::jsonRequire(*layer_geometry, "vbo");
             const auto geometry_ebo = util::jsonRequire(*layer_geometry, "ebo");
 
-            std::vector<vertex> vertices;
-            std::vector<unsigned int> indices;
-
             for(const auto &it : geometry_vbo->items()) {
                 const auto vtx = it.value();
 
@@ -119,20 +115,20 @@ bool Map::loadFromFile(const fs::path &path)
                 v.position = util::jsonToFloat<2>(*util::jsonRequire(vtx, "xy"));
                 v.texcoord = util::jsonToFloat<2>(*util::jsonRequire(vtx, "uv"));
 
-                vertices.push_back(v);
+                l.vertices.push_back(v);
             }
 
             for(const auto &it : geometry_ebo->items())
-                indices.push_back(it.value().get<unsigned int>());
+                l.indices.push_back(it.value().get<unsigned int>());
 
-            size_t vbo_size = sizeof(vertex) * vertices.size();
-            size_t ebo_size = sizeof(unsigned int) * indices.size();
+            size_t vbo_size = sizeof(vertex) * l.vertices.size();
+            size_t ebo_size = sizeof(unsigned int) * l.indices.size();
 
             l.geometry_vbo.resize(vbo_size);
-            l.geometry_vbo.write(0, vertices.data(), vbo_size);
+            l.geometry_vbo.write(0, l.vertices.data(), vbo_size);
 
             l.geometry_ebo.resize(ebo_size);
-            l.geometry_ebo.write(0, indices.data(), ebo_size);
+            l.geometry_ebo.write(0, l.indices.data(), ebo_size);
 
             l.geometry_vao.bindElementBuffer(l.geometry_ebo);
             l.geometry_vao.bindVertexBuffer(l.geometry_vbo, 0, offsetof(vertex, position), sizeof(vertex));
@@ -147,10 +143,13 @@ bool Map::loadFromFile(const fs::path &path)
             l.geometry_vao.setAttributeBinding(0, 0);
             l.geometry_vao.setAttributeBinding(1, 1);
 
-            l.geometry_count = indices.size();
+            l.geometry_count = l.indices.size();
 
-            // fixme: should I add a move constructor
-            // or everything will be automatically moved?
+            if(clear_vectors) {
+                l.vertices.clear();
+                l.indices.clear();
+            }
+
             layers.push_back(std::move(l));
         }
 
@@ -161,4 +160,8 @@ bool Map::loadFromFile(const fs::path &path)
     }
 }
 
+void Map::clear()
+{
+    layers.clear();
+}
 } // namespace data

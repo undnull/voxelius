@@ -4,6 +4,7 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #pragma once
+#include <data/vertex.hh>
 #include <gfx/pipeline.hh>
 #include <gfx/texture.hh>
 #include <gfx/vertex_array.hh>
@@ -22,10 +23,14 @@ public:
         gfx::Buffer geometry_ebo;
         gfx::VertexArray geometry_vao;
         size_t geometry_count;
+
+        std::vector<data::vertex> vertices;
+        std::vector<unsigned int> indices;
     };
 
 public:
-    bool loadFromFile(const fs::path &path);
+    bool loadFromFile(const fs::path &path, bool clear_vectors = true);
+    void clear();
 
     constexpr const std::vector<layer> &getLayers() const;
 
