@@ -5,4 +5,5 @@
 #
 target_sources(voxelius PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}/editor.cc"
+    "${CMAKE_CURRENT_LIST_DIR}/file_browser.cc"
     "${CMAKE_CURRENT_LIST_DIR}/menu_bar.cc")

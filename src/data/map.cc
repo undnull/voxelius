@@ -18,7 +18,7 @@ bool Map::loadFromFile(const char *filename)
 {
     layers.clear();
 
-    if(!util::fileExists(filename)) {
+    if(!fs::exists(filename)) {
         util::log("map: file %s doesn't exist", filename);
         return false;
     }
@@ -38,7 +38,7 @@ bool Map::loadFromFile(const char *filename)
             layer l;
 
             const std::string s_vertex = layer_vertex->get<std::string>();
-            if(!util::fileExists(s_vertex.c_str())) {
+            if(!fs::exists(s_vertex)) {
                 util::log("map: file %s doesn't exist", s_vertex.c_str());
                 return false;
             }
@@ -50,7 +50,7 @@ bool Map::loadFromFile(const char *filename)
             }
 
             const std::string s_fragment = layer_fragment->get<std::string>();
-            if(!util::fileExists(s_fragment.c_str())) {
+            if(!fs::exists(s_fragment)) {
                 util::log("map: file %s doesn't exist", s_fragment.c_str());
                 return false;
             }

@@ -4,29 +4,20 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #pragma once
-#include <util/clock.hh>
-
 #include <imgui.h>
 
 namespace editor
 {
-class MenuBar final {
-public:
-    void render(const ImGuiIO &io);
+    void drawMenuBar(const ImGuiIO &io);
 
-private:
-    util::Clock fps_clock;
-    float fps_framerate = 0.0f;
-    float fps_frametime = 0.0f;
-    bool fps_visible = true;
-
-public:
-    bool open_map = false;
-    bool open_script = false;
-    bool open_shader = false;
-    bool close_opened = false;
-    bool save_opened = false;
-    bool save_as_opened = false;
-    bool should_exit = false;
-};
+    extern bool menu_bar_open_map;
+    extern bool menu_bar_open_script;
+    extern bool menu_bar_open_shader;
+    extern bool menu_bar_new_map;
+    extern bool menu_bar_new_script;
+    extern bool menu_bar_new_shader;
+    extern bool menu_bar_close;
+    extern bool menu_bar_save;
+    extern bool menu_bar_save_as;
+    extern bool menu_bar_exit;
 } // namespace editor

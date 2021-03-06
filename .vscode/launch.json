@@ -1,22 +1,11 @@
 {
     "configurations": [
         {
-            "name": "Windows/Debug",
+            "name": "(win32, debug) Editor",
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/Debug/voxelius.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "console": "internalConsole"
-        },
-        {
-            "name": "Windows/Release",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/Release/voxelius.exe",
-            "args": [],
+            "args": ["--editor"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

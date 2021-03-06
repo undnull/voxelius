@@ -12,12 +12,6 @@
 
 namespace util
 {
-bool fileExists(const char *filename)
-{
-    std::ifstream ifs(filename, std::ios::in);
-    return ifs.good();
-}
-
 const std::string readTextFile(const char *filename)
 {
     std::ifstream ifs(filename, std::ios::in);
