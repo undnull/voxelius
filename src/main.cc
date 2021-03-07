@@ -69,7 +69,7 @@ int main(int argc, char **argv)
     const unsigned int nvidia_131185 = 131185;
     glDebugMessageControl(GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_OTHER, GL_DONT_CARE, 1, &nvidia_131185, GL_FALSE);
 
-    ui::init(args, window);
+    ui::init(window);
     ui::LoggerOut logger_out;
     ui::MenuBar menu_bar;
 

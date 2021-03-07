@@ -11,7 +11,7 @@ struct GLFWwindow;
 
 namespace ui
 {
-void init(const util::CommandLine &args, GLFWwindow *window);
+void init(GLFWwindow *window);
 const ImGuiIO &beginFrame();
 void endFrame();
 } // namespace ui

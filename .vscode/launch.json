@@ -5,7 +5,7 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/Debug/voxelius.exe",
-            "args": [ "--native", "--fullscreen", "--editor" ],
+            "args": [ "--width", "1152", "--height", "648", "--windowed", "--vsync" ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

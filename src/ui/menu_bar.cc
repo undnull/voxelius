@@ -47,16 +47,6 @@ void MenuBar::draw(const ImGuiIO &io)
         }
 
         if(ImGui::BeginMenu("View")) {
-            if(ImGui::BeginMenu("Style")) {
-                if(ImGui::MenuItem("StyleColorsClassic"))
-                    ImGui::StyleColorsClassic();
-                if(ImGui::MenuItem("StyleColorsDark"))
-                    ImGui::StyleColorsDark();
-                if(ImGui::MenuItem("StyleColorsLight"))
-                    ImGui::StyleColorsLight();
-                ImGui::EndMenu();
-            }
-            ImGui::Separator();
             ImGui::MenuItem("FPS counter", nullptr, &view_fps);
             ImGui::EndMenu();
         }
