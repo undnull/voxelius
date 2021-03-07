@@ -29,6 +29,35 @@ static void debugCallback(unsigned int src, unsigned int type, unsigned int id, 
     }
 }
 
+static inline bool checkGLSuitability()
+{
+    if(GLAD_GL_VERSION_4_6)
+        return true;
+
+    struct gl_extension final {
+        const char *id;
+        const int present;
+    };
+
+    const gl_extension extensions[] = {
+        //{ "ARB_texture_filter_anisotropic", GLAD_GL_ARB_texture_filter_anisotropic },
+        { "ARB_direct_state_access", GLAD_GL_ARB_direct_state_access },
+        { "ARB_gl_spirv", GLAD_GL_ARB_gl_spirv },
+        { nullptr, 0 }
+    };
+
+    const gl_extension *extension = extensions;
+    do {
+        if(!extension->present) {
+            util::log("opengl: extension %s is not present", extension->id);
+            return false;
+        }
+        extension++;
+    } while(extension->id && extension->present);
+
+    return true;
+}
+
 int main(int argc, char **argv)
 {
     util::CommandLine args(argc, argv);
@@ -54,8 +83,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    if(!GLAD_GL_VERSION_4_6) {
-        util::log("opengl: version 4.6 is required (while %d.%d is present)", GLVersion.major, GLVersion.minor);
+    if(!checkGLSuitability()) {
         glfwTerminate();
         return false;
     }
