@@ -20,9 +20,9 @@ public:
 public:
     CommandLine(int argc, char **argv);
 
-    bool hasOption(const char *option);
-    bool hasArgument(const char *option);
-    const char *getArgument(const char *option);
+    bool hasOption(const char *option) const;
+    bool hasArgument(const char *option) const;
+    const char *getArgument(const char *option) const;
 
 private:
     std::vector<option> options;

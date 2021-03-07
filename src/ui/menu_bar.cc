@@ -4,11 +4,11 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <config.hh>
-#include <editor/menu_bar.hh>
+#include <ui/menu_bar.hh>
 #include <util/clock.hh>
 #include <GLFW/glfw3.h>
 
-namespace editor
+namespace ui
 {
 MenuBar::MenuBar()
 {
@@ -20,7 +20,6 @@ MenuBar::MenuBar()
     file_exit = false;
 
     view_fps = true;
-    view_taking_screenshot = false;
 
     fps_framerate = 0.0f;
     fps_frametime = 0.0f;
@@ -38,10 +37,10 @@ void MenuBar::draw(const ImGuiIO &io)
 
     if(ImGui::BeginMainMenuBar()) {
         if(ImGui::BeginMenu("File")) {
-            file_open = ImGui::MenuItem("Open");
-            file_close = ImGui::MenuItem("Close", nullptr, false, false);
+            file_open = ImGui::MenuItem("Open", "(WIP)", false, false);
+            file_close = ImGui::MenuItem("Close", "(WIP)", false, false);
             ImGui::Separator();
-            file_new = ImGui::MenuItem("New", nullptr, false, false);
+            file_new = ImGui::MenuItem("New", "(WIP)", false, false);
             ImGui::Separator();
             file_exit = ImGui::MenuItem("Exit", "Shift+Esc");
             ImGui::EndMenu();
@@ -59,8 +58,6 @@ void MenuBar::draw(const ImGuiIO &io)
             }
             ImGui::Separator();
             ImGui::MenuItem("FPS counter", nullptr, &view_fps);
-            ImGui::Separator();
-            view_taking_screenshot = ImGui::MenuItem("Screenshot", "F7");
             ImGui::EndMenu();
         }
 
@@ -78,6 +75,5 @@ void MenuBar::draw(const ImGuiIO &io)
     }
 
     file_exit = file_exit || (io.KeyShift && io.KeysDown[GLFW_KEY_ESCAPE]);
-    view_taking_screenshot = io.KeysDown[GLFW_KEY_F7];
 }
-} // namespace editor
+} // namespace ui

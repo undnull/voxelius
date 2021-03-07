@@ -16,4 +16,5 @@ namespace util
 {
 const std::string readTextFile(const fs::path &path);
 const std::vector<uint8_t> readBinaryFile(const fs::path &path);
+void writeTextFile(const fs::path &path, const std::string &str);
 } // namespace util

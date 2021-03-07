@@ -39,7 +39,7 @@ CommandLine::CommandLine(int argc, char **argv)
     }
 }
 
-bool CommandLine::hasOption(const char *opt)
+bool CommandLine::hasOption(const char *opt) const
 {
     for(const auto &it : options) {
         if(it.opt == opt)
@@ -48,7 +48,7 @@ bool CommandLine::hasOption(const char *opt)
     return false;
 }
 
-bool CommandLine::hasArgument(const char *opt)
+bool CommandLine::hasArgument(const char *opt) const
 {
     for(const auto &it : options) {
         if(it.opt == opt && it.has_argument)
@@ -57,7 +57,7 @@ bool CommandLine::hasArgument(const char *opt)
     return false;
 }
 
-const char *CommandLine::getArgument(const char *opt)
+const char *CommandLine::getArgument(const char *opt) const
 {
     for(const auto &it : options) {
         if(it.opt == opt && it.has_argument)

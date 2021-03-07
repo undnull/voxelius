@@ -3,7 +3,10 @@
  * Created: 2021-01-16, 15:41:47.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <editor/editor.hh>
+#include <data/vidmode.hh>
+#include <ui/logger_out.hh>
+#include <ui/menu_bar.hh>
+#include <ui/ui.hh>
 #include <util/logger.hh>
 
 #include <GLFW/glfw3.h>
@@ -33,25 +36,13 @@ int main(int argc, char **argv)
     if(!glfwInit())
         return 1;
 
-    int width = 800;
-    int height = 600;
-    GLFWmonitor *monitor = nullptr;
-
-    if(args.hasArgument("--width"))
-        width = atoi(args.getArgument("--width"));
-    if(args.hasArgument("--height"))
-        height = atoi(args.getArgument("--height"));
-    if(args.hasOption("--fullscreen"))
-        monitor = glfwGetPrimaryMonitor();
-
-    if(args.hasOption("--native")) {
-        const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        width = mode->width;
-        height = mode->height;
-    }
+    data::VidMode vidmode;
+    vidmode.loadFromFile("vidmode.json");
+    vidmode.loadFromArgs(args);
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    GLFWwindow *window = glfwCreateWindow(width, height, "Voxelius", monitor, nullptr);
+    glfwWindowHint(GLFW_DECORATED, vidmode.border);
+    GLFWwindow *window = glfwCreateWindow(vidmode.width, vidmode.height, "Voxelius", vidmode.monitor, nullptr);
     if(!window) {
         glfwTerminate();
         return 1;
@@ -69,7 +60,7 @@ int main(int argc, char **argv)
         return false;
     }
 
-    glfwSwapInterval(1);
+    glfwSwapInterval(vidmode.swap_interval);
 
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -78,22 +69,33 @@ int main(int argc, char **argv)
     const unsigned int nvidia_131185 = 131185;
     glDebugMessageControl(GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_OTHER, GL_DONT_CARE, 1, &nvidia_131185, GL_FALSE);
 
-    if(args.hasOption("--editor")) {
-        util::log("starting editor");
-        int code = editor::run(args, window);
-        glfwDestroyWindow(window);
-        glfwTerminate();
-        return code;
-    }
+    ui::init(args, window);
+    ui::LoggerOut logger_out;
+    ui::MenuBar menu_bar;
 
     while(!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
+        glUseProgram(0);
+
+        const ImGuiIO &io = ui::beginFrame();
+        logger_out.draw(io);
+        menu_bar.draw(io);
+        ui::endFrame();
+
+        if(menu_bar.file_exit) {
+            glfwSetWindowShouldClose(window, GLFW_TRUE);
+            menu_bar.file_exit = false;
+        }
+
+        glBindProgramPipeline(0);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     glfwDestroyWindow(window);
     glfwTerminate();
+
+    vidmode.saveToFile("vidmode.json");
 
     return 0;
 }

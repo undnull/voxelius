@@ -7,7 +7,7 @@
 #include <util/imgui.hh>
 #include <util/clock.hh>
 
-namespace editor
+namespace ui
 {
 class MenuBar final {
 public:
@@ -23,11 +23,10 @@ public:
     bool file_save_as;
     bool file_exit;
     bool view_fps;
-    bool view_taking_screenshot;
 
 private:
     util::Clock fps_clock;
     float fps_framerate;
     float fps_frametime;
 };
-} // namespace editor
+} // namespace ui

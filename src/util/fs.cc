@@ -41,4 +41,11 @@ const std::vector<uint8_t> readBinaryFile(const fs::path &path)
     buffer.insert(buffer.begin(), std::istream_iterator<uint8_t>(ifs), std::istream_iterator<uint8_t>());
     return buffer;
 }
+
+void writeTextFile(const fs::path &path, const std::string &str)
+{
+    std::ofstream ofs(path, std::ios::out);
+    if(ofs.good())
+        ofs << str;
+}
 } // namespace util

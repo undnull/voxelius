@@ -3,12 +3,12 @@
  * Created: 2021-03-06, 13:06:46.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <editor/file_browser.hh>
+#include <ui/file_browser.hh>
 #include <util/format.hh>
 #include <imgui_stdlib.h>
 #include <GLFW/glfw3.h>
 
-namespace editor
+namespace ui
 {
 FileBrowserDialog::FileBrowserDialog(const std::string &title) : title(title)
 {
@@ -136,4 +136,4 @@ void FileBrowserDialog::updateEntries(bool updated)
         has_enumerated = true;
     }
 }
-} // namespace editor
+} // namespace ui

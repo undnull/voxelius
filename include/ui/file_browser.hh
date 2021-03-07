@@ -7,7 +7,7 @@
 #include <util/fs.hh>
 #include <util/imgui.hh>
 
-namespace editor
+namespace ui
 {
 class FileBrowserDialog final {
 private:
@@ -50,4 +50,4 @@ inline const fs::path &FileBrowserDialog::getPath() const
 {
     return selected;
 }
-} // namespace editor
+} // namespace ui

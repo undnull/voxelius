@@ -6,10 +6,10 @@
 #pragma once
 #include <util/imgui.hh>
 
-namespace editor
+namespace ui
 {
 class LoggerOut final {
 public:
     void draw(const ImGuiIO &io);
 };
-} // namespace editor
+} // namespace ui

@@ -3,10 +3,10 @@
  * Created: 2021-03-06, 22:54:34.
  * Copyright (C) 2021, Kirill GPRB.
  */
-#include <editor/logger_out.hh>
+#include <ui/logger_out.hh>
 #include <util/logger.hh>
 
-namespace editor
+namespace ui
 {
 static constexpr ImGuiWindowFlags FLAGS = ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar;
 static constexpr float TEXT_PADDING = 15.0f;
@@ -24,4 +24,4 @@ void LoggerOut::draw(const ImGuiIO &io)
     }
     ImGui::End();
 }
-} // namespace editor
+} // namespace ui
