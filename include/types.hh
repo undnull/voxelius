@@ -11,10 +11,10 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 #include <memory>
+#include <sstream>
 #include <stddef.h>
 #include <stdint.h>
 #include <string>
-#include <sstream>
 #include <unordered_map>
 #include <utility>
 #include <vector>

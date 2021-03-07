@@ -26,6 +26,8 @@ BreakBeforeBraces: Custom
 BraceWrapping:
   AfterFunction: true
   AfterNamespace: true
+  BeforeCatch: true
+  BeforeElse: true
 BreakBeforeTernaryOperators: 'true'
 ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
 BreakInheritanceList: BeforeColon

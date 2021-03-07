@@ -37,7 +37,7 @@ bool VidMode::loadFromFile(const fs::path &path)
         swap_interval = util::jsonRequire(j, "vsync")->get<bool>() ? 1 : 0;
         if(util::jsonRequire(j, "fullscreen")->get<bool>())
             monitor = glfwGetPrimaryMonitor();
-        
+
         return true;
     }
     catch(const std::exception &e) {
@@ -78,6 +78,8 @@ void VidMode::saveToFile(const fs::path &path)
         j["fullscreen"] = (monitor != nullptr);
         util::writeTextFile(path, j.dump(4));
     }
-    catch(const std::exception &e) { util::log("vidmode: %s", e.what()); }
+    catch(const std::exception &e) {
+        util::log("vidmode: %s", e.what());
+    }
 }
 } // namespace data

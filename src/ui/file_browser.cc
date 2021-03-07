@@ -5,12 +5,14 @@
  */
 #include <ui/file_browser.hh>
 #include <util/format.hh>
-#include <imgui_stdlib.h>
+
 #include <GLFW/glfw3.h>
+#include <imgui_stdlib.h>
 
 namespace ui
 {
-FileBrowserDialog::FileBrowserDialog(const std::string &title) : title(title)
+FileBrowserDialog::FileBrowserDialog(const std::string &title)
+    : title(title)
 {
     visible = false;
     cwd = fs::current_path();
@@ -108,7 +110,7 @@ void FileBrowserDialog::updateEntries(bool updated)
             prev.selected = false;
             entries.push_back(prev);
         }
-        
+
         for(const auto &it : fs::directory_iterator(cwd)) {
             if(it.is_directory()) {
                 fs_entry entry;

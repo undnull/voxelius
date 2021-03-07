@@ -6,6 +6,7 @@
 #include <config.hh>
 #include <ui/menu_bar.hh>
 #include <util/clock.hh>
+
 #include <GLFW/glfw3.h>
 
 namespace ui
