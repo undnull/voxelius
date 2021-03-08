@@ -59,7 +59,11 @@ void VidMode::loadFromArgs(const util::CommandLine &args)
     }
 
     border = args.hasOption("--noborder") ? GLFW_FALSE : border;
-    swap_interval = args.hasOption("--vsync") ? 1 : swap_interval;
+    
+    if(args.hasOption("--no-vsync"))
+        swap_interval = 0;
+    else if(args.hasOption("--vsync"))
+        swap_interval = 1;
 
     if(args.hasOption("--windowed"))
         monitor = nullptr;

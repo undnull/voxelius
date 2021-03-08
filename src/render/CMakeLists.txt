@@ -4,4 +4,5 @@
 # Copyright (C) 2021, Kirill GPRB.
 #
 target_sources(voxelius PRIVATE
-    "${CMAKE_CURRENT_LIST_DIR}/screenshots.cc")
+    "${CMAKE_CURRENT_LIST_DIR}/screenshots.cc"
+    "${CMAKE_CURRENT_LIST_DIR}/sprite_renderer.cc")

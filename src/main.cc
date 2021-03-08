@@ -7,7 +7,9 @@
 #include <ui/logger_out.hh>
 #include <ui/menu_bar.hh>
 #include <ui/ui.hh>
+#include <util/clock.hh>
 #include <util/logger.hh>
+#include <render/sprite_renderer.hh>
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -97,13 +99,53 @@ int main(int argc, char **argv)
     const unsigned int nvidia_131185 = 131185;
     glDebugMessageControl(GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_OTHER, GL_DONT_CARE, 1, &nvidia_131185, GL_FALSE);
 
+    // sprite
+    float2_t sprite_size;
+    gfx::Texture sprite_texture;
+    data::Transform sprite_transform0;
+    data::Transform sprite_transform1;
+
+    sprite_size = float2_t(100.0f, 100.0f);
+    sprite_transform0.setOrigin(float2_t(50.0f, 50.0f));
+    sprite_transform1.setOrigin(float2_t(50.0f, 50.0f));
+    sprite_transform0.move(float2_t(100.0f, 200.0f));
+    sprite_transform1.move(float2_t(300.0f, 200.0f));
+
+    int width, height, comp;
+    stbi_uc *pixels = stbi_load("textures/bruh.jpg", &width, &height, &comp, STBI_rgb_alpha);
+    if(!pixels)
+        return 1;
+    
+    sprite_texture.storage(width, height, GL_RGBA16F);
+    sprite_texture.subImage(width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+    sprite_texture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    sprite_texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    sprite_texture.setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    sprite_texture.setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    render::SpriteRenderer sprite_renderer(vidmode.width, vidmode.height);
+
     ui::init(window);
     ui::LoggerOut logger_out;
     ui::MenuBar menu_bar;
 
+    data::View view;
+    sprite_renderer.setView(view);
+
+    std::vector<data::Transform> transforms;
+    transforms.push_back(sprite_transform0);
+    transforms.push_back(sprite_transform1);
+
+    util::Clock frametime_clock;
     while(!glfwWindowShouldClose(window)) {
+        const float frametime = frametime_clock.reset();
+
+        transforms[0].rotate(45.0f * frametime);
+        transforms[1].rotate(-45.0f * frametime);
+
         glClear(GL_COLOR_BUFFER_BIT);
-        glUseProgram(0);
+
+        sprite_renderer.draw(transforms, sprite_texture, sprite_size);
 
         const ImGuiIO &io = ui::beginFrame();
         logger_out.draw(io);

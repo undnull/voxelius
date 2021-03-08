@@ -12,73 +12,90 @@ class Transform final {
 public:
     Transform();
 
+    void setOrigin(const float2_t &origin);
     void setPosition(const float2_t &position);
     void setRotation(float rotation);
-    void setScale(const float2_t &scale);
-    void setScale(float scale);
+    void setScale(float scale_v);
 
-    void move(const float2_t &delta);
-    void rotate(float delta);
+    void move(const float2_t &velocity);
+    void rotate(float angle);
+    void scale(float f);
 
+    const float2_t &getOrigin() const;
     const float2_t &getPosition() const;
     float getRotation() const;
-    const float2_t &getScale() const;
+    float getScale() const;
 
-    const float4x4_t &getMatrix();
+    void update();
+
+    const float4x4_t &getMatrix() const;
 
 private:
+    float2_t origin;
     float2_t position;
     float rotation;
-    float2_t scale;
+    float scale_v;
 
     float4x4_t matrix;
-    bool needs_update;
 };
 
 inline Transform::Transform()
 {
+    origin = float2_t(0.0f, 0.0f);
     position = float2_t(0.0f, 0.0f);
     rotation = 0.0f;
-    scale = float2_t(1.0f, 1.0f);
+    scale_v = 1.0f;
 
     matrix = float4x4_t(1.0f);
-    needs_update = true;
+    update();
+}
+
+inline void Transform::setOrigin(const float2_t &origin)
+{
+    this->origin = origin;
+    update();
 }
 
 inline void Transform::setPosition(const float2_t &position)
 {
     this->position = position;
-    needs_update = true;
+    update();
 }
 
 inline void Transform::setRotation(float rotation)
 {
     this->rotation = rotation;
-    needs_update = true;
+    update();
 }
 
-inline void Transform::setScale(const float2_t &scale)
+inline void Transform::setScale(float scale_v)
 {
-    this->scale = scale;
-    needs_update = true;
+    this->scale_v = scale_v;
+    update();
 }
 
-inline void Transform::setScale(float scale)
+inline void Transform::move(const float2_t &velocity)
 {
-    this->scale = float2_t(scale, scale);
-    needs_update = true;
+    position += velocity;
+    update();
 }
 
-inline void Transform::move(const float2_t &delta)
+inline void Transform::rotate(float angle)
 {
-    position += delta;
-    needs_update = true;
+    rotation += angle;
+    rotation = fmodf(rotation, 360.0f);
+    update();
 }
 
-inline void Transform::rotate(float delta)
+inline void Transform::scale(float f)
 {
-    rotation += delta;
-    needs_update = true;
+    scale_v *= f;
+    update();
+}
+
+inline const float2_t &Transform::getOrigin() const
+{
+    return origin;
 }
 
 inline const float2_t &Transform::getPosition() const
@@ -91,20 +108,22 @@ inline float Transform::getRotation() const
     return rotation;
 }
 
-inline const float2_t &Transform::getScale() const
+inline float Transform::getScale() const
 {
-    return scale;
+    return scale_v;
 }
 
-inline const float4x4_t &Transform::getMatrix()
+inline void Transform::update()
 {
-    if(needs_update) {
-        matrix = float4x4_t(1.0f);
-        matrix = glm::translate(matrix, float3_t(position, 0.0f));
-        matrix = glm::rotate(matrix, glm::radians(rotation), float3_t(0.0f, 0.0f, 1.0f));
-        matrix = glm::scale(matrix, float3_t(scale, 1.0f));
-        needs_update = false;
-    }
+    matrix = float4x4_t(1.0f);
+    matrix = glm::translate(matrix, float3_t(position, 0.0f));
+    matrix = glm::rotate(matrix, glm::radians(rotation), float3_t(0.0f, 0.0f, 1.0f));
+    matrix = glm::translate(matrix, float3_t(-origin, 0.0f));
+    matrix = glm::scale(matrix, float3_t(scale_v, scale_v, 1.0f));
+}
+
+inline const float4x4_t &Transform::getMatrix() const
+{
     return matrix;
 }
 } // namespace data
