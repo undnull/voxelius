@@ -16,11 +16,11 @@ enum class ShaderStage {
 };
 
 template<ShaderStage T>
-constexpr unsigned int GL_SHADER_STAGE = 0;
+constexpr GLenum SHADER_STAGE = 0;
 template<>
-constexpr unsigned int GL_SHADER_STAGE<ShaderStage::VERTEX> = GL_VERTEX_SHADER;
+constexpr GLenum SHADER_STAGE<ShaderStage::VERTEX> = GL_VERTEX_SHADER;
 template<>
-constexpr unsigned int GL_SHADER_STAGE<ShaderStage::FRAGMENT> = GL_FRAGMENT_SHADER;
+constexpr GLenum SHADER_STAGE<ShaderStage::FRAGMENT> = GL_FRAGMENT_SHADER;
 
 template<ShaderStage T>
 class Shader final {
@@ -37,11 +37,11 @@ public:
     bool link(const void *binary, size_t size);
 
     constexpr const char *getInfoLog() const;
-    constexpr unsigned int get() const;
+    constexpr GLuint get() const;
 
 private:
     char *info_log;
-    unsigned int program;
+    GLuint program;
 };
 
 using VertexShader = Shader<ShaderStage::VERTEX>;
@@ -91,7 +91,7 @@ inline bool Shader<T>::link(const void *binary, size_t size)
         info_log = nullptr;
     }
 
-    unsigned int shader = glCreateShader(GL_SHADER_STAGE<T>);
+    unsigned int shader = glCreateShader(SHADER_STAGE<T>);
     glShaderBinary(1, &shader, GL_SHADER_BINARY_FORMAT_SPIR_V, binary, static_cast<GLsizei>(size));
     glSpecializeShader(shader, "main", 0, nullptr, nullptr);
 
@@ -133,7 +133,7 @@ inline constexpr const char *Shader<T>::getInfoLog() const
 }
 
 template<ShaderStage T>
-inline constexpr unsigned int Shader<T>::get() const
+inline constexpr GLuint Shader<T>::get() const
 {
     return program;
 }

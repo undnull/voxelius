@@ -9,11 +9,11 @@
 namespace gfx
 {
 template<ShaderStage T>
-constexpr unsigned int GL_SHADER_STAGE_BIT = 0;
+constexpr GLenum SHADER_STAGE_BIT = 0;
 template<>
-constexpr unsigned int GL_SHADER_STAGE_BIT<ShaderStage::VERTEX> = GL_VERTEX_SHADER_BIT;
+constexpr GLenum SHADER_STAGE_BIT<ShaderStage::VERTEX> = GL_VERTEX_SHADER_BIT;
 template<>
-constexpr unsigned int GL_SHADER_STAGE_BIT<ShaderStage::FRAGMENT> = GL_FRAGMENT_SHADER_BIT;
+constexpr GLenum SHADER_STAGE_BIT<ShaderStage::FRAGMENT> = GL_FRAGMENT_SHADER_BIT;
 
 class Pipeline final {
 public:
@@ -29,10 +29,10 @@ public:
     template<ShaderStage T>
     void stage(const Shader<T> &shader);
 
-    constexpr unsigned int get() const;
+    constexpr GLuint get() const;
 
 private:
-    unsigned int pipeline;
+    GLuint pipeline;
 };
 
 inline Pipeline::Pipeline()
@@ -61,10 +61,10 @@ inline Pipeline &Pipeline::operator=(Pipeline &&rhs)
 template<ShaderStage T>
 inline void Pipeline::stage(const Shader<T> &shader)
 {
-    glUseProgramStages(pipeline, GL_SHADER_STAGE_BIT<T>, shader.get());
+    glUseProgramStages(pipeline, SHADER_STAGE_BIT<T>, shader.get());
 }
 
-inline constexpr unsigned int Pipeline::get() const
+inline constexpr GLuint Pipeline::get() const
 {
     return pipeline;
 }

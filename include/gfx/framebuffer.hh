@@ -19,14 +19,14 @@ public:
     Framebuffer &operator=(Framebuffer &&rhs);
     Framebuffer &operator=(const Framebuffer &rhs) = delete;
 
-    void attach(unsigned int attachment, const Texture &texture, unsigned int level);
+    void attach(GLenum attachment, const Texture &texture, GLint level);
 
     bool isComplete();
 
-    constexpr unsigned int get() const;
+    constexpr GLuint get() const;
 
 private:
-    unsigned int framebuffer;
+    GLuint framebuffer;
 };
 
 inline Framebuffer::Framebuffer()
@@ -52,7 +52,7 @@ inline Framebuffer &Framebuffer::operator=(Framebuffer &&rhs)
     return *this;
 }
 
-inline void Framebuffer::attach(unsigned int attachment, const Texture &texture, unsigned int level)
+inline void Framebuffer::attach(GLenum attachment, const Texture &texture, GLint level)
 {
     glNamedFramebufferTexture(framebuffer, attachment, texture.get(), level);
 }
@@ -62,7 +62,7 @@ inline bool Framebuffer::isComplete()
     return glCheckNamedFramebufferStatus(framebuffer, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
 }
 
-inline constexpr unsigned int Framebuffer::get() const
+inline constexpr GLuint Framebuffer::get() const
 {
     return framebuffer;
 }

@@ -10,6 +10,21 @@
 
 namespace gfx
 {
+enum class BufferUsage {
+    STATIC,
+    STREAM,
+    DYNAMIC,
+};
+
+template<BufferUsage T>
+constexpr GLenum BUFFER_USAGE = 0;
+template<>
+constexpr GLenum BUFFER_USAGE<BufferUsage::STATIC> = GL_STATIC_DRAW;
+template<>
+constexpr GLenum BUFFER_USAGE<BufferUsage::STREAM> = GL_STREAM_DRAW;
+template<>
+constexpr GLenum BUFFER_USAGE<BufferUsage::DYNAMIC> = GL_DYNAMIC_DRAW;
+
 class Buffer final {
 public:
     Buffer();
@@ -21,13 +36,14 @@ public:
     Buffer &operator=(Buffer &&rhs);
     Buffer &operator=(const Buffer &rhs) = delete;
 
-    void resize(size_t new_size);
-    void write(size_t offset, const void *data, size_t size);
+    template<BufferUsage T>
+    void storage(size_t size);
+    void subData(size_t offset, const void *data, size_t size);
 
-    constexpr unsigned int get() const;
+    constexpr GLuint get() const;
 
 private:
-    unsigned int buffer;
+    GLuint buffer;
 };
 
 inline Buffer::Buffer()
@@ -53,17 +69,18 @@ inline Buffer &Buffer::operator=(Buffer &&rhs)
     return *this;
 }
 
-inline void Buffer::resize(size_t new_size)
+template<BufferUsage T>
+inline void Buffer::storage(size_t size)
 {
-    glNamedBufferData(buffer, static_cast<GLsizeiptr>(new_size), nullptr, GL_STATIC_DRAW);
+    glNamedBufferData(buffer, static_cast<GLsizeiptr>(size), nullptr, BUFFER_USAGE<T>);
 }
 
-inline void Buffer::write(size_t offset, const void *data, size_t size)
+inline void Buffer::subData(size_t offset, const void *data, size_t size)
 {
     glNamedBufferSubData(buffer, static_cast<GLintptr>(offset), static_cast<GLsizeiptr>(size), data);
 }
 
-inline constexpr unsigned int Buffer::get() const
+inline constexpr GLuint Buffer::get() const
 {
     return buffer;
 }

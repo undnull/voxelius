@@ -9,9 +9,9 @@
 namespace gfx
 {
 template<typename T>
-constexpr unsigned int GL_ATTRIBUTE_FORMAT = 0;
+constexpr unsigned int ATTRIBUTE_FORMAT = 0;
 template<>
-constexpr unsigned int GL_ATTRIBUTE_FORMAT<float> = GL_FLOAT;
+constexpr unsigned int ATTRIBUTE_FORMAT<float> = GL_FLOAT;
 
 class VertexArray final {
 public:
@@ -80,7 +80,7 @@ inline void VertexArray::enableAttribute(unsigned int attrib)
 template<typename T>
 inline void VertexArray::setAttributeFormat(unsigned int attrib, size_t count, bool normalized)
 {
-    glVertexArrayAttribFormat(vaobj, attrib, static_cast<GLint>(count), GL_ATTRIBUTE_FORMAT<T>, normalized ? GL_TRUE : GL_FALSE, 0);
+    glVertexArrayAttribFormat(vaobj, attrib, static_cast<GLint>(count), ATTRIBUTE_FORMAT<T>, normalized ? GL_TRUE : GL_FALSE, 0);
 }
 
 inline void VertexArray::setAttributeBinding(unsigned int attrib, unsigned int binding)
