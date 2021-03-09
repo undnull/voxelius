@@ -72,6 +72,7 @@ int main(int argc, char **argv)
     vidmode.loadFromFile("vidmode.json");
     vidmode.loadFromArgs(args);
 
+    glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     glfwWindowHint(GLFW_DECORATED, vidmode.border);
     GLFWwindow *window = glfwCreateWindow(vidmode.width, vidmode.height, "Voxelius", vidmode.monitor, nullptr);
