@@ -32,7 +32,7 @@ inline const json::const_iterator jsonRequire(const json &j, const char *propert
 {
     const json::const_iterator it = j.find(property);
     if(it == j.cend())
-        throw std::runtime_error(util::format("proprty \"%s\" is required but non-existent", property));
+        throw std::runtime_error(util::format("property \"%s\" is required but non-existent", property));
     return it;
 }
 } // namespace util
