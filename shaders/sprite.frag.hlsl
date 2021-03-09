@@ -8,10 +8,10 @@ struct ps_input {
     float2 texcoord : TexCoord0;
 };
 
-sampler2D diffuse : register(S0);
+sampler2D color : register(S0);
 
 float4 main(ps_input input) : SV_Target
 {
-    return tex2D(diffuse, input.texcoord);
+    return tex2D(color, input.texcoord);
     return float4(1.0, 1.0, 1.0, 1.0);
 }
