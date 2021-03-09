@@ -1,7 +1,19 @@
 {
     "configurations": [
         {
-            "name": "(win32, debug) Editor",
+            "name": "(gdb) Run",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/voxelius",
+            "args": [ "--width", "1152", "--height", "648", "--windowed", "--vsync" ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb"
+        },
+        {
+            "name": "(win32, debug) Run",
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/Debug/voxelius.exe",
