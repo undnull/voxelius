@@ -5,7 +5,7 @@
  */
 
 struct ps_input {
-    float2 texcoord : TEXCOORD0;
+    float2 texcoord : TexCoord0;
 };
 
 sampler2D diffuse : register(S0);

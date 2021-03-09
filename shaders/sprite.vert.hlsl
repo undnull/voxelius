@@ -5,14 +5,14 @@
  */
 
 struct vs_input {
-    float2 position : POSITION;
-    float2 texcoord : TEXCOORD1;
+    float2 position : Position;
+    float2 texcoord : TexCoord1;
     int instance_id : SV_InstanceID;
 };
 
 struct vs_output {
     float4 position : SV_Position;
-    float2 texcoord : TEXCOORD1;
+    float2 texcoord : TexCoord0;
 };
 
 cbuffer ubo : register(b0) {
