@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     glfwWindowHint(GLFW_DECORATED, vidmode.border);
-    GLFWwindow *window = glfwCreateWindow(vidmode.width, vidmode.height, "Voxelius", vidmode.monitor, nullptr);
+    GLFWwindow *window = glfwCreateWindow(vidmode.width, vidmode.height, "TEST", vidmode.monitor, nullptr);
     if(!window) {
         glfwTerminate();
         return 1;
@@ -96,76 +96,76 @@ int main(int argc, char **argv)
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(debugCallback, nullptr);
+	{
+		const unsigned int nvidia_131185 = 131185;
+    	glDebugMessageControl(GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_OTHER, GL_DONT_CARE, 1, &nvidia_131185, GL_FALSE);
 
-    const unsigned int nvidia_131185 = 131185;
-    glDebugMessageControl(GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_OTHER, GL_DONT_CARE, 1, &nvidia_131185, GL_FALSE);
+    	// sprite
+    	float2_t sprite_size;
+    	gfx::Texture sprite_texture;
+    	data::Transform sprite_transform0;
+    	data::Transform sprite_transform1;
 
-    // sprite
-    float2_t sprite_size;
-    gfx::Texture sprite_texture;
-    data::Transform sprite_transform0;
-    data::Transform sprite_transform1;
+    	sprite_size = float2_t(100.0f, 100.0f);
+    	sprite_transform0.setOrigin(float2_t(50.0f, 50.0f));
+    	sprite_transform1.setOrigin(float2_t(50.0f, 50.0f));
+    	sprite_transform0.move(float2_t(100.0f, 200.0f));
+    	sprite_transform1.move(float2_t(300.0f, 200.0f));
 
-    sprite_size = float2_t(100.0f, 100.0f);
-    sprite_transform0.setOrigin(float2_t(50.0f, 50.0f));
-    sprite_transform1.setOrigin(float2_t(50.0f, 50.0f));
-    sprite_transform0.move(float2_t(100.0f, 200.0f));
-    sprite_transform1.move(float2_t(300.0f, 200.0f));
+    	int width, height, comp;
+    	stbi_uc *pixels = stbi_load("textures/bruh.jpg", &width, &height, &comp, STBI_rgb_alpha);
+    	if(!pixels)
+    	    return 1;
+    	
+    	sprite_texture.storage(width, height, GL_RGBA16F);
+    	sprite_texture.subImage(width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+    	sprite_texture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    	sprite_texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    	sprite_texture.setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    	sprite_texture.setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    int width, height, comp;
-    stbi_uc *pixels = stbi_load("textures/bruh.jpg", &width, &height, &comp, STBI_rgb_alpha);
-    if(!pixels)
-        return 1;
-    
-    sprite_texture.storage(width, height, GL_RGBA16F);
-    sprite_texture.subImage(width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-    sprite_texture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    sprite_texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    sprite_texture.setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    sprite_texture.setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    	render::SpriteRenderer sprite_renderer(vidmode.width, vidmode.height);
 
-    render::SpriteRenderer sprite_renderer(vidmode.width, vidmode.height);
+    	ui::init(window);
+    	ui::LoggerOut logger_out;
+    	ui::MenuBar menu_bar;
 
-    ui::init(window);
-    ui::LoggerOut logger_out;
-    ui::MenuBar menu_bar;
+    	data::View view;
+    	sprite_renderer.setView(view);
 
-    data::View view;
-    sprite_renderer.setView(view);
+    	std::vector<data::Transform> transforms;
+    	transforms.push_back(sprite_transform0);
+    	transforms.push_back(sprite_transform1);
 
-    std::vector<data::Transform> transforms;
-    transforms.push_back(sprite_transform0);
-    transforms.push_back(sprite_transform1);
+    	util::Clock frametime_clock;
+    	while(!glfwWindowShouldClose(window)) {
+    	    const float frametime = frametime_clock.reset();
 
-    util::Clock frametime_clock;
-    while(!glfwWindowShouldClose(window)) {
-        const float frametime = frametime_clock.reset();
+    	    transforms[0].rotate(45.0f * frametime);
+    	    transforms[1].rotate(-45.0f * frametime);
 
-        transforms[0].rotate(45.0f * frametime);
-        transforms[1].rotate(-45.0f * frametime);
+    	    glClear(GL_COLOR_BUFFER_BIT);
 
-        glClear(GL_COLOR_BUFFER_BIT);
+    	    sprite_renderer.draw(transforms, sprite_texture, sprite_size);
 
-        sprite_renderer.draw(transforms, sprite_texture, sprite_size);
+    	    const ImGuiIO &io = ui::beginFrame();
+    	    logger_out.draw(io);
+    	    menu_bar.draw(io);
+    	    ui::endFrame();
 
-        const ImGuiIO &io = ui::beginFrame();
-        logger_out.draw(io);
-        menu_bar.draw(io);
-        ui::endFrame();
+    	    if(menu_bar.file_exit) {
+    	        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    	        menu_bar.file_exit = false;
+    	    }
 
-        if(menu_bar.file_exit) {
-            glfwSetWindowShouldClose(window, GLFW_TRUE);
-            menu_bar.file_exit = false;
-        }
+    	    glBindProgramPipeline(0);
+    	    glfwSwapBuffers(window);
+    	    glfwPollEvents();
+    	}
 
-        glBindProgramPipeline(0);
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    glfwDestroyWindow(window);
-    glfwTerminate();
-
+	}
+   	glfwDestroyWindow(window);
+   	glfwTerminate();
     vidmode.saveToFile("vidmode.json");
 
     return 0;
