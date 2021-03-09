@@ -31,7 +31,7 @@ static void debugCallback(unsigned int src, unsigned int type, unsigned int id, 
     }
 }
 
-static inline bool checkGLSuitability()
+inline bool checkGLSuitability()
 {
     if(GLAD_GL_VERSION_4_6)
         return true;
@@ -43,6 +43,7 @@ static inline bool checkGLSuitability()
 
     const gl_extension extensions[] = {
         //{ "ARB_texture_filter_anisotropic", GLAD_GL_ARB_texture_filter_anisotropic },
+        { "ARB_shader_storage_buffer_object", GLAD_GL_ARB_shader_storage_buffer_object },
         { "ARB_direct_state_access", GLAD_GL_ARB_direct_state_access },
         { "ARB_gl_spirv", GLAD_GL_ARB_gl_spirv },
         { nullptr, 0 }

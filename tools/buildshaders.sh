@@ -8,6 +8,7 @@ PATH=$PATH:"$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 shift $((OPTIND - 1))
 work_dir="$@"
+build_dir="build/shaders"
 
 if [[ -z "$work_dir" ]] || [[ ! -d "$work_dir" ]]
 then
@@ -22,9 +23,20 @@ then
     exit 1
 fi
 
+mkdir -p "$build_dir"
+
 for src in $sources
 do
     xspv=$(basename "$src" .hlsl)
-    glslangValidator -G4.5 --hlsl-dx9-compatible -e main -o "$work_dir/$xspv.spv" "$src"
+    glslangValidator -G --hlsl-dx9-compatible -e main -o "$build_dir/$xspv.spv" "$src"
+    
+    # glslangValidator seems to have an issue with SV_InstanceID
+    # when it links it with InstanceIndex builtin even if the target
+    # API is set to OpenGL (should be InstanceId). This is being
+    # fixed by compiling the shader twice (HLSL->SPV->GLSL->SPV).
+    # This behaviour doesn't seem to be intended so that's probably
+    # a bug. TODO: make an issue in the glslang repository.
+    spirv-cross "$build_dir/$xspv.spv" > "$build_dir/$xspv.glsl"
+    glslangValidator --quiet -G -e main -o "$work_dir/$xspv.spv" "$build_dir/$xspv.glsl"
 done
 exit 0

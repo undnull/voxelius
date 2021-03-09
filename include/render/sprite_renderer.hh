@@ -10,7 +10,7 @@ namespace render
 {
 class SpriteRenderer final {
 public:
-    struct alignas(16) ubo0_s final {
+    struct alignas(16) ubo_s final {
         float4x4_t projection;
         float4x4_t scale;
         float4x4_t view;
@@ -30,8 +30,8 @@ private:
     gfx::Buffer vbo, ebo;
     gfx::VertexArray vao;
 
-    gfx::Buffer ubo0;
-    gfx::Buffer ubo1;
+    gfx::Buffer ubo;
+    gfx::Buffer ssbo;
 
     std::vector<float4x4_t> instances;
 };

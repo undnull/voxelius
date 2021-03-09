@@ -15,15 +15,13 @@ struct vs_output {
     float2 texcoord : TEXCOORD1;
 };
 
-cbuffer ubo_0 : register(b0) {
+cbuffer ubo : register(b0) {
     row_major float4x4 projection;
     row_major float4x4 scale;
     row_major float4x4 view;
 };
 
-cbuffer ubo_1 : register(b1) {
-    row_major float4x4 transform[];
-};
+row_major StructuredBuffer<float4x4> ssbo : register(u0);
 
 vs_output main(vs_input input)
 {
@@ -31,7 +29,7 @@ vs_output main(vs_input input)
 
     // output.position = projection * view * (transform[input.instance_id] * scale) * float4(input.position, 0.0, 1.0);
     // output.position = projection * view * scale * float4(input.position, 0.0, 1.0);
-    output.position = projection * view * (transform[input.instance_id] * scale) * float4(input.position, 0.0, 1.0);
+    output.position = projection * view * (ssbo[input.instance_id] * scale) * float4(input.position, 0.0, 1.0);
     // output.position = mul(output.position, transform[input.instance_id]);
     // output.position = mul(output.position, scale);
     // output.position = mul(output.position, view);

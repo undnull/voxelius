@@ -5,6 +5,8 @@
  */
 #include <render/sprite_renderer.hh>
 
+#include <algorithm>
+
 namespace render
 {
 static const data::vertex vertices[] = {
@@ -25,8 +27,8 @@ SpriteRenderer::SpriteRenderer(int width, int height)
 {
     const float4x4_t projection_m = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, -1.0f, 1.0f);
 
-    ubo0.storage<gfx::BufferUsage::DYNAMIC>(sizeof(ubo0_s));
-    ubo0.subData(offsetof(ubo0_s, projection), &projection_m, sizeof(projection_m));
+    ubo.storage<gfx::BufferUsage::DYNAMIC>(sizeof(ubo_s));
+    ubo.subData(offsetof(ubo_s, projection), &projection_m, sizeof(projection_m));
 
     vbo.storage<gfx::BufferUsage::STATIC>(sizeof(vertices));
     vbo.subData(0, vertices, sizeof(vertices));
@@ -62,7 +64,7 @@ SpriteRenderer::SpriteRenderer(int width, int height)
 void SpriteRenderer::setView(const data::View &view)
 {
     const float4x4_t view_m = view.getMatrix();
-    ubo0.subData(offsetof(ubo0_s, view), &view_m, sizeof(view_m));
+    ubo.subData(offsetof(ubo_s, view), &view_m, sizeof(view_m));
 }
 
 void SpriteRenderer::draw(const std::vector<data::Transform> &transforms, const gfx::Texture &texture, const float2_t &size)
@@ -70,24 +72,23 @@ void SpriteRenderer::draw(const std::vector<data::Transform> &transforms, const 
     // The sprite mesh is internally set to be a unit one ([0.0, 0.0] to [1.0, 1.0])
     // thus the additional scale matrix will just resize it to the target size
     const float4x4_t size_m = glm::scale(float4x4_t(1.0f), float3_t(size, 1.0f));
-    ubo0.subData(offsetof(ubo0_s, scale), &size_m, sizeof(size_m));
+    ubo.subData(offsetof(ubo_s, scale), &size_m, sizeof(size_m));
 
     instances.clear();
     std::transform(transforms.cbegin(), transforms.cend(), std::back_inserter(instances), [](const data::Transform &t) {
-        util::log("%f", t.getRotation());
         return t.getMatrix();
     });
 
     const size_t num_instances = instances.size();
-    const size_t ubo1_size = sizeof(float4x4_t) * num_instances;
+    const size_t ssbo_size = sizeof(float4x4_t) * num_instances;
 
-    ubo1.storage<gfx::BufferUsage::DYNAMIC>(ubo1_size);
-    ubo1.subData(0, instances.data(), ubo1_size);
+    ssbo.storage<gfx::BufferUsage::DYNAMIC>(ssbo_size);
+    ssbo.subData(0, instances.data(), ssbo_size);
 
     glUseProgram(0);
     glBindProgramPipeline(pipeline.get());
-    glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo0.get());
-    glBindBufferBase(GL_UNIFORM_BUFFER, 1, ubo1.get());
+    glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo.get());
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo.get());
     glBindTextureUnit(0, texture.get());
     glBindVertexArray(vao.get());
     glDrawElementsInstanced(GL_TRIANGLES, NUM_INDICES, GL_UNSIGNED_INT, nullptr, static_cast<GLsizei>(num_instances));
