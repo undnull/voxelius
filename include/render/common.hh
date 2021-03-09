@@ -15,19 +15,19 @@
 
 namespace render
 {
-    enum class RenderMode {
-        NORMAL,
-        POINTS,
-        WIREFRAME,
-    };
+enum class RenderMode {
+    NORMAL,
+    POINTS,
+    WIREFRAME,
+};
 
-    template<RenderMode T>
-    inline constexpr GLenum RENDER_MODE = 0;
-    template<>
-    inline constexpr GLenum RENDER_MODE<RenderMode::NORMAL> = GL_LINE;
-    template<>
-    inline constexpr GLenum RENDER_MODE<RenderMode::POINTS> = GL_POINT;
-    template<>
-    inline constexpr GLenum RENDER_MODE<RenderMode::WIREFRAME> = GL_FILL;
-    
+template<RenderMode T>
+inline constexpr GLenum RENDER_MODE = 0;
+template<>
+inline constexpr GLenum RENDER_MODE<RenderMode::NORMAL> = GL_LINE;
+template<>
+inline constexpr GLenum RENDER_MODE<RenderMode::POINTS> = GL_POINT;
+template<>
+inline constexpr GLenum RENDER_MODE<RenderMode::WIREFRAME> = GL_FILL;
+
 } // namespace render

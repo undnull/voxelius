@@ -4,12 +4,12 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #include <data/vidmode.hh>
+#include <render/sprite_renderer.hh>
 #include <ui/logger_out.hh>
 #include <ui/menu_bar.hh>
 #include <ui/ui.hh>
 #include <util/clock.hh>
 #include <util/logger.hh>
-#include <render/sprite_renderer.hh>
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     glfwWindowHint(GLFW_DECORATED, vidmode.border);
-    GLFWwindow *window = glfwCreateWindow(vidmode.width, vidmode.height, "TEST", vidmode.monitor, nullptr);
+    GLFWwindow *window = glfwCreateWindow(vidmode.width, vidmode.height, "Voxelius", vidmode.monitor, nullptr);
     if(!window) {
         glfwTerminate();
         return 1;
@@ -96,12 +96,15 @@ int main(int argc, char **argv)
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(debugCallback, nullptr);
-    {
-        const unsigned int nvidia_131185 = 131185;
-        glDebugMessageControl(GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_OTHER, GL_DONT_CARE, 1, &nvidia_131185, GL_FALSE);
 
-        // sprite
-       float2_t sprite_size;
+    const unsigned int nvidia_131185 = 131185;
+    glDebugMessageControl(GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_OTHER, GL_DONT_CARE, 1, &nvidia_131185, GL_FALSE);
+
+    // All the GL-related (objects) stuff should be done
+    // inside of this scope to avoid destructor calls when
+    // the window is destroyed and the GL context is gone
+    {
+        float2_t sprite_size;
         gfx::Texture sprite_texture;
         data::Transform sprite_transform0;
         data::Transform sprite_transform1;
@@ -116,7 +119,7 @@ int main(int argc, char **argv)
         stbi_uc *pixels = stbi_load("textures/bruh.jpg", &width, &height, &comp, STBI_rgb_alpha);
         if(!pixels)
             return 1;
-        
+
         sprite_texture.storage(width, height, GL_RGBA16F);
         sprite_texture.subImage(width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
         sprite_texture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -162,10 +165,11 @@ int main(int argc, char **argv)
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
-
     }
+
     glfwDestroyWindow(window);
     glfwTerminate();
+
     vidmode.saveToFile("vidmode.json");
 
     return 0;

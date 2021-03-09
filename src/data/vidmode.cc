@@ -59,7 +59,7 @@ void VidMode::loadFromArgs(const util::CommandLine &args)
     }
 
     border = args.hasOption("--noborder") ? GLFW_FALSE : border;
-    
+
     if(args.hasOption("--no-vsync"))
         swap_interval = 0;
     else if(args.hasOption("--vsync"))
