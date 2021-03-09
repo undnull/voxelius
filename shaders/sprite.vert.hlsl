@@ -27,13 +27,11 @@ vs_output main(vs_input input)
 {
     vs_output output;
 
-    // output.position = projection * view * (transform[input.instance_id] * scale) * float4(input.position, 0.0, 1.0);
-    // output.position = projection * view * scale * float4(input.position, 0.0, 1.0);
-    output.position = projection * view * (ssbo[input.instance_id] * scale) * float4(input.position, 0.0, 1.0);
-    // output.position = mul(output.position, transform[input.instance_id]);
-    // output.position = mul(output.position, scale);
-    // output.position = mul(output.position, view);
-    // output.position = mul(output.position, projection);
+    output.position = float4(input.position, 0.0, 1.0);
+    output.position = mul(output.position, scale);
+    output.position = mul(output.position, ssbo[input.instance_id]);
+    output.position = mul(output.position, view);
+    output.position = mul(output.position, projection);
 
     output.texcoord = input.texcoord;
 
