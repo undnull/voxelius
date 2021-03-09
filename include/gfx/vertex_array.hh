@@ -13,13 +13,13 @@ constexpr unsigned int ATTRIBUTE_FORMAT = 0;
 template<>
 constexpr unsigned int ATTRIBUTE_FORMAT<float> = GL_FLOAT;
 
-class VertexArray final {
+class VertexArray {
 public:
     VertexArray();
     VertexArray(VertexArray &&rhs);
     VertexArray(const VertexArray &rhs) = delete;
 
-    ~VertexArray();
+    virtual ~VertexArray();
 
     VertexArray &operator=(VertexArray &&rhs);
     VertexArray &operator=(const VertexArray &rhs) = delete;

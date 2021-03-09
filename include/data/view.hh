@@ -8,7 +8,7 @@
 
 namespace data
 {
-class View final {
+class View {
 public:
     View();
 

@@ -23,13 +23,13 @@ template<>
 constexpr GLenum SHADER_STAGE<ShaderStage::FRAGMENT> = GL_FRAGMENT_SHADER;
 
 template<ShaderStage T>
-class Shader final {
+class Shader {
 public:
     Shader();
     Shader(Shader &&rhs);
     Shader(const Shader &rhs) = delete;
 
-    ~Shader();
+    virtual ~Shader();
 
     Shader &operator=(Shader &&rhs);
     Shader &operator=(const Shader &rhs) = delete;

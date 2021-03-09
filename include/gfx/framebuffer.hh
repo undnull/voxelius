@@ -8,13 +8,13 @@
 
 namespace gfx
 {
-class Framebuffer final {
+class Framebuffer {
 public:
     Framebuffer();
     Framebuffer(Framebuffer &&rhs);
     Framebuffer(const Framebuffer &rhs) = delete;
 
-    ~Framebuffer();
+    virtual ~Framebuffer();
 
     Framebuffer &operator=(Framebuffer &&rhs);
     Framebuffer &operator=(const Framebuffer &rhs) = delete;

@@ -8,7 +8,7 @@
 
 namespace ui
 {
-class LoggerOut final {
+class LoggerOut {
 public:
     void draw(const ImGuiIO &io);
 };

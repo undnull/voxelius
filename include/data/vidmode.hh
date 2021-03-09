@@ -11,7 +11,7 @@ struct GLFWmonitor;
 
 namespace data
 {
-class VidMode final {
+class VidMode {
 public:
     VidMode();
 

@@ -8,7 +8,7 @@
 
 namespace data
 {
-struct vertex final {
+struct vertex {
     float2_t position = { 0.0f, 0.0f };
     float2_t texcoord = { 0.0f, 0.0f };
 };

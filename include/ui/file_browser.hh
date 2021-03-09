@@ -9,9 +9,9 @@
 
 namespace ui
 {
-class FileBrowserDialog final {
+class FileBrowserDialog {
 private:
-    struct fs_entry final {
+    struct fs_entry {
         fs::path path;
         std::string print;
         bool is_directory;

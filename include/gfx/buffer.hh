@@ -25,13 +25,13 @@ constexpr GLenum BUFFER_USAGE<BufferUsage::STREAM> = GL_STREAM_DRAW;
 template<>
 constexpr GLenum BUFFER_USAGE<BufferUsage::DYNAMIC> = GL_DYNAMIC_DRAW;
 
-class Buffer final {
+class Buffer {
 public:
     Buffer();
     Buffer(Buffer &&rhs);
     Buffer(const Buffer &&rhs) = delete;
 
-    ~Buffer();
+    virtual ~Buffer();
 
     Buffer &operator=(Buffer &&rhs);
     Buffer &operator=(const Buffer &rhs) = delete;

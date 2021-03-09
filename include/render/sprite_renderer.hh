@@ -8,9 +8,9 @@
 
 namespace render
 {
-class SpriteRenderer final {
+class SpriteRenderer {
 public:
-    struct alignas(16) ubo_s final {
+    struct alignas(16) ubo_s {
         float4x4_t projection;
         float4x4_t scale;
         float4x4_t view;

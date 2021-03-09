@@ -9,7 +9,7 @@
 
 namespace ui
 {
-class MenuBar final {
+class MenuBar {
 public:
     MenuBar();
 

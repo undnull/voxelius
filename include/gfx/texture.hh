@@ -10,13 +10,13 @@
 
 namespace gfx
 {
-class Texture final {
+class Texture {
 public:
     Texture();
     Texture(Texture &&rhs);
     Texture(const Texture &rhs) = delete;
 
-    ~Texture();
+    virtual ~Texture();
 
     Texture &operator=(Texture &&rhs);
     Texture &operator=(const Texture &rhs) = delete;

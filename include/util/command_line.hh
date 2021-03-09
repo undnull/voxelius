@@ -9,9 +9,9 @@
 
 namespace util
 {
-class CommandLine final {
+class CommandLine {
 public:
-    struct option final {
+    struct option {
         std::string opt;
         std::string argument;
         bool has_argument;

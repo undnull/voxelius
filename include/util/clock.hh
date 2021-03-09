@@ -7,7 +7,7 @@
 
 namespace util
 {
-class Clock final {
+class Clock {
 public:
     Clock();
 

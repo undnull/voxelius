@@ -15,13 +15,13 @@ constexpr GLenum SHADER_STAGE_BIT<ShaderStage::VERTEX> = GL_VERTEX_SHADER_BIT;
 template<>
 constexpr GLenum SHADER_STAGE_BIT<ShaderStage::FRAGMENT> = GL_FRAGMENT_SHADER_BIT;
 
-class Pipeline final {
+class Pipeline {
 public:
     Pipeline();
     Pipeline(Pipeline &&rhs);
     Pipeline(const Pipeline &rhs) = delete;
 
-    ~Pipeline();
+    virtual ~Pipeline();
 
     Pipeline &operator=(Pipeline &&rhs);
     Pipeline &operator=(const Pipeline &rhs) = delete;

@@ -8,7 +8,7 @@
 
 namespace data
 {
-class Transform final {
+class Transform {
 public:
     Transform();
 
