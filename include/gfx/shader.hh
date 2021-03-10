@@ -84,20 +84,20 @@ inline Shader<T> &Shader<T>::operator=(Shader &&rhs)
 template<ShaderStage T>
 inline bool Shader<T>::link(const void *binary, size_t size)
 {
-    int status;
+    GLint status;
 
     if(info_log) {
         delete[] info_log;
         info_log = nullptr;
     }
 
-    unsigned int shader = glCreateShader(SHADER_STAGE<T>);
+    GLuint shader = glCreateShader(SHADER_STAGE<T>);
     glShaderBinary(1, &shader, GL_SHADER_BINARY_FORMAT_SPIR_V, binary, static_cast<GLsizei>(size));
     glSpecializeShader(shader, "main", 0, nullptr, nullptr);
 
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if(status == GL_FALSE) {
-        int length;
+        GLint length;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
 
         info_log = new char[length];
