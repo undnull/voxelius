@@ -17,11 +17,22 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/Debug/voxelius.exe",
-            "args": [ "--width", "1152", "--height", "648", "--windowed", "--vsync" ],
+            "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "console": "internalConsole"
+        },
+        {
+            "name": "(win32, release) Run",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Release/voxelius.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "newExternalWindow"
         }
     ]
 }
