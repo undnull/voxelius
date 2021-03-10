@@ -40,9 +40,7 @@ Depending on your environment, run one of the following commands:
 
 ### 5. (Optional) building shaders
 This step requires Vulkan SDK to be installed.  
-If you don't have Vulkan SDK installed, you may download the latest release of _glslangValidator_ and put the binary into the `tools` directory.  
-
-**Note:** _glslangValidator_ has a bug which breaks HLSL shaders for OpenGL environment. At this point project uses a workaround involving _spirv-cross_ to avoid this to happen.  
+If you don't have Vulkan SDK installed, you may download the latest release of _glslangValidator_ and _spirv-cross_ and put the binary into the `tools` directory.  
 
 Run the following command:
 ```
