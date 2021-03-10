@@ -4,6 +4,8 @@
  * Copyright (C) 2021, Kirill GPRB.
  */
 #pragma once
+#include <config.hh>
+
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/mat4x4.hpp>
