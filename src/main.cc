@@ -5,6 +5,7 @@
  */
 #include <data/image.hh>
 #include <data/vidmode.hh>
+#include <input/keyboard.hh>
 #include <render/sprite_renderer.hh>
 #include <ui/logger_out.hh>
 #include <ui/menu_bar.hh>
@@ -31,7 +32,7 @@ static void debugCallback(unsigned int src, unsigned int type, unsigned int id, 
     }
 }
 
-inline bool checkGLSuitability()
+static bool checkGLSuitability()
 {
     if(GLAD_GL_VERSION_4_6)
         return true;
@@ -61,10 +62,22 @@ inline bool checkGLSuitability()
     return true;
 }
 
+static void errorCallback(int code, const char *message)
+{
+    util::log("glfw error %d: %s", code, message);
+}
+
+static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
+{
+    //ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
+    input::keyCallback(key, action);
+}
+
 int main(int argc, char **argv)
 {
     util::CommandLine args(argc, argv);
 
+    glfwSetErrorCallback(errorCallback);
     if(!glfwInit())
         return 1;
 
@@ -80,6 +93,10 @@ int main(int argc, char **argv)
         glfwTerminate();
         return 1;
     }
+
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
+
+    glfwSetKeyCallback(window, keyCallback);
 
     glfwMakeContextCurrent(window);
     if(!gladLoadGL()) {
@@ -151,7 +168,9 @@ int main(int argc, char **argv)
         transforms.push_back(sprite.transform);
 
         render::SpriteRenderer sprite_renderer(vidmode.width, vidmode.height);
-        sprite_renderer.setView(data::View());
+
+        data::View view;
+        sprite_renderer.setView(view);
 
         //ui::init(window);
         //ui::LoggerOut logger_out;
@@ -164,6 +183,23 @@ int main(int argc, char **argv)
 
         while(!glfwWindowShouldClose(window)) {
             const float frametime = clock.reset();
+
+            {
+                float2_t velocity = float2_t(0.0f, 0.0f);
+                if(input::isKeyPressed(GLFW_KEY_W))
+                    velocity.y += 1.0f;
+                if(input::isKeyPressed(GLFW_KEY_A))
+                    velocity.x += 1.0f;
+                if(input::isKeyPressed(GLFW_KEY_S))
+                    velocity.y += -1.0f;
+                if(input::isKeyPressed(GLFW_KEY_D))
+                    velocity.x += -1.0f;
+                
+                if(glm::abs(glm::length(velocity)) > 0.0f) {
+                    view.move(velocity * 128.0f * frametime);
+                    sprite_renderer.setView(view);
+                }
+            }
 
             if(perf.getTime() >= 1.0f) {
                 util::log("momentary frametime: %f (%f FPS)", frametime, 1.0f / frametime);

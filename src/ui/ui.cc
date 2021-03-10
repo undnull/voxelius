@@ -163,8 +163,7 @@ void init(GLFWwindow *window)
     applyStyle_cherry(ImGui::GetStyle());
     //applyStyle_vgui(ImGui::GetStyle());
 
-    // FIXME: install the callbacks manually
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(window, false);
     ImGui_ImplOpenGL3_Init("#version 450");
 
     ImGuiIO &io = ImGui::GetIO();
