@@ -44,7 +44,7 @@ Headers are sorted in alphabetical order regardless of the subdirectory:
 ### General
 * Almost all C++ rules apply also for HLSL except for some
 * Macros are allowed (does HLSL even have `constexpr`?)
-* There are no `clang-format` for shaders so format it manually.
+* There is no `clang-format` for shaders so format it manually.
 
 ### File names
 #### Sources
