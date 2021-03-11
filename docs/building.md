@@ -3,7 +3,7 @@
 * Git
 * CMake >=3.10
 * Any build environment
-* Any C and C++ compiler
+* Any C99 and C++17 compiler
 
 ## Actions
 ### 1. Cloning
