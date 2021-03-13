@@ -180,9 +180,12 @@ int main(int argc, char **argv)
         float sincos_angle = 0.0f;
 
         util::Clock perf;
+        float perf_frametime = 0.0f;
 
         while(!glfwWindowShouldClose(window)) {
             const float frametime = clock.reset();
+            perf_frametime += frametime;
+            perf_frametime *= 0.5f;
 
             {
                 float2_t velocity = float2_t(0.0f, 0.0f);
@@ -202,7 +205,7 @@ int main(int argc, char **argv)
             }
 
             if(perf.getTime() >= 1.0f) {
-                util::log("momentary frametime: %f (%f FPS)", frametime, 1.0f / frametime);
+                util::log("average frametime: %f (%f FPS)", perf_frametime, 1.0f / perf_frametime);
                 perf.reset();
             }
 
